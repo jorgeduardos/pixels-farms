@@ -4,6 +4,7 @@ import { arrayMoveMutable } from 'array-move';
 var dev = false;
 const farmListDom = document.querySelector('.farm-list');
 const farmInput = document.getElementById('farmNumber');
+var farmCountDom = document.getElementById('farm-count');
 
 var storedFarms = JSON.parse(localStorage.getItem("farms"));
 var farms = [];
@@ -19,6 +20,7 @@ if (storedFarms != null) {
     farms.forEach(farm => {
         createFarmNode(farm);
     });
+    updateFarmCount(farms);
 }
 
 
@@ -95,6 +97,8 @@ function addFarm(form) {
     }
 
     farms.push(farm);
+    updateFarmCount(farms);
+
     localStorage.setItem("farms", JSON.stringify(farms));
 
     if (dev) {
@@ -147,6 +151,7 @@ farmListDom.addEventListener('click', function (e) {
         }
 
         farms.splice(farm.i, 1);
+        updateFarmCount(farms);
 
         if (dev) {
             console.log('farms after delete: ', farms);
@@ -193,6 +198,11 @@ function createFarmNode(farm) {
 
     farmListDom.appendChild(tag);
 
+}
+
+function updateFarmCount(arr){
+    let farmCount = arr.length;
+    farmCountDom.innerHTML = farmCount;
 }
 
 /// helpers
