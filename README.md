@@ -2,7 +2,7 @@
 
 Pixels-farms is a simple tool that helps farmers keep track of the crops they are currently farming
 
-### GUIDE
+### HOW TO USE
 
 -   Add a farm using the fields above.
     -   Type the farm number or just copy/paste the URL.
