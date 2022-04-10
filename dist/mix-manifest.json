@@ -5,5 +5,7 @@
     "/images/grumpkin.png": "/images/grumpkin.png",
     "/images/pixels-logo.png": "/images/pixels-logo.png",
     "/images/popberry.png": "/images/popberry.png",
-    "/images/scarrot.png": "/images/scarrot.png"
+    "/images/scarrot.png": "/images/scarrot.png",
+    "/js/app.min.js": "/js/app.min.js",
+    "/css/app.min.css": "/css/app.min.css"
 }

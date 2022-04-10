@@ -30,7 +30,7 @@ const crops = [
         name: 'Popberry',
         sproutTime: {
             hours: 2,
-            minutes: 30
+            minutes: 0
         }, // in hours
     },
     {
@@ -46,7 +46,7 @@ const crops = [
         name: 'Scarrot',
         sproutTime: {
             hours: 5,
-            minutes: 0
+            minutes: 20
         },  // in hours
     }
 ]
