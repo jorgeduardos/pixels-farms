@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixels Farms</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="dist/css/app.css" />
+</head>
+
+<body>
+    <h1>
+        <img src="/dist/images/pixels-logo.png" alt="Pixels">-<span>Farms</span>
+    </h1>
+
+    <div class="global-container">
+        <div class="farm-list">
+
+            <!-- <div class="farm" data-id="0">
+                <h4>Farm 1545</h4>
+                <div class="crop-type scarrot"></div>
+                <div class="timer">5:00</div>
+
+                <div class="ui">
+                    <button>Delete</button>
+                    <button class="start-farm">Start</button>
+                </div>
+            </div> -->
+
+        </div>
+
+        <div class="form-container">
+            <div class="fix">
+                <div>
+                    <form action="">
+                        <label for="">
+                            <span>Farm Number/URL</span>
+                            <input id="farmNumber" name="farmNumber" type="text" required>
+                        </label>
+                        <label for="">
+                            <span>Crop</span>
+                            <!-- <select name="type" id="">
+                                <option value="0">Popberries</option>
+                                <option value="1">Grumpkins</option>
+                                <option value="2">Scarrots</option>
+                            </select> -->
+                            <div class="radios">
+                                <label for="popberry">
+                                    <input type="radio" value="0" name="type" id="popberry" required checked>
+                                    <div><img src="/dist/images/popberry.png" alt="Popberry"></div>
+                                </label>
+                                <label for="grumpkin">
+                                    <input type="radio" value="1" name="type" id="grumpkin">
+                                    <div><img src="/dist/images/grumpkin.png" alt="Grumpkin"></div>
+                                </label>
+                                <label for="scarrot">
+                                    <input type="radio" value="2" name="type" id="scarrot">
+                                    <div><img src="/dist/images/scarrot.png" alt="Scarrot"></div>
+                                </label>
+                            </div>
+                        </label>
+                        <button type="submit">Add Farm</button>
+                    </form>
+                    <button id="reset" disabled>Reset Farms</button>
+                </div>
+
+                <div class="guide">
+                    <h3>ABOUT (scroll)</h3>
+                    <p>Pixels-farms is a simple tool that helps farmers keep track of the crops they are currently farming
+                    </p>
+                    <h3>GUIDE</h3>
+                    <ul>
+                        <li class="parent-li">Add a farm using the fields above.
+                            <ul>
+                                <li>Type the farm number or just copy/paste the URL.</li>
+                                <li>Select the crop type</li>
+                                <li>Click "Add Farm"</li>
+                                <li>A farm will appear on the left column</li>
+                            </ul>
+                        </li>
+
+                        <li class="parent-li">Start Farm
+                            <ul>
+                                <li>Click the "Start" button to start the timer on the farm</li>
+                                <li>This will open the game in a new tab so you can go ahead and collec/plant the crop
+                                </li>
+                                <li>Close the game and continue with the next farm in the list</li>
+                                <li>Rows will turn green whenever the timer is over, press start to start the farm again
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="parent-li">Delete Farm
+                            <ul>
+                                <li>Click the "Delete" button to delete farm from the list</li>
+                            </ul>
+                        </li>
+                        <li class="parent-li">Re-order Farms
+                            <ul>
+                                <li>Drag and drop farms to re-order them</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Farms order and information (except timers for now) are persisted even after refreshig the
+                            website :D
+                        </li>
+                        <li class="parent-li">To-Dos
+                            <ul>
+                                <li>Persist Timers on reload</li>
+                                <li>Error handling</li>
+                                <li>Better Styling</li>
+                                <li>Responsive Design</li>
+                                <li>Better UI/UX</li>
+                                <li>Pull dynamic information of farms whenever an API is made available</li>
+                                <li>For bug or feature requests ask DEON#9972 on the Pixels discord :)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="dist/js/lib/easytimer.min.js"></script>
+    <script src="dist/js/app.js"></script>
+</body>
+
+</html>
