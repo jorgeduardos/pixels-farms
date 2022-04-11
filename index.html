@@ -11,10 +11,36 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="dist/css/app.css?v=1.0.2" />
+    <link rel="stylesheet" href="dist/css/app.css?v=1.1.2.1" />
 </head>
 
 <body>
+
+    <div id="edit-pop-up">
+        <div class="screen"></div>
+        <div class="container">
+            <button id="close-pop">&#x2715;</button>
+            <form action="" id="edit-farm">
+                <h2>Edit Farm 2</h2>
+                <div class="radios">
+                    <label for="popberry-p">
+                        <input type="radio" value="0" name="type" id="popberry-p" required checked>
+                        <div><img src="/dist/images/popberry.png" alt="Popberry"></div>
+                    </label>
+                    <label for="grumpkin-p">
+                        <input type="radio" value="1" name="type" id="grumpkin-p">
+                        <div><img src="/dist/images/grumpkin.png" alt="Grumpkin"></div>
+                    </label>
+                    <label for="scarrot-p">
+                        <input type="radio" value="2" name="type" id="scarrot-p">
+                        <div><img src="/dist/images/scarrot.png" alt="Scarrot"></div>
+                    </label>
+                </div>
+                <button id="confirm-edit">Confirm</button>
+            </form>
+        </div>
+    </div>
+
     <h1>
         <img src="/dist/images/pixels-logo.png" alt="Pixels">-<span>Farms</span>
     </h1>
@@ -29,23 +55,26 @@
     <div class="global-container">
         <div class="farm-list">
 
-            <!-- <div class="farm" data-id="0">
+            <div class="farm" data-id="0">
+                <input type="checkbox" name="select-farm" class="select-farm">
                 <h4>Farm 1545</h4>
                 <div class="crop-type scarrot"></div>
                 <div class="timer">5:00</div>
 
                 <div class="ui">
-                    <button>Delete</button>
+                    <button class="delete-farm">Delete</button>
+                    <button class="edit-farm">Edit</button>
+                    <button class="open-farm">Open</button>
                     <button class="start-farm">Start</button>
                 </div>
-            </div> -->
+            </div>
 
         </div>
 
         <div class="form-container">
             <div class="fix">
                 <div>
-                    <form action="">
+                    <form action="" id="add-farm">
                         <label for="">
                             <span>Farm Number/URL</span>
                             <input id="farmNumber" name="farmNumber" type="text" required>
@@ -113,12 +142,12 @@
                             </ul>
                         </li>
                         <li>
-                            Farms order and information (except timers for now) are persisted even after refreshig the
+                            Farms data is persisted even after refreshig the
                             website :D
                         </li>
                         <li class="parent-li">To-Dos
                             <ul>
-                                <li>Persist Timers on reload</li>
+                                <li>Editing farms after creating them</li>
                                 <li>Error handling</li>
                                 <li>Better Styling</li>
                                 <li>Responsive Design</li>
@@ -137,7 +166,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="dist/js/lib/easytimer.min.js"></script>
-    <script src="dist/js/app.js?v=1.0.2"></script>
+    <script src="dist/js/app.js?v=1.1.2.1"></script>
 </body>
 
 </html>

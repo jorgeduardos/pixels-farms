@@ -4,6 +4,7 @@ import { arrayMoveMutable } from 'array-move';
 var dev = false;
 const farmListDom = document.querySelector('.farm-list');
 const farmInput = document.getElementById('farmNumber');
+const editPopUpDom = document.getElementById('edit-pop-up');
 var farmCountDom = document.getElementById('farm-count');
 
 var storedFarms = JSON.parse(localStorage.getItem("farms"));
@@ -18,8 +19,11 @@ if (storedFarms != null) {
         console.log('farms on load: ', farms);
     }
     farms.forEach(farm => {
+        if(farm.crop.sproutTime.seconds == undefined){
+            farm.crop.sproutTime.seconds = 0;
+        }
         createFarmNode(farm);
-        if(farm.startTime != null){
+        if(farm.startTime != undefined && farm.startTime != null){
             continueFarmTimer(farm)
         }
     });
@@ -34,9 +38,9 @@ const crops = [
         id: 0,
         name: 'Popberry',
         sproutTime: {
-            hours: 0,
+            hours: 2,
             minutes: 0,
-            seconds: 20
+            seconds: 0
         }, // in hours
     },
     {
@@ -73,7 +77,7 @@ var sortable = new Sortable(farmListDom, {
 });
 
 //form submission
-let form = document.querySelector('form');
+let form = document.getElementById('add-farm');
 form.addEventListener('submit', function (e) {
 
     e.preventDefault();
@@ -148,7 +152,7 @@ farmListDom.addEventListener('click', function (e) {
             farmDom.classList.add('completed');
         });
 
-        window.open(`https://play.pixels.online/farm${farm.number}`, "_blank");
+        openFarm(farm.number);
 
     } else if (e.target.classList.contains('delete-farm')) {
 
@@ -171,6 +175,17 @@ farmListDom.addEventListener('click', function (e) {
         localStorage.setItem("farms", JSON.stringify(farms));
         farmDom.remove();
 
+    } else if(e.target.classList.contains('open-farm')){
+
+        let farmDom = e.target.parentElement.parentElement;
+        openFarm(farmDom.id);
+
+    } else if(e.target.classList.contains('edit-farm')){
+
+        let farmDom = e.target.parentElement.parentElement;
+        
+        editPopUpDom.querySelector('h2').innerHTML = `Edit Farm ${farmDom.id}`
+        editPopUpDom.classList.add('open');
     }
 })
 
@@ -199,9 +214,11 @@ function createFarmNode(farm) {
     let cropName = farm.crop.name.toLowerCase();
     let cropTimer;
 
+    // console.log(farm);
+
     // if crop timer was started, use it
 
-    if (farm.startTime != null) {
+    if (farm.startTime != undefined && farm.startTime != null) {
         cropTimer = {
             hours: '',
             minutes: '',
@@ -213,17 +230,24 @@ function createFarmNode(farm) {
     }
 
 
-    tag.innerHTML = `<h4>Farm ${farm.number}</h4>
+    tag.innerHTML = `<input type="checkbox" name="select-farm" class="select-farm">
+        <h4>Farm ${farm.number}</h4>
         <div class="crop-type ${cropName}"></div>
-        <div class="timer">${cropTimer.hours}:${cropTimer.minutes}:${cropTimer.seconds}</div>
+        <div class="timer">${cropTimer.hours == 0 ? '00' : cropTimer.hours}:${cropTimer.minutes == 0 ? '00': cropTimer.minutes}:${cropTimer.seconds == 0 ? '00' : cropTimer.seconds}</div>
 
         <div class="ui">
             <button class="delete-farm">Delete</button>
+            <button class="edit-farm">Edit</button>
+            <button class="open-farm">Open</button>
             <button class="start-farm">Start</button>
         </div>`;
 
     farmListDom.appendChild(tag);
 
+}
+
+function openFarm(farmNumber){
+    window.open(`https://play.pixels.online/farm${farmNumber}`, "_blank");
 }
 
 function continueFarmTimer(farm){
@@ -302,6 +326,22 @@ function timerCalculate(fDate, oDate, sproutTimer) {
         seconds: nseconds
     }
 }
+
+// edit farm
+document.getElementById('close-pop').addEventListener('click', function(e){
+    editPopUpDom.classList.remove('open')
+})
+document.querySelector('#edit-pop-up .container').addEventListener('click', function(e){
+    e.stopPropagation();
+})
+
+document.querySelector('#edit-pop-up .screen').addEventListener('click', function(){
+    editPopUpDom.classList.remove('open')
+})
+
+document.getElementById('confirm-edit').addEventListener('click', function(){
+    
+})
 
 /// helpers
 

@@ -58,6 +58,7 @@ h1 {
     margin: 0 auto;
     grid-column: 1 / 2;
     padding: 15px;
+    padding-left: 5px;
     position: relative;
     cursor: move;
     font-size: 1.4rem;
@@ -68,6 +69,10 @@ h1 {
 
     &.completed{
         background-color: #92FC7A;
+    }
+
+    .select-farm{
+        margin-right: 1.5rem;
     }
 
     h4 {
@@ -127,21 +132,6 @@ h1 {
             // align-self: flex-start;
             margin-bottom: 5px;
         }
-
-        .radios{
-            display: flex;
-            margin-top: 10px;
-            label{
-                margin-right: 2rem;
-                display: flex;
-                align-items: center;
-                border: 1px solid #ccc;
-                padding: 5px;
-            }
-            img{
-                height: 50px;
-            }
-        }
     }
 
     #reset{
@@ -173,6 +163,21 @@ h1 {
     }
 }
 
+.radios{
+    display: flex;
+    margin-top: 10px;
+    label{
+        margin-right: 2rem;
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        padding: 5px;
+    }
+    img{
+        height: 50px;
+    }
+}
+
 input, select{
     font-size: 1.1rem;
     padding: 5px;
@@ -181,4 +186,60 @@ input, select{
 button{
     font-size: 1.2rem;
     padding: 5px;
+}
+
+#edit-pop-up{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    display: none;
+
+    &.open{
+        display: block;
+    }
+
+    .screen{
+        // position: absolute;
+        height: inherit;
+        width: inherit;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .container{
+        position: absolute;
+        text-align: center;
+        height: 250px;
+        width: 500px;
+        border: 1px solid #ccc;
+        inset: 0;
+        margin: auto;
+        background-color: white;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        #close-pop{
+            position: absolute;
+            right: 1.5rem;
+            top: 1rem;
+            border: none;
+            background-color: white;
+            padding: 0;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        h2{
+            margin-top: 0;
+        }
+
+        .radios{
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+    }
 }

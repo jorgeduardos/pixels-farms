@@ -16,6 +16,7 @@ __webpack_require__.r(__webpack_exports__);
 var dev = false;
 var farmListDom = document.querySelector('.farm-list');
 var farmInput = document.getElementById('farmNumber');
+var editPopUpDom = document.getElementById('edit-pop-up');
 var farmCountDom = document.getElementById('farm-count');
 var storedFarms = JSON.parse(localStorage.getItem("farms"));
 var farms = []; // generate farms if there are farms saved
@@ -29,9 +30,13 @@ if (storedFarms != null) {
   }
 
   farms.forEach(function (farm) {
+    if (farm.crop.sproutTime.seconds == undefined) {
+      farm.crop.sproutTime.seconds = 0;
+    }
+
     createFarmNode(farm);
 
-    if (farm.startTime != null) {
+    if (farm.startTime != undefined && farm.startTime != null) {
       continueFarmTimer(farm);
     }
   });
@@ -43,9 +48,9 @@ var crops = [{
   id: 0,
   name: 'Popberry',
   sproutTime: {
-    hours: 0,
+    hours: 2,
     minutes: 0,
-    seconds: 20
+    seconds: 0
   } // in hours
 
 }, {
@@ -81,7 +86,7 @@ var sortable = new sortablejs__WEBPACK_IMPORTED_MODULE_0__["default"](farmListDo
   }
 }); //form submission
 
-var form = document.querySelector('form');
+var form = document.getElementById('add-farm');
 form.addEventListener('submit', function (e) {
   e.preventDefault();
   var formData = new FormData(e.target);
@@ -140,7 +145,7 @@ farmListDom.addEventListener('click', function (e) {
       target.disabled = false;
       farmDom.classList.add('completed');
     });
-    window.open("https://play.pixels.online/farm".concat(farm.number), "_blank");
+    openFarm(farm.number);
   } else if (e.target.classList.contains('delete-farm')) {
     var _farmDom = e.target.parentElement.parentElement;
 
@@ -162,6 +167,13 @@ farmListDom.addEventListener('click', function (e) {
     localStorage.setItem("farms", JSON.stringify(farms));
 
     _farmDom.remove();
+  } else if (e.target.classList.contains('open-farm')) {
+    var _farmDom2 = e.target.parentElement.parentElement;
+    openFarm(_farmDom2.id);
+  } else if (e.target.classList.contains('edit-farm')) {
+    var _farmDom3 = e.target.parentElement.parentElement;
+    editPopUpDom.querySelector('h2').innerHTML = "Edit Farm ".concat(_farmDom3.id);
+    editPopUpDom.classList.add('open');
   }
 }); // find farm in array, returns farm and index
 
@@ -186,9 +198,10 @@ function createFarmNode(farm) {
   tag.setAttribute('id', farm.number);
   tag.setAttribute('data-id', farm.number);
   var cropName = farm.crop.name.toLowerCase();
-  var cropTimer; // if crop timer was started, use it
+  var cropTimer; // console.log(farm);
+  // if crop timer was started, use it
 
-  if (farm.startTime != null) {
+  if (farm.startTime != undefined && farm.startTime != null) {
     cropTimer = {
       hours: '',
       minutes: '',
@@ -198,8 +211,12 @@ function createFarmNode(farm) {
     cropTimer = farm.crop.sproutTime;
   }
 
-  tag.innerHTML = "<h4>Farm ".concat(farm.number, "</h4>\n        <div class=\"crop-type ").concat(cropName, "\"></div>\n        <div class=\"timer\">").concat(cropTimer.hours, ":").concat(cropTimer.minutes, ":").concat(cropTimer.seconds, "</div>\n\n        <div class=\"ui\">\n            <button class=\"delete-farm\">Delete</button>\n            <button class=\"start-farm\">Start</button>\n        </div>");
+  tag.innerHTML = "<input type=\"checkbox\" name=\"select-farm\" class=\"select-farm\">\n        <h4>Farm ".concat(farm.number, "</h4>\n        <div class=\"crop-type ").concat(cropName, "\"></div>\n        <div class=\"timer\">").concat(cropTimer.hours == 0 ? '00' : cropTimer.hours, ":").concat(cropTimer.minutes == 0 ? '00' : cropTimer.minutes, ":").concat(cropTimer.seconds == 0 ? '00' : cropTimer.seconds, "</div>\n\n        <div class=\"ui\">\n            <button class=\"delete-farm\">Delete</button>\n            <button class=\"edit-farm\">Edit</button>\n            <button class=\"open-farm\">Open</button>\n            <button class=\"start-farm\">Start</button>\n        </div>");
   farmListDom.appendChild(tag);
+}
+
+function openFarm(farmNumber) {
+  window.open("https://play.pixels.online/farm".concat(farmNumber), "_blank");
 }
 
 function continueFarmTimer(farm) {
@@ -264,7 +281,19 @@ function timerCalculate(fDate, oDate, sproutTimer) {
     minutes: nmin,
     seconds: nseconds
   };
-} /// helpers
+} // edit farm
+
+
+document.getElementById('close-pop').addEventListener('click', function (e) {
+  editPopUpDom.classList.remove('open');
+});
+document.querySelector('#edit-pop-up .container').addEventListener('click', function (e) {
+  e.stopPropagation();
+});
+document.querySelector('#edit-pop-up .screen').addEventListener('click', function () {
+  editPopUpDom.classList.remove('open');
+});
+document.getElementById('confirm-edit').addEventListener('click', function () {}); /// helpers
 
 /***/ }),
 
