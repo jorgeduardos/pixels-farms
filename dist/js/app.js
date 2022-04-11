@@ -11,25 +11,39 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sortablejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/modular/sortable.esm.js");
 /* harmony import */ var array_move__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! array-move */ "./node_modules/array-move/index.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 
 
 var dev = false;
 var farmListDom = document.querySelector('.farm-list');
 var farmInput = document.getElementById('farmNumber');
 var editPopUpDom = document.getElementById('edit-pop-up');
+var selectAllFarmsDom = document.getElementById('select-all-farms');
 var farmCountDom = document.getElementById('farm-count');
 var storedFarms = JSON.parse(localStorage.getItem("farms"));
-var farms = []; // generate farms if there are farms saved
+var FARMS = [];
+var FARMStoUpdate = []; // generate farms if there are farms saved
 // console.log(storedFarms)
 
 if (storedFarms != null) {
-  farms = storedFarms;
+  FARMS = storedFarms;
 
   if (dev) {
-    console.log('farms on load: ', farms);
+    console.log('farms on load: ', FARMS);
   }
 
-  farms.forEach(function (farm) {
+  FARMS.forEach(function (farm) {
     if (farm.crop.sproutTime.seconds == undefined) {
       farm.crop.sproutTime.seconds = 0;
     }
@@ -40,7 +54,11 @@ if (storedFarms != null) {
       continueFarmTimer(farm);
     }
   });
-  updateFarmCount(farms);
+  updateFarmCount(FARMS);
+
+  if (FARMS.length > 0) {
+    selectAllFarmsDom.classList.add('show');
+  }
 }
 
 var regex = /(?<=farm)[^/\s]*/i;
@@ -48,9 +66,9 @@ var crops = [{
   id: 0,
   name: 'Popberry',
   sproutTime: {
-    hours: 2,
+    hours: 0,
     minutes: 0,
-    seconds: 0
+    seconds: 10
   } // in hours
 
 }, {
@@ -77,11 +95,11 @@ var sortable = new sortablejs__WEBPACK_IMPORTED_MODULE_0__["default"](farmListDo
   animation: 150,
   ghostClass: 'ghost',
   onEnd: function onEnd(e) {
-    (0,array_move__WEBPACK_IMPORTED_MODULE_1__.arrayMoveMutable)(farms, e.oldIndex, e.newIndex);
-    localStorage.setItem("farms", JSON.stringify(farms));
+    (0,array_move__WEBPACK_IMPORTED_MODULE_1__.arrayMoveMutable)(FARMS, e.oldIndex, e.newIndex);
+    localStorage.setItem("farms", JSON.stringify(FARMS));
 
     if (dev) {
-      console.log('farms after move: ', farms);
+      console.log('farms after move: ', FARMS);
     }
   }
 }); //form submission
@@ -107,12 +125,13 @@ function addFarm(form) {
     timer: null,
     startTime: null
   };
-  farms.push(farm);
-  updateFarmCount(farms);
-  localStorage.setItem("farms", JSON.stringify(farms));
+  FARMS.push(farm);
+  updateFarmCount(FARMS);
+  selectAllFarmsDom.classList.add('show');
+  localStorage.setItem("farms", JSON.stringify(FARMS));
 
   if (dev) {
-    console.log('farms after add: ', farms);
+    console.log('farms after add: ', FARMS);
   }
 
   return farm;
@@ -120,27 +139,26 @@ function addFarm(form) {
 
 
 farmListDom.addEventListener('click', function (e) {
+  //start farm
   if (e.target.classList.contains('start-farm')) {
     var target = e.target;
     target.disabled = true;
     var farmDom = e.target.parentElement.parentElement;
     farmDom.classList.remove('completed');
-    var farm = findFarm(farmDom.id).farm;
+    var farm = findFarm(farmDom.id, FARMS).farm;
     var timerDom = farmDom.querySelector('.timer');
     var timer = new easytimer.Timer(); //saving timer pointer in farm
 
     farm.timer = timer;
     farm.startTime = Date(); //saving farm in localStorage
 
-    localStorage.setItem("farms", JSON.stringify(farms)); // timer.start({ countdown: true, startValues: {seconds: 10} });
+    localStorage.setItem("farms", JSON.stringify(FARMS)); // timer.start({ countdown: true, startValues: {seconds: 10} });
 
     timer.start({
       countdown: true,
       startValues: farm.crop.sproutTime
     });
-    timer.addEventListener('secondsUpdated', function (e) {
-      timerDom.innerHTML = timer.getTimeValues().toString();
-    });
+    timer.addEventListener('secondsUpdated', handleTimerStart(timerDom, timer));
     timer.addEventListener('targetAchieved', function (e) {
       target.disabled = false;
       farmDom.classList.add('completed');
@@ -149,7 +167,7 @@ farmListDom.addEventListener('click', function (e) {
   } else if (e.target.classList.contains('delete-farm')) {
     var _farmDom = e.target.parentElement.parentElement;
 
-    var _farm = findFarm(_farmDom.id);
+    var _farm = findFarm(_farmDom.id, FARMS);
 
     if (dev) {
       console.log('deleting farms ...');
@@ -157,14 +175,18 @@ farmListDom.addEventListener('click', function (e) {
       console.log('farm to be deleted: ', _farm);
     }
 
-    farms.splice(_farm.i, 1);
-    updateFarmCount(farms);
+    FARMS.splice(_farm.i, 1);
+    updateFarmCount(FARMS);
 
-    if (dev) {
-      console.log('farms after delete: ', farms);
+    if (FARMS.length == 0) {
+      selectAllFarmsDom.classList.remove('show');
     }
 
-    localStorage.setItem("farms", JSON.stringify(farms));
+    if (dev) {
+      console.log('farms after delete: ', FARMS);
+    }
+
+    localStorage.setItem("farms", JSON.stringify(FARMS));
 
     _farmDom.remove();
   } else if (e.target.classList.contains('open-farm')) {
@@ -172,14 +194,39 @@ farmListDom.addEventListener('click', function (e) {
     openFarm(_farmDom2.id);
   } else if (e.target.classList.contains('edit-farm')) {
     var _farmDom3 = e.target.parentElement.parentElement;
-    editPopUpDom.querySelector('h2').innerHTML = "Edit Farm ".concat(_farmDom3.id);
+    var h2 = editPopUpDom.querySelector('h2');
+    h2.innerHTML = "Edit Farm ".concat(_farmDom3.id);
+    h2.setAttribute('data-farm', _farmDom3.id);
+    h2.setAttribute('data-objtype', 'obj');
     editPopUpDom.classList.add('open');
+  } else if (e.target.classList.contains('select-farm')) {
+    var _farmDom4 = e.target.parentElement;
+
+    if (e.target.checked == true) {
+      // add farm to FARMStoUpdate
+      var _farm2 = findFarm(_farmDom4.id, FARMS);
+
+      FARMStoUpdate.push(_farm2.farm);
+      console.log('adding farm to FARMStoUpdate: ', FARMStoUpdate);
+    } else {
+      // remove farm from FARMStoUpdate
+      var _farm3 = findFarm(_farmDom4.id, FARMStoUpdate);
+
+      FARMStoUpdate.splice(_farm3.i, 1);
+      console.log('removing farm to FARMStoUpdate: ', FARMStoUpdate);
+    }
+
+    if (FARMStoUpdate.length > 1) {
+      document.querySelector('.mass-edit-container .extra-buttons').classList.add('show');
+    } else {
+      document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
+    }
   }
 }); // find farm in array, returns farm and index
 
-function findFarm(id) {
+function findFarm(id, arr) {
   var farm;
-  farms.forEach(function (item, index) {
+  arr.forEach(function (item, index) {
     if (id == item.number) {
       farm = {
         farm: item,
@@ -281,7 +328,7 @@ function timerCalculate(fDate, oDate, sproutTimer) {
     minutes: nmin,
     seconds: nseconds
   };
-} // edit farm
+} // edit farm pop up
 
 
 document.getElementById('close-pop').addEventListener('click', function (e) {
@@ -293,7 +340,162 @@ document.querySelector('#edit-pop-up .container').addEventListener('click', func
 document.querySelector('#edit-pop-up .screen').addEventListener('click', function () {
   editPopUpDom.classList.remove('open');
 });
-document.getElementById('confirm-edit').addEventListener('click', function () {}); /// helpers
+document.getElementById('edit-farm-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var formData = new FormData(e.target);
+  var formProps = Object.fromEntries(formData);
+  var crop = crops[formProps.type];
+  var typeOfEdit = editPopUpDom.querySelector('h2').getAttribute('data-objtype');
+
+  if (typeOfEdit == 'obj') {
+    var farmId = editPopUpDom.querySelector('h2').getAttribute('data-farm');
+    var farm = findFarm(farmId, FARMS).farm;
+    editFarm(farm, crop);
+  } else if (typeOfEdit == 'arr') {
+    editFarm(FARMStoUpdate, crop);
+    var checkBoxes = farmListDom.querySelectorAll('.select-farm');
+    var selectButton = document.getElementById('select-all-farms');
+    clearCheckBoxes(checkBoxes, selectButton);
+  }
+}); // mass deleting
+
+document.getElementById('delete-all-farms').addEventListener('click', function (e) {
+  for (var i = 0; i < FARMStoUpdate.length; i++) {
+    var farmToDelete = FARMStoUpdate[i].number;
+    var farmToDeleteDom = document.getElementById(FARMStoUpdate[i].number);
+
+    for (var f = 0; f < FARMS.length; f++) {
+      var farm = FARMS[f];
+
+      if (farm.number == farmToDelete) {
+        FARMS.splice(f, 1);
+        console.log('FARMS after splice: ', FARMS);
+        farmToDeleteDom.remove();
+      }
+    }
+  }
+
+  FARMStoUpdate = [];
+  console.log('FARMStoupdate after splice: ', FARMStoUpdate);
+  updateFarmCount(FARMS);
+  document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
+
+  if (FARMS.length == 0) {
+    selectAllFarmsDom.classList.remove('show');
+  }
+
+  localStorage.setItem("farms", JSON.stringify(FARMS));
+}); // mass editing
+
+document.getElementById('edit-all-farms').addEventListener('click', function (e) {
+  var h2 = editPopUpDom.querySelector('h2');
+  h2.innerHTML = "Edit Farms";
+  h2.setAttribute('data-objtype', 'arr');
+  editPopUpDom.classList.add('open');
+}); //mass starting
+
+document.getElementById('start-all-farms').addEventListener('click', function (e) {
+  FARMStoUpdate.forEach(function (farm) {
+    var farmDom = document.getElementById(farm.number);
+
+    if (farmDom.classList.contains('completed')) {
+      var startButton = farmDom.querySelector('.start-farm');
+      startButton.disabled = true;
+      farmDom.classList.remove('completed');
+      var timerDom = farmDom.querySelector('.timer');
+      var timer = new easytimer.Timer();
+      farm.timer = timer;
+      farm.startTime = Date(); // timer.start({ countdown: true, startValues: {seconds: 10} });
+
+      timer.start({
+        countdown: true,
+        startValues: farm.crop.sproutTime
+      });
+      timer.addEventListener('secondsUpdated', function (e) {
+        timerDom.innerHTML = timer.getTimeValues().toString();
+      });
+      timer.addEventListener('targetAchieved', function (e) {
+        startButton.disabled = false;
+        farmDom.classList.add('completed');
+      });
+      openFarm(farm.number);
+    }
+  });
+  var checkBoxes = farmListDom.querySelectorAll('.select-farm');
+  var selectButton = document.getElementById('select-all-farms');
+  clearCheckBoxes(checkBoxes, selectButton);
+  localStorage.setItem("farms", JSON.stringify(FARMS));
+  FARMStoUpdate = [];
+}); // mass select
+
+selectAllFarmsDom.addEventListener('click', function (e) {
+  var button = e.target;
+  var checkBoxes = farmListDom.querySelectorAll('.select-farm');
+
+  if (button.classList.contains('all-selected')) {
+    //deselecting
+    FARMStoUpdate = [];
+    clearCheckBoxes(checkBoxes, button);
+  } else {
+    //selecting
+    FARMStoUpdate = _toConsumableArray(FARMS);
+    checkBoxes.forEach(function (element) {
+      element.checked = true;
+    });
+    document.querySelector('.mass-edit-container .extra-buttons').classList.add('show');
+    button.classList.add('all-selected');
+    button.innerHTML = 'Deselect All';
+  }
+}); //edit farm function
+
+function editFarm(obj, crop) {
+  if (Array.isArray(obj)) {
+    console.log('type array');
+    var farmArr = obj;
+    farmArr.forEach(function (farm) {
+      updateFarmDom(farm, crop);
+    });
+    FARMStoUpdate = [];
+  } else {
+    updateFarmDom(obj, crop);
+  }
+
+  editPopUpDom.classList.remove('open');
+}
+
+function updateFarmDom(farmToUpdate, crop) {
+  var farm = farmToUpdate;
+  var prevCrop = farm.crop; //update farm in the arr (type and startTimer)
+
+  farm.crop = crop;
+  var cropTimer = farm.crop.sproutTime;
+  farm.startTime = null;
+  farm.timer = null; //save in local localStorage
+
+  localStorage.setItem("farms", JSON.stringify(FARMS)); //build dom tree
+
+  var farmDom = document.getElementById(farm.number);
+  farmDom.classList.remove('completed');
+  farmDom.querySelector('.start-farm').disabled = false;
+  farmDom.querySelector('.crop-type').classList.remove(prevCrop.name.toLowerCase());
+  farmDom.querySelector('.crop-type').classList.add(farm.crop.name.toLowerCase());
+  farmDom.querySelector('.timer').innerHTML = "".concat(cropTimer.hours == 0 ? '00' : cropTimer.hours, ":").concat(cropTimer.minutes == 0 ? '00' : cropTimer.minutes, ":").concat(cropTimer.seconds == 0 ? '00' : cropTimer.seconds);
+}
+
+function clearCheckBoxes(arr, selectButton) {
+  arr.forEach(function (element) {
+    element.checked = false;
+  });
+  document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
+  selectButton.classList.remove('all-selected');
+  selectButton.innerHTML = 'Select All';
+}
+
+function handleTimerStart(timerDom, timer) {
+  return function () {
+    timerDom.innerHTML = timer.getTimeValues().toString();
+  };
+}
 
 /***/ }),
 

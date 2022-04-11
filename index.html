@@ -20,8 +20,8 @@
         <div class="screen"></div>
         <div class="container">
             <button id="close-pop">&#x2715;</button>
-            <form action="" id="edit-farm">
-                <h2>Edit Farm 2</h2>
+            <form action="" id="edit-farm-form">
+                <h2 data-farm="" data-objtype="">Edit Farm 2</h2>
                 <div class="radios">
                     <label for="popberry-p">
                         <input type="radio" value="0" name="type" id="popberry-p" required checked>
@@ -36,7 +36,7 @@
                         <div><img src="/dist/images/scarrot.png" alt="Scarrot"></div>
                     </label>
                 </div>
-                <button id="confirm-edit">Confirm</button>
+                <button id="confirm-edit" type="submit">Confirm</button>
             </form>
         </div>
     </div>
@@ -51,11 +51,21 @@
             <span id="farm-count"></span>
         </h2>
     </div>
+    <div class="mass-edit-container">
+        <div>
+            <button id="select-all-farms">Select All</button>
+            <div class="extra-buttons">
+                <button id="delete-all-farms">Delete</button>
+                <button id="edit-all-farms">Edit</button>
+                <button id="start-all-farms">Start</button>
+            </div>
+        </div>
+    </div>
 
     <div class="global-container">
         <div class="farm-list">
 
-            <div class="farm" data-id="0">
+            <!-- <div class="farm" data-id="0">
                 <input type="checkbox" name="select-farm" class="select-farm">
                 <h4>Farm 1545</h4>
                 <div class="crop-type scarrot"></div>
@@ -67,7 +77,7 @@
                     <button class="open-farm">Open</button>
                     <button class="start-farm">Start</button>
                 </div>
-            </div>
+            </div> -->
 
         </div>
 
@@ -147,9 +157,7 @@
                         </li>
                         <li class="parent-li">To-Dos
                             <ul>
-                                <li>Editing farms after creating them</li>
                                 <li>Error handling</li>
-                                <li>Better Styling</li>
                                 <li>Responsive Design</li>
                                 <li>Better UI/UX</li>
                                 <li>Add farm statistics (money made, farms harvested, crops and seeds collected etc.)</li>
