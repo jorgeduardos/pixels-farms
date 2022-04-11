@@ -62,9 +62,9 @@ h1 {
     cursor: move;
     font-size: 1.4rem;
 
-    &:nth-child(1){
-        padding-top: 0;
-    }
+    // &:nth-child(1){
+    //     padding-top: 0;
+    // }
 
     &.completed{
         background-color: #92FC7A;

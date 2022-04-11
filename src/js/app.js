@@ -19,6 +19,9 @@ if (storedFarms != null) {
     }
     farms.forEach(farm => {
         createFarmNode(farm);
+        if(farm.startTime != null){
+            continueFarmTimer(farm)
+        }
     });
     updateFarmCount(farms);
 }
@@ -31,8 +34,9 @@ const crops = [
         id: 0,
         name: 'Popberry',
         sproutTime: {
-            hours: 2,
-            minutes: 0
+            hours: 0,
+            minutes: 0,
+            seconds: 20
         }, // in hours
     },
     {
@@ -40,7 +44,8 @@ const crops = [
         name: 'Grumpkin',
         sproutTime: {
             hours: 4,
-            minutes: 0
+            minutes: 0,
+            seconds: 0
         },  // in hours
     },
     {
@@ -48,7 +53,8 @@ const crops = [
         name: 'Scarrot',
         sproutTime: {
             hours: 5,
-            minutes: 20
+            minutes: 20,
+            seconds: 0
         },  // in hours
     }
 ]
@@ -94,6 +100,7 @@ function addFarm(form) {
         number: number,
         crop: crop,
         timer: null,
+        startTime: null,
     }
 
     farms.push(farm);
@@ -124,6 +131,10 @@ farmListDom.addEventListener('click', function (e) {
 
         //saving timer pointer in farm
         farm.timer = timer;
+        farm.startTime = Date();
+
+        //saving farm in localStorage
+        localStorage.setItem("farms", JSON.stringify(farms));
 
         // timer.start({ countdown: true, startValues: {seconds: 10} });
         timer.start({ countdown: true, startValues: farm.crop.sproutTime });
@@ -186,10 +197,25 @@ function createFarmNode(farm) {
     tag.setAttribute('data-id', farm.number);
 
     let cropName = farm.crop.name.toLowerCase();
+    let cropTimer;
+
+    // if crop timer was started, use it
+
+    if (farm.startTime != null) {
+        cropTimer = {
+            hours: '',
+            minutes: '',
+            seconds: ''
+        }
+
+    } else {
+        cropTimer = farm.crop.sproutTime;
+    }
+
 
     tag.innerHTML = `<h4>Farm ${farm.number}</h4>
         <div class="crop-type ${cropName}"></div>
-        <div class="timer">${farm.crop.sproutTime.hours}:${farm.crop.sproutTime.minutes == 0 ? '00' : farm.crop.sproutTime.minutes}</div>
+        <div class="timer">${cropTimer.hours}:${cropTimer.minutes}:${cropTimer.seconds}</div>
 
         <div class="ui">
             <button class="delete-farm">Delete</button>
@@ -200,9 +226,81 @@ function createFarmNode(farm) {
 
 }
 
-function updateFarmCount(arr){
+function continueFarmTimer(farm){
+    let farmDom = document.getElementById(farm.number);
+    let timerDom = farmDom.querySelector('.timer');
+    let now = Date();
+
+    let farmTimer = timerCalculate(now, farm.startTime, farm.crop.sproutTime);
+    
+    //saving timer pointer in farm
+    if(
+        (Math.sign(farmTimer.hours) == 0 || Math.sign(farmTimer.hours) == -1) && 
+        (Math.sign(farmTimer.minutes) == 0 || Math.sign(farmTimer.minutes) == -1) && 
+        (Math.sign(farmTimer.seconds) == 0 || Math.sign(farmTimer.seconds) == -1)
+    ){
+        farmDom.classList.add('completed');
+        timerDom.innerHTML = '00:00:00';
+        return
+    }
+
+    let timer = new easytimer.Timer();
+    farm.timer = timer;
+    farmDom.querySelector('.start-farm').disabled = true;
+
+    // timer.start({ countdown: true, startValues: {seconds: 10} });
+    timer.start({ countdown: true, startValues: farmTimer});
+
+    timer.addEventListener('secondsUpdated', function (e) {
+        timerDom.innerHTML = timer.getTimeValues().toString();
+    });
+
+    timer.addEventListener('targetAchieved', function (e) {
+        farmDom.querySelector('.start-farm').disabled = false;
+        farmDom.classList.add('completed');
+    });
+}
+
+function updateFarmCount(arr) {
     let farmCount = arr.length;
     farmCountDom.innerHTML = farmCount;
+}
+
+function timerCalculate(fDate, oDate, sproutTimer) {
+    // get total seconds between the times
+    let futureDate = new Date(fDate);
+    let oldDate = new Date(oDate);
+
+    var delta = Math.abs(futureDate - oldDate) / 1000;
+
+    // calculate (and subtract) whole hours
+    var hours = Math.floor(delta / 3600) % 24;
+    delta -= hours * 3600;
+
+    // calculate (and subtract) whole minutes
+    var minutes = Math.floor(delta / 60) % 60;
+    delta -= minutes * 60;
+
+    // what's left is seconds
+    var seconds = delta % 60;  // in theory the modulus is not required
+
+    //create date with sprout timer
+    var sproutDate = new Date(1994, 4, 20, sproutTimer.hours, sproutTimer.minutes, sproutTimer.seconds, 0);
+    //create date with time that has passes since start
+    var startDate = new Date(1994, 4, 20, hours, minutes, seconds, 0);
+
+    var newTimer = sproutDate.getTime() - startDate.getTime();
+
+    var nseconds = ~~(newTimer / 1000);
+    var nhour = ~~(nseconds / 60 / 60);
+    var nmin = ~~((nseconds - 60 * 60 * nhour) / 60);
+    nseconds = ~~(((nseconds - 60*60*nhour) - nmin*60));
+
+    return {
+        hours: nhour,
+        minutes: nmin,
+        seconds: nseconds
+    }
 }
 
 /// helpers
