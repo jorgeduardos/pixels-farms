@@ -5,6 +5,7 @@ var dev = false;
 const farmListDom = document.querySelector('.farm-list');
 const farmInput = document.getElementById('farmNumber');
 const editPopUpDom = document.getElementById('edit-pop-up');
+const importPopUpDom = document.getElementById('import-pop-up');
 const selectAllFarmsDom = document.getElementById('select-all-farms');
 var farmCountDom = document.getElementById('farm-count');
 
@@ -44,9 +45,9 @@ const crops = [
         id: 0,
         name: 'Popberry',
         sproutTime: {
-            hours: 0,
+            hours: 2,
             minutes: 0,
-            seconds: 10
+            seconds: 0
         }, // in hours
     },
     {
@@ -373,9 +374,13 @@ document.querySelector('#edit-pop-up .container').addEventListener('click', func
     e.stopPropagation();
 })
 
-document.querySelector('#edit-pop-up .screen').addEventListener('click', function () {
-    editPopUpDom.classList.remove('open')
+document.querySelectorAll('.pop-up .screen').forEach(element => {
+    element.addEventListener('click', function (e) {
+        console.log( element.parentElement);
+        element.parentElement.classList.remove('open')
+    })
 })
+
 
 document.getElementById('edit-farm-form').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -439,7 +444,7 @@ document.getElementById('edit-all-farms').addEventListener('click', function (e)
     let h2 = editPopUpDom.querySelector('h2');
     h2.innerHTML = `Edit Farms`;
     h2.setAttribute('data-objtype', 'arr');
-    editPopUpDom.classList.add('open');
+    openPop(editPopUpDom);
 })
 
 //mass starting
@@ -527,8 +532,7 @@ function editFarm(obj, crop) {
     } else {
         updateFarmDom(obj, crop);
     }
-
-    editPopUpDom.classList.remove('open');
+    closePop(editPopUpDom);
 }
 
 function updateFarmDom(farmToUpdate, crop) {
@@ -565,11 +569,59 @@ function clearCheckBoxes(arr, selectButton) {
     selectButton.innerHTML = 'Select All';
 }
 
-function handleTimerStart(timerDom, timer){
-    return function(){
+function handleTimerStart(timerDom, timer) {
+    return function () {
         timerDom.innerHTML = timer.getTimeValues().toString();
     }
 }
+
+//export import farms
+document.getElementById('export-farms').addEventListener('click', function (e) {
+    if(FARMS.length > 0){
+        let farmsToExport = localStorage.getItem("farms");
+        download('exported-farms', farmsToExport)
+    }
+})
+
+document.getElementById('import-farms').addEventListener('click', function (e) {
+    openPop(importPopUpDom);
+})
+document.getElementById('close-import-pop').addEventListener('click', function (e) {
+    closePop(importPopUpDom);
+})
+
+document.getElementById('import-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    let formData = new FormData(e.target);
+    let formProps = Object.fromEntries(formData);
+
+    localStorage.setItem("farms", formProps.farms);
+
+    window.location.reload();
+
+})
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+function openPop(container){
+    container.classList.add('open');
+}
+
+function closePop(container){
+    container.classList.remove('open');
+}
+
 
 
 

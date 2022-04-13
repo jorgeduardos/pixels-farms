@@ -35,12 +35,19 @@ h1 {
 
 .mass-edit-container{
     padding: 1rem;
+    padding-left: 0.5rem;
+
+    >div{
+        display: flex;
+    }
+
     button{
         font-size: 1rem;
     }
 
     #select-all-farms{
         display: none;
+        margin-right: 1rem;
 
         &.show{
             display: inline-block;
@@ -58,6 +65,7 @@ h1 {
             margin-right: 1rem;
         }
     }
+
 }
 
 .global-container {
@@ -156,7 +164,16 @@ h1 {
 
         button{
             // align-self: flex-start;
-            margin-bottom: 5px;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .export-buttons{
+        display: flex;
+        margin-bottom: 1rem;
+        justify-content: space-between;
+        button{
+            width: calc(50% - 5px);
         }
     }
 
@@ -214,7 +231,7 @@ button{
     padding: 5px;
 }
 
-#edit-pop-up{
+.pop-up{
     position: fixed;
     height: 100vh;
     width: 100vw;
@@ -222,6 +239,13 @@ button{
     top: 0;
     z-index: 999;
     display: none;
+
+    &#edit-pop-up{
+        .container{
+            height: 250px; 
+            width: 500px;  
+        }
+    }
 
     &.open{
         display: block;
@@ -237,8 +261,8 @@ button{
     .container{
         position: absolute;
         text-align: center;
-        height: 250px;
-        width: 500px;
+        height: 350px;
+        width: 550px;
         border: 1px solid #ccc;
         inset: 0;
         margin: auto;
@@ -248,7 +272,7 @@ button{
         flex-direction: column;
         justify-content: center;
 
-        #close-pop{
+        .pop-close{
             position: absolute;
             right: 1.5rem;
             top: 1rem;
@@ -262,10 +286,25 @@ button{
         h2{
             margin-top: 0;
         }
+    }
 
-        .radios{
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
+    textarea{
+        resize: none;
+        margin: 0 auto;
+        margin-bottom: 2rem;
+        width: 95%;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .radios{
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+
+    .warning{
+        color: red;
+        font-size: 1.1rem;
+        margin-top: 0;
+        line-height: 1.3;
     }
 }

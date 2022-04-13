@@ -7,19 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixels Farms</title>
 
+    <meta name="description" content="Pixels-farms is a simple tool that helps farmers keep track of the crops they are currently farming.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="dist/css/app.css?v=1.1.2.1" />
+    <link rel="stylesheet" href="dist/css/app.css?v=1.2.0" />
 </head>
 
 <body>
 
-    <div id="edit-pop-up">
+    <div id="edit-pop-up" class="pop-up">
         <div class="screen"></div>
         <div class="container">
-            <button id="close-pop">&#x2715;</button>
+            <button id="close-pop" class="pop-close">&#x2715;</button>
             <form action="" id="edit-farm-form">
                 <h2 data-farm="" data-objtype="">Edit Farm 2</h2>
                 <div class="radios">
@@ -37,6 +39,20 @@
                     </label>
                 </div>
                 <button id="confirm-edit" type="submit">Confirm</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="import-pop-up" class="pop-up">
+        <div class="screen"></div>
+        <div class="container">
+            <button id="close-import-pop" class="pop-close">&#x2715;</button>
+            <form action="" id="import-form">
+                <h2 data-farm="" data-objtype="">Edit Farm 2</h2>
+                <textarea name="farms" id="" cols="30" rows="10"></textarea>
+                <p class="warning">Warning: This will erase your current farms!</p>
+                <button id="confirm-edit" type="submit">Import</button>
             </form>
         </div>
     </div>
@@ -113,6 +129,10 @@
                         </label>
                         <button type="submit">Add Farm</button>
                     </form>
+                    <div class="export-buttons">
+                        <button id="export-farms">Export Farms</button>
+                        <button id="import-farms">Import Farms</button>
+                    </div>
                     <button id="reset" disabled>Reset Farms</button>
                 </div>
 
@@ -141,14 +161,40 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="parent-li">Edit Farm
+                            <ul>
+                                <li>Click the "Edit" button to edit the farm</li>
+                                <li>A pop-up will open where you can select the new crop type for that farm</li>
+                                <li>Click "Confirm" to confirm selection</li>
+                            </ul>
+                        </li>
+                        <li class="parent-li">Open Farm
+                            <ul>
+                                <li>Click the "Open" button to open Pixels game for that farm (this action wont start the timer)</li>
+                            </ul>
+                        </li>
                         <li class="parent-li">Delete Farm
                             <ul>
                                 <li>Click the "Delete" button to delete farm from the list</li>
                             </ul>
                         </li>
+                        <li class="parent-li">Bulk Editing
+                            <ul>
+                                <li>Bulk editing is possible by clicking "Select All" or by having two or more farms selected.</li>
+                                <li>To select a farm click on the checkbox located on the left side of the farm number</li>
+                            </ul>
+                        </li>
                         <li class="parent-li">Re-order Farms
                             <ul>
                                 <li>Drag and drop farms to re-order them</li>
+                            </ul>
+                        </li>
+                        <li class="parent-li">Exporting/Importing Farms
+                            <ul>
+                                <li>To export farms click the "Export Farms" button</li>
+                                <li>This will automatically download a txt file named "exported-farms"</li>
+                                <li>To import farms click the "Import Farms" button</li>
+                                <li>This will open a pop-up where you can copy and paste the contents located in an "exported-farms" txt file</li>
                             </ul>
                         </li>
                         <li>
@@ -157,6 +203,7 @@
                         </li>
                         <li class="parent-li">To-Dos
                             <ul>
+                                <li>Drag and drop exported files to import</li>
                                 <li>Error handling</li>
                                 <li>Responsive Design</li>
                                 <li>Better UI/UX</li>
@@ -174,7 +221,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="dist/js/lib/easytimer.min.js"></script>
-    <script src="dist/js/app.js?v=1.1.2.1"></script>
+    <script src="dist/js/app.js?v=1.2.0"></script>
 </body>
 
 </html>
