@@ -126,7 +126,12 @@ function addFarm(form) {
 
     FARMS.push(farm);
     updateFarmCount(FARMS);
-    selectAllFarmsDom.classList.add('show');
+    document.getElementById('farmNumber').value = ''
+    document.getElementById('farmNumber').focus
+
+    if(FARMS.length > 1 ){
+        selectAllFarmsDom.classList.add('show');
+    }
 
     localStorage.setItem("farms", JSON.stringify(FARMS));
 
@@ -636,13 +641,15 @@ document.getElementById('import-form').addEventListener('submit', function (e) {
 document.getElementById('reset').addEventListener('click', function (e) {
 
     if(FARMS.length > 0){
+
+        FARMS.forEach(farm => {
+            farm.startTime = null;
+            farm.timer = null;
+        })
+
         localStorage.setItem("farms", JSON.stringify(FARMS));
         window.location.reload();
     }
-    FARMS.forEach(farm => {
-        farm.startTime = null;
-        farm.timer = null;
-    })
 })
 
 function download(filename, text) {
