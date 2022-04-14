@@ -36,6 +36,10 @@ h1 {
 .mass-edit-container{
     padding: 1rem;
     padding-left: 0.5rem;
+    position: sticky;
+    top: 0rem;
+    background-color: rgb(216, 216, 216);
+    z-index: 2;
 
     >div{
         display: flex;
@@ -105,6 +109,11 @@ h1 {
         background-color: #92FC7A;
     }
 
+    &.selected-drag{
+        background-color: rgba(255, 166, 0, 0.464);
+        border-color: orange;
+    }
+
     .select-farm{
         margin-right: 1.5rem;
     }
@@ -147,10 +156,11 @@ h1 {
     grid-column: 2 / 3;
     padding: 0 30px;
     border-left: 1px solid #ccc;
+    padding-top: 2rem;
 
     .fix {
         position: sticky;
-        top: 3rem;
+        top: 5rem;
     }
 
     form {
@@ -261,13 +271,13 @@ button{
     .container{
         position: absolute;
         text-align: center;
-        height: 350px;
-        width: 550px;
+        height: 450px;
+        width: 600px;
         border: 1px solid #ccc;
         inset: 0;
         margin: auto;
         background-color: white;
-        padding: 2rem;
+        padding: 2rem 3rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -286,6 +296,21 @@ button{
         h2{
             margin-top: 0;
         }
+
+        .file-type-container{
+            display: flex;
+            justify-content: space-evenly;
+            margin-bottom: 2rem;
+
+            label{
+                display: inline-flex;
+                align-items: center;
+                input{
+                    margin: 0;
+                    margin-right: 5px;
+                }
+            }
+        }
     }
 
     textarea{
@@ -299,6 +324,11 @@ button{
     .radios{
         justify-content: center;
         margin-bottom: 2rem;
+    }
+
+    label{
+        padding: 5px;
+        border: 1px solid #ccc;
     }
 
     .warning{

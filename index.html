@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="dist/css/app.css?v=1.2.0" />
+    <link rel="stylesheet" href="dist/css/app.css?v=1.2.3" />
 </head>
 
 <body>
@@ -49,8 +49,21 @@
         <div class="container">
             <button id="close-import-pop" class="pop-close">&#x2715;</button>
             <form action="" id="import-form">
-                <h2 data-farm="" data-objtype="">Edit Farm 2</h2>
-                <textarea name="farms" id="" cols="30" rows="10"></textarea>
+                <h2 data-farm="" data-objtype="">Import Farms</h2>
+                <p>How are you importing them?</p>
+                <div class="file-type-container">
+                    <label for="exported">
+                        <input type="radio" name="file" value="exported" id="exported" checked>
+                        Exported File
+                    </label>
+                    <label for="new-line">
+                        <input type="radio" name="file" value="new-line" id="new-line">
+                        List of farm links
+                    </label>
+                </div>
+                <textarea name="farms" id="import-data" 
+                    placeholder='[{"number":"3084","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null},{"number":"3223","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null}]' 
+                    cols="30" rows="10" required></textarea>
                 <p class="warning">Warning: This will erase your current farms!</p>
                 <button id="confirm-edit" type="submit">Import</button>
             </form>
@@ -133,7 +146,7 @@
                         <button id="export-farms">Export Farms</button>
                         <button id="import-farms">Import Farms</button>
                     </div>
-                    <button id="reset" disabled>Reset Farms</button>
+                    <button id="reset">Reset Farms</button>
                 </div>
 
                 <div class="guide">
@@ -221,7 +234,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="dist/js/lib/easytimer.min.js"></script>
-    <script src="dist/js/app.js?v=1.2.0"></script>
+    <script src="dist/js/app.js?v=1.2.3"></script>
 </body>
 
 </html>

@@ -418,7 +418,6 @@ document.getElementById('delete-all-farms').addEventListener('click', function (
 
             if (farm.number == farmToDelete) {
                 FARMS.splice(f, 1);
-                console.log('FARMS after splice: ', FARMS)
                 farmToDeleteDom.remove();
             }
 
@@ -427,13 +426,15 @@ document.getElementById('delete-all-farms').addEventListener('click', function (
     }
 
     FARMStoUpdate = [];
-    console.log('FARMStoupdate after splice: ', FARMStoUpdate)
 
     updateFarmCount(FARMS);
     document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
+    
 
     if (FARMS.length == 0) {
         selectAllFarmsDom.classList.remove('show');
+        selectAllFarmsDom.classList.remove('all-selected');
+        selectAllFarmsDom.innerHTML = 'Select All';
     }
 
     localStorage.setItem("farms", JSON.stringify(FARMS));
@@ -500,6 +501,9 @@ selectAllFarmsDom.addEventListener('click', function (e) {
         //deselecting
         FARMStoUpdate = [];
         clearCheckBoxes(checkBoxes, button);
+        document.querySelector('.mass-edit-container .extra-buttons').classList.rmove('show');
+        button.classList.remove('all-selected');
+        button.innerHTML = 'Select All';
     } else {
 
         //selecting
@@ -590,15 +594,46 @@ document.getElementById('close-import-pop').addEventListener('click', function (
     closePop(importPopUpDom);
 })
 
+//import farm
+var examplePlaceholder = '[{"number":"3084","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null},{"number":"3223","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null}';
+var examplePlaceholder2 = 'https://play.pixels.online/farm1688\nhttps://play.pixels.online/farm2766\nhttps://play.pixels.online/farm2130\nhttps://play.pixels.online/farm3535';
+var importTextArea = document.getElementById('import-data');
+document.querySelector(".file-type-container").addEventListener('click', function (event) {
+    if (event.target && event.target.matches("input[type='radio']")) {
+        if(event.target.value == 'exported'){
+            importTextArea.setAttribute('placeholder', examplePlaceholder)
+        }else{
+            importTextArea.setAttribute('placeholder', examplePlaceholder2)
+        }
+    }
+});
+
 document.getElementById('import-form').addEventListener('submit', function (e) {
     e.preventDefault();
     let formData = new FormData(e.target);
     let formProps = Object.fromEntries(formData);
+    let textarea = e.target.querySelector('textarea');
 
-    localStorage.setItem("farms", formProps.farms);
+    let cleanFarms = importClean(formProps.farms, formProps.file);
+
+    localStorage.setItem("farms", JSON.stringify(cleanFarms));
+    textarea.value = '';
 
     window.location.reload();
 
+})
+
+//reset farms
+document.getElementById('reset').addEventListener('click', function (e) {
+
+    if(FARMS.length > 0){
+        localStorage.setItem("farms", JSON.stringify(FARMS));
+        window.location.reload();
+    }
+    FARMS.forEach(farm => {
+        farm.startTime = null;
+        farm.timer = null;
+    })
 })
 
 function download(filename, text) {
@@ -620,6 +655,43 @@ function openPop(container){
 
 function closePop(container){
     container.classList.remove('open');
+}
+
+function importClean(data, fileType){
+    let dataArr = [];
+
+    //chekc if data is of type string or array
+    if(fileType == 'exported'){
+        try {
+            return JSON.parse(data);
+        } catch (e) {
+            console.log('error when trying to import data');
+        }
+
+        return dataArr
+    }
+
+    //iterate
+
+    data.split(/\r?\n/).forEach(link => {
+        var match = regex.exec(link);
+        if(match != null){
+            let farm = {
+                number: match[0],
+                crop: crops[0],
+                timer: null,
+                startTime: null,
+            }  
+            
+            dataArr.push(farm);
+        }
+        
+    })
+    
+    return dataArr;
+
+    //return always an array
+
 }
 
 

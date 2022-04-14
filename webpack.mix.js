@@ -20,7 +20,6 @@ mix
     .browserSync({
         proxy: URL,
         port: 3000,
-        browser: 'google chrome',
         files: [
             './dist/css/app.css',
             './dist/js/app.js',
