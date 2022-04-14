@@ -7,6 +7,7 @@ const farmInput = document.getElementById('farmNumber');
 const editPopUpDom = document.getElementById('edit-pop-up');
 const importPopUpDom = document.getElementById('import-pop-up');
 const selectAllFarmsDom = document.getElementById('select-all-farms');
+const errorDom = document.getElementById('error-handling');
 var farmCountDom = document.getElementById('farm-count');
 
 var storedFarms = JSON.parse(localStorage.getItem("farms"));
@@ -92,10 +93,9 @@ form.addEventListener('submit', function (e) {
     const formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
 
-    farmInput.value = "";
     farmInput.focus();
 
-    createFarmNode(addFarm(formProps));
+    addFarm(formProps);
 })
 
 //add farm to list
@@ -105,6 +105,16 @@ function addFarm(form) {
 
     var match = regex.exec(form.farmNumber);
     let number = match == null ? form.farmNumber : match[0];
+
+    //errpr handling
+    if(isNaN(number*1)){
+        return showError('Invalid Farm');
+    }else if((number*1) > 5000 || (number*1) < 0){
+        return showError('Invalid Farm');
+    }else if(FARMS.length > 0 && findFarm(number, FARMS) != null){
+        return showError('Farm already exists');
+    }
+
     //regex url
 
     let farm = {
@@ -124,7 +134,7 @@ function addFarm(form) {
         console.log('farms after add: ', FARMS);
     }
 
-    return farm;
+    createFarmNode(farm);
 }
 
 // start and delete farm function
@@ -230,7 +240,7 @@ farmListDom.addEventListener('click', function (e) {
 
 // find farm in array, returns farm and index
 function findFarm(id, arr) {
-    let farm;
+    let farm = null;
     arr.forEach((item, index) => {
         if (id == item.number) {
             farm = {
@@ -594,7 +604,7 @@ document.getElementById('close-import-pop').addEventListener('click', function (
     closePop(importPopUpDom);
 })
 
-//import farm
+//mass import farm type
 var examplePlaceholder = '[{"number":"3084","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null},{"number":"3223","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null}';
 var examplePlaceholder2 = 'https://play.pixels.online/farm1688\nhttps://play.pixels.online/farm2766\nhttps://play.pixels.online/farm2130\nhttps://play.pixels.online/farm3535';
 var importTextArea = document.getElementById('import-data');
@@ -608,19 +618,18 @@ document.querySelector(".file-type-container").addEventListener('click', functio
     }
 });
 
+//mass import event
 document.getElementById('import-form').addEventListener('submit', function (e) {
     e.preventDefault();
     let formData = new FormData(e.target);
     let formProps = Object.fromEntries(formData);
     let textarea = e.target.querySelector('textarea');
 
-    let cleanFarms = importClean(formProps.farms, formProps.file);
-
-    localStorage.setItem("farms", JSON.stringify(cleanFarms));
     textarea.value = '';
 
-    window.location.reload();
+    importClean(formProps.farms, formProps.file);
 
+    // window.location.reload();
 })
 
 //reset farms
@@ -658,40 +667,91 @@ function closePop(container){
 }
 
 function importClean(data, fileType){
-    let dataArr = [];
+    let farmsToClean = [];
+    let sameFarms = [];
 
     //chekc if data is of type string or array
     if(fileType == 'exported'){
         try {
-            return JSON.parse(data);
+            JSON.parse(data);
         } catch (e) {
-            console.log('error when trying to import data');
+            return showError('Invalid data');
         }
 
-        return dataArr
+        farmsToClean = JSON.parse(data);
+
+        if(FARMS == 0){
+            localStorage.setItem("farms", JSON.stringify(farmsToClean));
+            window.location.reload();
+        }
+
+        for(var i = farmsToClean.length -1; i >= 0 ; i--){
+            if(findFarm(farmsToClean[i].number, FARMS) != null){
+                sameFarms.push(farmsToClean[i]);
+                farmsToClean.splice(i, 1);
+            }
+        }
+
+        FARMS = FARMS.concat(farmsToClean)
+
+        // if(sameFarms.length > 0){
+        //     showError('Duplicated farms were ommited', 1);
+        // }
+
+        localStorage.setItem("farms", JSON.stringify(FARMS));
+        window.location.reload();
+
+    }else{
+        data.split(/\r?\n/).forEach(link => {
+            var match = regex.exec(link);
+            if(match != null){
+                let farm = {
+                    number: match[0],
+                    crop: crops[0],
+                    timer: null,
+                    startTime: null,
+                }  
+                
+                farmsToClean.push(farm);
+            }
+            
+        })
+
+        if(FARMS == 0){
+            localStorage.setItem("farms", JSON.stringify(farmsToClean));
+            window.location.reload();
+        }
+
+        for(var i = farmsToClean.length -1; i >= 0 ; i--){
+            if(findFarm(farmsToClean[i].number, FARMS) != null){
+                sameFarms.push(farmsToClean[i]);
+                farmsToClean.splice(i, 1);
+            }
+        }
+
+        FARMS = FARMS.concat(farmsToClean)
+        localStorage.setItem("farms", JSON.stringify(FARMS));
+        window.location.reload();
     }
 
-    //iterate
+}
 
-    data.split(/\r?\n/).forEach(link => {
-        var match = regex.exec(link);
-        if(match != null){
-            let farm = {
-                number: match[0],
-                crop: crops[0],
-                timer: null,
-                startTime: null,
-            }  
-            
-            dataArr.push(farm);
-        }
-        
-    })
-    
-    return dataArr;
 
-    //return always an array
+function showError(errorMessage, errorCode){
+    errorDom.querySelector('p').innerHTML = errorMessage;
 
+    if(errorCode == 0){
+        errorDom.classList.add('show', 'error');
+    }else if(errorCode == 1){
+        errorDom.classList.add('show', 'warning');
+    }else{
+
+        errorDom.classList.add('show', 'error');
+    }
+
+    setTimeout(function(){
+        errorDom.classList.remove('show', 'error', 'warning');
+    }, 5000)
 }
 
 
