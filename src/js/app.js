@@ -8,7 +8,11 @@ const editPopUpDom = document.getElementById('edit-pop-up');
 const importPopUpDom = document.getElementById('import-pop-up');
 const selectAllFarmsDom = document.getElementById('select-all-farms');
 const errorDom = document.getElementById('error-handling');
+const addColorInputDom = document.getElementById('farm-color');
+const editColorInputDom = document.getElementById('farm-color-edit');
 var farmCountDom = document.getElementById('farm-count');
+var farmReadytDom = document.getElementById('farms-ready');
+var farmStartedDom = document.getElementById('farms-started');
 
 var storedFarms = JSON.parse(localStorage.getItem("farms"));
 var FARMS = [];
@@ -26,7 +30,11 @@ if (storedFarms != null) {
         if (farm.crop.sproutTime.seconds == undefined) {
             farm.crop.sproutTime.seconds = 0;
         }
-        createFarmNode(farm);
+        if (farm.info == undefined) {
+            farm.info = {};
+        }
+        farmListDom.appendChild(createFarmNode(farm));
+
         if (farm.startTime != undefined && farm.startTime != null) {
             continueFarmTimer(farm)
         }
@@ -34,7 +42,7 @@ if (storedFarms != null) {
 
     updateFarmCount(FARMS);
     if (FARMS.length > 0) {
-        selectAllFarmsDom.classList.add('show');
+        selectAllFarmsDom.disabled = false;
     }
 }
 
@@ -95,8 +103,38 @@ form.addEventListener('submit', function (e) {
 
     farmInput.focus();
 
+    // console.log(addColorInputDom.getAttribute('data-color'))
+    formProps.farmColor = addColorInputDom.getAttribute('data-color');
     addFarm(formProps);
 })
+
+document.querySelectorAll('.add-color').forEach(el => {
+    el.addEventListener('click', e => {
+        let button = e.target;
+        let parent = button.parentElement;
+        let colorInputDom = parent.querySelector('input');
+    
+        if(parent.classList.contains('show')){
+            parent.classList.remove('show')
+            colorInputDom.setAttribute('data-color', null)
+        }else{
+            parent.classList.add('show')
+            colorInputDom.click();
+            colorInputDom.setAttribute('data-color', colorInputDom.value)
+        }
+
+        // console.log(colorInputDom.getAttribute('data-color'))
+    })
+})
+
+document.querySelectorAll('.farm-color-input').forEach(el => {
+    el.addEventListener('change', (e)=>{
+        let imput = e.target;
+        imput.setAttribute('data-color', imput.value)
+        // console.log(imput.getAttribute('data-color'))
+    })
+})
+
 
 //add farm to list
 function addFarm(form) {
@@ -122,15 +160,20 @@ function addFarm(form) {
         crop: crop,
         timer: null,
         startTime: null,
+        info: {
+            color: form.farmColor == 'null' ? null : form.farmColor,
+            notes: form.farmNotes
+        }
     }
 
     FARMS.push(farm);
     updateFarmCount(FARMS);
     document.getElementById('farmNumber').value = ''
+    document.getElementById('farm-notes').value = ''
     document.getElementById('farmNumber').focus
 
     if(FARMS.length > 1 ){
-        selectAllFarmsDom.classList.add('show');
+        selectAllFarmsDom.disabled = false;
     }
 
     localStorage.setItem("farms", JSON.stringify(FARMS));
@@ -139,11 +182,12 @@ function addFarm(form) {
         console.log('farms after add: ', FARMS);
     }
 
-    createFarmNode(farm);
+    farmListDom.appendChild(createFarmNode(farm));
 }
 
 // start and delete farm function
 farmListDom.addEventListener('click', function (e) {
+
     //start farm
     if (e.target.classList.contains('start-farm')) {
 
@@ -168,12 +212,16 @@ farmListDom.addEventListener('click', function (e) {
         timer.start({ countdown: true, startValues: farm.crop.sproutTime });
 
         timer.addEventListener('secondsUpdated', handleTimerStart(timerDom, timer));
+        farmDom.classList.add('started');
 
         timer.addEventListener('targetAchieved', function (e) {
             target.disabled = false;
             farmDom.classList.add('completed');
+            farmDom.classList.remove('started');
+            updateFarmCount(FARMS);
         });
 
+        updateFarmCount(FARMS);
         openFarm(farm.number);
 
     } else if (e.target.classList.contains('delete-farm')) {
@@ -188,10 +236,9 @@ farmListDom.addEventListener('click', function (e) {
         }
 
         FARMS.splice(farm.i, 1);
-        updateFarmCount(FARMS);
 
         if (FARMS.length == 0) {
-            selectAllFarmsDom.classList.remove('show');
+            selectAllFarmsDom.disabled = true;
         }
 
         if (dev) {
@@ -200,6 +247,7 @@ farmListDom.addEventListener('click', function (e) {
 
         localStorage.setItem("farms", JSON.stringify(FARMS));
         farmDom.remove();
+        updateFarmCount(FARMS);
 
     } else if (e.target.classList.contains('open-farm')) {
 
@@ -209,10 +257,32 @@ farmListDom.addEventListener('click', function (e) {
     } else if (e.target.classList.contains('edit-farm')) {
 
         let farmDom = e.target.parentElement.parentElement;
+        let farm = findFarm(farmDom.id, FARMS).farm;
+
         let h2 = editPopUpDom.querySelector('h2');
+        let textarea = editPopUpDom.querySelector('textarea');
+        let colorPickerButton = editPopUpDom.querySelector('.add-color');
+        let colorParent = colorPickerButton.parentElement;
+        let colorInputDom = colorParent.querySelector('input');
+        
         h2.innerHTML = `Edit Farm ${farmDom.id}`;
         h2.setAttribute('data-farm', farmDom.id);
         h2.setAttribute('data-objtype', 'obj');
+
+        textarea.value = farm.info.notes;
+
+        if(farm.info.color != null){
+            colorParent.classList.add('show')
+            // colorInputDom.click();
+            colorInputDom.value = farm.info.color
+            colorInputDom.setAttribute('data-color', colorInputDom.value)
+        }else{
+            colorParent.classList.remove('show')
+            colorInputDom.setAttribute('data-color', null)
+        }
+
+        // console.log(farm)
+
         editPopUpDom.classList.add('open');
 
     } else if (e.target.classList.contains('select-farm')) {
@@ -268,6 +338,8 @@ function createFarmNode(farm) {
     let cropName = farm.crop.name.toLowerCase();
     let cropTimer;
 
+    let colorDom = farm.info.color == undefined || farm.info.color == null ? '' : `<div class="color" style="background-color: ${farm.info.color};"></div>`
+    let notesDom = farm.info.notes == undefined || farm.info.notes == '' ? '' : ` <div class="info"><svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="24px" height="24px">    <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"/></svg><div class="content"><p>${farm.info.notes}</p></div></div>`
     // console.log(farm);
 
     // if crop timer was started, use it
@@ -283,20 +355,32 @@ function createFarmNode(farm) {
         cropTimer = farm.crop.sproutTime;
     }
 
-
-    tag.innerHTML = `<input type="checkbox" name="select-farm" class="select-farm">
-        <h4>Farm ${farm.number}</h4>
+    tag.innerHTML = `<input type="checkbox" id="check-${farm.number}" name="select-farm" class="select-farm">
+        <label for="check-${farm.number}"><h4>Farm ${farm.number}</h4></label>
         <div class="crop-type ${cropName}"></div>
         <div class="timer">${cropTimer.hours == 0 ? '00' : cropTimer.hours}:${cropTimer.minutes == 0 ? '00' : cropTimer.minutes}:${cropTimer.seconds == 0 ? '00' : cropTimer.seconds}</div>
 
+        <div class="notes">
+            ${colorDom}
+            ${notesDom}
+        </div>
+
         <div class="ui">
-            <button class="delete-farm">Delete</button>
-            <button class="edit-farm">Edit</button>
-            <button class="open-farm">Open</button>
-            <button class="start-farm">Start</button>
+            <button class="delete-farm btn-icon" title="Delete Farm">
+                <img src="/dist/images/icons/trash.png" alt="Delete Farm">
+            </button>
+            <button class="edit-farm btn-icon" title="Edit Farm">
+                <img src="/dist/images/icons/edit.png" alt="Edit Farm">
+            </button>
+            <button class="open-farm btn-icon" title="Open Farm">
+                <img src="/dist/images/icons/link.png" alt="Open Farm">
+            </button>
+            <button class="start-farm btn-icon" title="Start Farm">
+                <img src="/dist/images/icons/stopwatch.png" alt="Start Farm">
+            </button>
         </div>`;
 
-    farmListDom.appendChild(tag);
+    return tag;
 
 }
 
@@ -333,16 +417,39 @@ function continueFarmTimer(farm) {
         timerDom.innerHTML = timer.getTimeValues().toString();
     });
 
+    farmDom.classList.add('started');
+
     timer.addEventListener('targetAchieved', function (e) {
         farmDom.querySelector('.start-farm').disabled = false;
         farmDom.classList.add('completed');
+        farmDom.classList.remove('started');
     });
 }
 
+//set farm counts
 function updateFarmCount(arr) {
     let farmCount = arr.length;
+    let farmsDom = farmListDom.querySelectorAll('.farm');
+    let readyFarms = 0;
+    let startedFarms = 0;
+
     farmCountDom.innerHTML = farmCount;
+
+    farmsDom.forEach(farm => {
+        if(farm.classList.contains('started')){
+            startedFarms++;
+        }else if(farm.classList.contains('completed')){
+            readyFarms++;
+        }
+    })
+
+    // console.log(readyFarms);
+
+    farmReadytDom.innerHTML = readyFarms;
+    farmStartedDom.innerHTML = startedFarms;
+
 }
+
 
 function timerCalculate(fDate, oDate, sproutTimer) {
     // get total seconds between the times
@@ -401,17 +508,22 @@ document.getElementById('edit-farm-form').addEventListener('submit', function (e
     e.preventDefault();
     let formData = new FormData(e.target);
     let formProps = Object.fromEntries(formData);
-    let crop = crops[formProps.type];
+    // let crop = crops[formProps.type];
+
+    formProps.farmColor = editColorInputDom.getAttribute('data-color');
 
     let typeOfEdit = editPopUpDom.querySelector('h2').getAttribute('data-objtype');
+
     if (typeOfEdit == 'obj') {
 
         let farmId = editPopUpDom.querySelector('h2').getAttribute('data-farm');
         let farm = findFarm(farmId, FARMS).farm;
-        editFarm(farm, crop);
+        // editFarm(farm, crop);
+        editFarm(farm, formProps);
 
     } else if (typeOfEdit == 'arr') {
-        editFarm(FARMStoUpdate, crop);
+
+        editFarm(FARMStoUpdate, formProps);
         let checkBoxes = farmListDom.querySelectorAll('.select-farm');
         let selectButton = document.getElementById('select-all-farms');
 
@@ -435,31 +547,41 @@ document.getElementById('delete-all-farms').addEventListener('click', function (
                 FARMS.splice(f, 1);
                 farmToDeleteDom.remove();
             }
-
         }
-
     }
 
     FARMStoUpdate = [];
 
-    updateFarmCount(FARMS);
     document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
     
 
     if (FARMS.length == 0) {
-        selectAllFarmsDom.classList.remove('show');
+        selectAllFarmsDom.disabled = true;
         selectAllFarmsDom.classList.remove('all-selected');
         selectAllFarmsDom.innerHTML = 'Select All';
     }
 
     localStorage.setItem("farms", JSON.stringify(FARMS));
+    updateFarmCount(FARMS);
 })
 
 // mass editing
 document.getElementById('edit-all-farms').addEventListener('click', function (e) {
     let h2 = editPopUpDom.querySelector('h2');
+    let textarea = editPopUpDom.querySelector('textarea');
+    let colorPickerButton = editPopUpDom.querySelector('.add-color');
+    let colorParent = colorPickerButton.parentElement;
+    let colorInputDom = colorParent.querySelector('input');
+
     h2.innerHTML = `Edit Farms`;
     h2.setAttribute('data-objtype', 'arr');
+
+    textarea.value = '';
+
+    colorParent.classList.remove('show')
+    colorInputDom.setAttribute('data-color', null)
+
+
     openPop(editPopUpDom);
 })
 
@@ -469,7 +591,7 @@ document.getElementById('start-all-farms').addEventListener('click', function (e
     FARMStoUpdate.forEach(farm => {
         let farmDom = document.getElementById(farm.number);
 
-        if (farmDom.classList.contains('completed')) {
+        if (!farmDom.classList.contains('started')) {
             let startButton = farmDom.querySelector('.start-farm');
 
             startButton.disabled = true
@@ -487,11 +609,16 @@ document.getElementById('start-all-farms').addEventListener('click', function (e
                 timerDom.innerHTML = timer.getTimeValues().toString();
             });
 
+            farmDom.classList.add('started');
+
             timer.addEventListener('targetAchieved', function (e) {
                 startButton.disabled = false;
                 farmDom.classList.add('completed');
+                farmDom.classList.remove('started');
+                updateFarmCount(FARMS);
             });
 
+            updateFarmCount(FARMS);
             openFarm(farm.number);
         }
     });
@@ -516,7 +643,7 @@ selectAllFarmsDom.addEventListener('click', function (e) {
         //deselecting
         FARMStoUpdate = [];
         clearCheckBoxes(checkBoxes, button);
-        document.querySelector('.mass-edit-container .extra-buttons').classList.rmove('show');
+        document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
         button.classList.remove('all-selected');
         button.innerHTML = 'Select All';
     } else {
@@ -536,46 +663,57 @@ selectAllFarmsDom.addEventListener('click', function (e) {
 })
 
 //edit farm function
-function editFarm(obj, crop) {
+function editFarm(obj, data) {
 
     if (Array.isArray(obj)) {
         console.log('type array');
         let farmArr = obj;
 
         farmArr.forEach(farm => {
-            updateFarmDom(farm, crop);
+            updateFarmDom(farm, data);
         });
 
         FARMStoUpdate = [];
 
     } else {
-        updateFarmDom(obj, crop);
+        // console.log(data)
+        updateFarmDom(obj, data);
     }
     closePop(editPopUpDom);
 }
 
-function updateFarmDom(farmToUpdate, crop) {
+function updateFarmDom(farmToUpdate, data) {
     let farm = farmToUpdate;
     let prevCrop = farm.crop;
+    let farmColor = data.farmColor == 'null' ? null : data.farmColor;
+    let farmDom = document.getElementById(farm.number);
+    let nextDomE = farmDom.nextElementSibling;
+
 
     //update farm in the arr (type and startTimer)
-    farm.crop = crop;
-    let cropTimer = farm.crop.sproutTime;
+    if( data.type != undefined){
+        farm.crop = crops[data.type];
+        let cropTimer = farm.crop.sproutTime;
+        farm.startTime = null;
+        farm.timer = null;
+    }
 
-    farm.startTime = null;
-    farm.timer = null;
+    farm.info.color = farmColor == null ? farm.info.color : farmColor;
+    farm.info.notes = data.farmNotes;
+
 
     //save in local localStorage
     localStorage.setItem("farms", JSON.stringify(FARMS));
 
     //build dom tree
-    let farmDom = document.getElementById(farm.number);
+    farmDom.remove();
+    farmListDom.insertBefore(createFarmNode(farm), nextDomE)
 
-    farmDom.classList.remove('completed');
-    farmDom.querySelector('.start-farm').disabled = false;
-    farmDom.querySelector('.crop-type').classList.remove(prevCrop.name.toLowerCase());
-    farmDom.querySelector('.crop-type').classList.add(farm.crop.name.toLowerCase());
-    farmDom.querySelector('.timer').innerHTML = `${cropTimer.hours == 0 ? '00' : cropTimer.hours}:${cropTimer.minutes == 0 ? '00' : cropTimer.minutes}:${cropTimer.seconds == 0 ? '00' : cropTimer.seconds}`
+    // farmDom.classList.remove('completed');
+    // farmDom.querySelector('.start-farm').disabled = false;
+    // farmDom.querySelector('.crop-type').classList.remove(prevCrop.name.toLowerCase());
+    // farmDom.querySelector('.crop-type').classList.add(farm.crop.name.toLowerCase());
+    // farmDom.querySelector('.timer').innerHTML = `${cropTimer.hours == 0 ? '00' : cropTimer.hours}:${cropTimer.minutes == 0 ? '00' : cropTimer.minutes}:${cropTimer.seconds == 0 ? '00' : cropTimer.seconds}`
 }
 
 function clearCheckBoxes(arr, selectButton) {

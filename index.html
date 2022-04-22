@@ -13,7 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="dist/css/app.css?v=1.2.4" />
+    <link rel="stylesheet" href="dist/css/main.css?v=1.3.1" />
+    <!-- <link rel="stylesheet" href="dist/css/main.css" /> -->
 </head>
 
 <body>
@@ -23,10 +24,10 @@
         <div class="container">
             <button id="close-pop" class="pop-close">&#x2715;</button>
             <form action="" id="edit-farm-form">
-                <h2 data-farm="" data-objtype="">Edit Farm 2</h2>
+                <h2 data-farm="" data-objtype="">Edit Farm</h2>
                 <div class="radios">
                     <label for="popberry-p">
-                        <input type="radio" value="0" name="type" id="popberry-p" required checked>
+                        <input type="radio" value="0" name="type" id="popberry-p">
                         <div><img src="/dist/images/popberry.png" alt="Popberry"></div>
                     </label>
                     <label for="grumpkin-p">
@@ -36,6 +37,19 @@
                     <label for="scarrot-p">
                         <input type="radio" value="2" name="type" id="scarrot-p">
                         <div><img src="/dist/images/scarrot.png" alt="Scarrot"></div>
+                    </label>
+                </div>
+                <div class="notes-container">
+                    <div>
+                        <button type="button" class="add-color"></button>
+                        <div>
+                            <label for="farm-color-edit" class="farm-color-label">Identifier color</label>
+                            <input class="farm-color-input" type="color" name="farmColor" data-color="null" value="#e66465" id="farm-color-edit">
+                        </div>
+                    </div>
+                    <label for="farm-notes" class="farm-notes-label">
+                        <span>Farm Notes</span>
+                        <textarea name="farmNotes" id="farm-notes" cols="30" rows="3"></textarea>
                     </label>
                 </div>
                 <button id="confirm-edit" type="submit">Confirm</button>
@@ -75,19 +89,28 @@
     </h1>
 
     <div class="farm-count-container">
-        <h2>
-            Farm Count 
-            <span id="farm-count"></span>
-        </h2>
+        <h3>
+            Total
+            <span id="farm-count">0</span>
+        </h3>
+        <h3>
+            Ready 
+            <span id="farms-ready">0</span>
+        </h3>
+        <h3>
+            Started 
+            <span id="farms-started">0</span>
+        </h3>
     </div>
     <div class="mass-edit-container">
         <div>
-            <button id="select-all-farms">Select All</button>
+            <button id="select-all-farms" disabled>Select All</button>
             <div class="extra-buttons">
                 <button id="delete-all-farms">Delete</button>
                 <button id="edit-all-farms">Edit</button>
                 <button id="start-all-farms">Start</button>
             </div>
+            <a class="general-store" target="_blank" href="https://play.pixels.online/generalstore">General Store</a>
         </div>
     </div>
 
@@ -99,12 +122,29 @@
                 <h4>Farm 1545</h4>
                 <div class="crop-type scarrot"></div>
                 <div class="timer">5:00</div>
+                <div class="notes">
+                    <div class="color"></div>
+                    <div class="info">
+                        <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="24px" height="24px">    <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"/></svg>
+                        <div class="content">
+                            <p>deons farm</p>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="ui">
-                    <button class="delete-farm">Delete</button>
-                    <button class="edit-farm">Edit</button>
-                    <button class="open-farm">Open</button>
-                    <button class="start-farm">Start</button>
+                    <button class="delete-farm btn-icon" title="Delete Farm">
+                        <img src="/dist/images/icons/trash.png" alt="Delete Farm">
+                    </button>
+                    <button class="edit-farm btn-icon" title="Edit Farm">
+                        <img src="/dist/images/icons/edit.png" alt="Edit Farm">
+                    </button>
+                    <button class="open-farm btn-icon" title="Open Farm">
+                        <img src="/dist/images/icons/link.png" alt="Open Farm">
+                    </button>
+                    <button class="start-farm btn-icon" title="Start Farm">
+                        <img src="/dist/images/icons/stopwatch.png" alt="Start Farm">
+                    </button>
                 </div>
             </div> -->
 
@@ -118,28 +158,34 @@
                             <span>Farm Number/URL</span>
                             <input id="farmNumber" name="farmNumber" type="text" required>
                         </label>
-                        <label for="">
-                            <span>Crop</span>
-                            <!-- <select name="type" id="">
-                                <option value="0">Popberries</option>
-                                <option value="1">Grumpkins</option>
-                                <option value="2">Scarrots</option>
-                            </select> -->
-                            <div class="radios">
-                                <label for="popberry">
-                                    <input type="radio" value="0" name="type" id="popberry" required checked>
-                                    <div><img src="/dist/images/popberry.png" alt="Popberry"></div>
-                                </label>
-                                <label for="grumpkin">
-                                    <input type="radio" value="1" name="type" id="grumpkin">
-                                    <div><img src="/dist/images/grumpkin.png" alt="Grumpkin"></div>
-                                </label>
-                                <label for="scarrot">
-                                    <input type="radio" value="2" name="type" id="scarrot">
-                                    <div><img src="/dist/images/scarrot.png" alt="Scarrot"></div>
-                                </label>
+                        <span>Crop</span>
+                        <div class="radios">
+                            <label for="popberry">
+                                <input type="radio" value="0" name="type" id="popberry" required checked>
+                                <div><img src="/dist/images/popberry.png" alt="Popberry"></div>
+                            </label>
+                            <label for="grumpkin">
+                                <input type="radio" value="1" name="type" id="grumpkin">
+                                <div><img src="/dist/images/grumpkin.png" alt="Grumpkin"></div>
+                            </label>
+                            <label for="scarrot">
+                                <input type="radio" value="2" name="type" id="scarrot">
+                                <div><img src="/dist/images/scarrot.png" alt="Scarrot"></div>
+                            </label>
+                        </div>
+                        <div class="notes-container">
+                            <div>
+                                <button type="button" class="add-color"></button>
+                                <div>
+                                    <label for="farm-color" class="farm-color-label">Identifier color</label>
+                                    <input class="farm-color-input" type="color" name="farmColor" data-color="null" value="#e66465" id="farm-color">
+                                </div>
                             </div>
-                        </label>
+                            <label for="farm-notes" class="farm-notes-label">
+                                <span>Farm Notes</span>
+                                <textarea name="farmNotes" id="farm-notes" cols="30" rows="3"></textarea>
+                            </label>
+                        </div>
                         <button type="submit">Add Farm</button>
                     </form>
                     <div class="export-buttons">
@@ -235,8 +281,7 @@
         <p>This is an error</p>
     </div>
     <script src="dist/js/lib/easytimer.min.js"></script>
-    <!-- <script src="dist/js/app.js?v=1.2.4"></script> -->
-    <script src="dist/js/app.js"></script>
+    <script src="dist/js/app.js?v=1.3.1"></script>
 </body>
 
 </html>
