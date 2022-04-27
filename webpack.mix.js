@@ -16,13 +16,13 @@ mix
 
 
 mix
-    .js('src/js/app.js', 'js').sass('src/css/main.scss', 'css').setPublicPath('dist')
+    .js('src/js/app.js', 'js').js('src/js/w3g.js', 'js').sass('src/css/main.scss', 'css').setPublicPath('dist')
     .browserSync({
         proxy: URL,
         port: 3000,
         files: [
             './dist/css/main.css',
-            './dist/js/app.js',
+            './dist/js/**/*.js',
             './dist/images/{*,**/*}.{svg,jpg,png}',
             './index.html',
         ],

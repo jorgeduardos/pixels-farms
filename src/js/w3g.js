@@ -1,3 +1,644 @@
+var localStoreCheck = JSON.parse(localStorage.getItem("w3gfarms"));
+
+const w3gFarms = [
+    {
+      number: "2366",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "3539",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "2694",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "2856",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "2421",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "4048",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "4335",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        color: null,
+        notes: ""
+      }
+    },
+    {
+      number: "3120",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "3598",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "2097",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "2083",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "4916",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "3752",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "4574",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "3084",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "1527",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "3223",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "2402",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "1028",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "2713",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "2526",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "538",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "406",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "449",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "409",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "4783",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "3909",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "4041",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "2962",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "3111",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "1031",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "4571",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "4897",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "4334",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "3643",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "468",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    },
+    {
+      number: "1781",
+      crop: {
+        id: 2,
+        name: "Scarrot",
+        sproutTime: {
+          hours: 5,
+          minutes: 20,
+          seconds: 0
+        }
+      },
+      timer: null,
+      startTime: null,
+      info: {
+        notes: ""
+      }
+    }
+]
+
+console.log(localStoreCheck)
+
+if (localStoreCheck == null || localStoreCheck.length == 0){
+    localStorage.setItem("w3gfarms", JSON.stringify(w3gFarms));
+}
+
 import Sortable from 'sortablejs';
 import { arrayMoveMutable } from 'array-move';
 
@@ -14,7 +655,7 @@ var farmCountDom = document.getElementById('farm-count');
 var farmReadytDom = document.getElementById('farms-ready');
 var farmStartedDom = document.getElementById('farms-started');
 
-var storedFarms = JSON.parse(localStorage.getItem("farms"));
+var storedFarms = JSON.parse(localStorage.getItem("w3gfarms"));
 var FARMS = [];
 var FARMStoUpdate = [];
 
@@ -86,7 +727,7 @@ var sortable = new Sortable(farmListDom, {
     ghostClass: 'ghost',
     onEnd: function (e) {
         arrayMoveMutable(FARMS, e.oldIndex, e.newIndex)
-        localStorage.setItem("farms", JSON.stringify(FARMS));
+        localStorage.setItem("w3gfarms", JSON.stringify(FARMS));
         if (dev) {
             console.log('farms after move: ', FARMS);
         }
@@ -177,7 +818,7 @@ function addFarm(form) {
         selectAllFarmsDom.disabled = false;
     }
 
-    localStorage.setItem("farms", JSON.stringify(FARMS));
+    localStorage.setItem("w3gfarms", JSON.stringify(FARMS));
 
     if (dev) {
         console.log('farms after add: ', FARMS);
@@ -207,7 +848,7 @@ farmListDom.addEventListener('click', function (e) {
         farm.startTime = Date();
 
         //saving farm in localStorage
-        localStorage.setItem("farms", JSON.stringify(FARMS));
+        localStorage.setItem("w3gfarms", JSON.stringify(FARMS));
 
         // timer.start({ countdown: true, startValues: {seconds: 10} });
         timer.start({ countdown: true, startValues: farm.crop.sproutTime });
@@ -246,7 +887,7 @@ farmListDom.addEventListener('click', function (e) {
             console.log('farms after delete: ', FARMS);
         }
 
-        localStorage.setItem("farms", JSON.stringify(FARMS));
+        localStorage.setItem("w3gfarms", JSON.stringify(FARMS));
         farmDom.remove();
         updateFarmCount(FARMS);
 
@@ -562,7 +1203,7 @@ document.getElementById('delete-all-farms').addEventListener('click', function (
         selectAllFarmsDom.innerHTML = 'Select All';
     }
 
-    localStorage.setItem("farms", JSON.stringify(FARMS));
+    localStorage.setItem("w3gfarms", JSON.stringify(FARMS));
     updateFarmCount(FARMS);
 })
 
@@ -629,7 +1270,7 @@ document.getElementById('start-all-farms').addEventListener('click', function (e
 
     clearCheckBoxes(checkBoxes, selectButton);
 
-    localStorage.setItem("farms", JSON.stringify(FARMS));
+    localStorage.setItem("w3gfarms", JSON.stringify(FARMS));
 
 
     FARMStoUpdate = [];
@@ -704,7 +1345,7 @@ function updateFarmDom(farmToUpdate, data) {
 
 
     //save in local localStorage
-    localStorage.setItem("farms", JSON.stringify(FARMS));
+    localStorage.setItem("w3gfarms", JSON.stringify(FARMS));
 
     //build dom tree
     farmDom.remove();
@@ -736,7 +1377,7 @@ function handleTimerStart(timerDom, timer) {
 //export import farms
 document.getElementById('export-farms').addEventListener('click', function (e) {
     if(FARMS.length > 0){
-        let farmsToExport = localStorage.getItem("farms");
+        let farmsToExport = localStorage.getItem("w3gfarms");
         download('exported-farms', farmsToExport)
     }
 })
@@ -786,7 +1427,7 @@ document.getElementById('reset').addEventListener('click', function (e) {
             farm.timer = null;
         })
 
-        localStorage.setItem("farms", JSON.stringify(FARMS));
+        localStorage.setItem("w3gfarms", JSON.stringify(FARMS));
         window.location.reload();
     }
 })
@@ -827,7 +1468,7 @@ function importClean(data, fileType){
         farmsToClean = JSON.parse(data);
 
         if(FARMS == 0){
-            localStorage.setItem("farms", JSON.stringify(farmsToClean));
+            localStorage.setItem("w3gfarms", JSON.stringify(farmsToClean));
             window.location.reload();
         }
 
@@ -844,7 +1485,7 @@ function importClean(data, fileType){
         //     showError('Duplicated farms were ommited', 1);
         // }
 
-        localStorage.setItem("farms", JSON.stringify(FARMS));
+        localStorage.setItem("w3gfarms", JSON.stringify(FARMS));
         window.location.reload();
 
     }else{
@@ -864,7 +1505,7 @@ function importClean(data, fileType){
         })
 
         if(FARMS == 0){
-            localStorage.setItem("farms", JSON.stringify(farmsToClean));
+            localStorage.setItem("w3gfarms", JSON.stringify(farmsToClean));
             window.location.reload();
         }
 
@@ -876,7 +1517,7 @@ function importClean(data, fileType){
         }
 
         FARMS = FARMS.concat(farmsToClean)
-        localStorage.setItem("farms", JSON.stringify(FARMS));
+        localStorage.setItem("w3gfarms", JSON.stringify(FARMS));
         window.location.reload();
     }
 

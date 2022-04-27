@@ -122,18 +122,25 @@
     }
 
     .ui{
-        margin-left: auto;
+        // margin-left: auto;
+        display: flex;
+        flex-grow: 1;
 
         .btn-icon{
             border: unset;
             cursor: pointer;
             padding: 0;
+            margin-left: 10px;
 
             &:disabled{
                 pointer-events: none;
                 img{
                     opacity: 0.3;
                 }
+            }
+
+            &.delete-farm {
+                margin-right: auto;
             }
 
             img{

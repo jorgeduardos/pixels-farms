@@ -1,0 +1,16 @@
+.w3g-main{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    padding: 0;
+
+    .alert{
+        width: 500px;
+        height: 300px;
+        background-color: #ccc;
+        padding: 3rem;
+    }
+}
