@@ -1,0 +1,12 @@
+{% if content is not empty %}
+  <div class="fixed-container">
+    <div id="cookies-banner" class="cookies js-cookies hidden" role="region" aria-label="Cookie Banner" tabindex="0">
+      <div class="cookies-container flex v-center">
+        <div class="cookies-text">
+          {{ content }}
+        </div>
+        <button id="cookies-button" class="normal primary-button cookies-button" type="button" aria-label="Accept and close">Ok</button>
+      </div>
+    </div>
+  </div>
+{% endif %}

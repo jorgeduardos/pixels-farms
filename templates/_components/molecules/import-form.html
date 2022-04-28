@@ -1,0 +1,19 @@
+<form action="" id="import-form">
+    <h2 data-farm="" data-objtype="">Import Farms</h2>
+    <p>How are you importing them?</p>
+    <div class="file-type-container">
+        <label for="exported">
+            <input type="radio" name="file" value="exported" id="exported" checked>
+            Exported File
+        </label>
+        <label for="new-line">
+            <input type="radio" name="file" value="new-line" id="new-line">
+            List of farm links
+        </label>
+    </div>
+    <textarea name="farms" id="import-data"
+        placeholder='[{"number":"3084","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null},{"number":"3223","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null}]'
+        cols="30" rows="10" required></textarea>
+    <p class="warning">Warning: This will erase your current farms!</p>
+    <button id="confirm-edit" type="submit">Import</button>
+</form>

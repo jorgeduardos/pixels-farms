@@ -1,0 +1,18 @@
+<h3 class="cta-header small faq-control">
+  <button class="faq-button" aria-expanded="false" aria-controls="{{ contentId }}" id="{{ tabId }}">
+    <span class="faq-title">{{ question }}</span>
+    <span class="faq-arrow">
+      {% include "fragments/svg/arrow-down" %}
+    </span>
+  </button>
+</h3>
+<div class="faq-panel" id="{{ contentId }}" aria-labelledby="{{ tabId }}" role="region" aria-hidden="true">
+  <div>
+    {{ answer }}
+  </div>
+</div>
+
+{# <details>
+  <summary><h2 class="h3 cta-header small">{{ question }}</h2></summary>
+  {{ answer }}
+</details> #}

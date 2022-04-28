@@ -1,5 +1,20 @@
+@charset 'UTF-8';
+
 @import './app.scss';
 
-@import './components/w3g.scss';
+//MOLECULES
+@import './components/molecules/farm.scss';
+@import './components/molecules/edit-form.scss';
 
-@import './components/farm.scss';
+
+//ORGANISMS
+@import './components/organisms/pop-up.scss';
+@import './components/organisms/guide.scss';
+
+
+// PAGES
+@import './components/pages/w3g.scss';
+
+
+
+

@@ -1,0 +1,16 @@
+{# -- VARIABLES --  #}
+
+{# label: button text
+#   id: boolean or text, button id
+#   classes: boolean or text, button class
+#   externalTarget: boolean
+#   dialogId: text
+#   openDialog: boolean #}
+
+{% if label is not empty %}
+  <a {% if target is not empty %}href="{{ target }}"{% endif %}
+  {% if id is not empty %}id="{{ id }}"{% endif %} 
+  {% if classes is not empty %}class="{{ classes }}"{% endif %}
+  {% if externalTarget %}rel="noreferrer noopener" target="_blank"{% endif %}
+  {% if openDialog %}data-a11y-dialog-show="{{ dialogId|default('') }}"{% endif %}>{{ label }}</a>
+{% endif %}

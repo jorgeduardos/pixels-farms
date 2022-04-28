@@ -1,0 +1,105 @@
+{% extends "/index.twig" %}
+
+{% block content %}
+
+{% include './_components/organisms/pop-up.html' with {content: 'edit-form'} %}
+
+
+<div id="import-pop-up" class="pop-up">
+    <div class="screen"></div>
+    <div class="container">
+        <button id="close-import-pop" class="pop-close">&#x2715;</button>
+        {% include './_components/molecules/import-form.html'%}
+    </div>
+</div>
+
+<h1>
+    {#<img src="/dist/images/pixels-logo.png" alt="Pixels">#}Pixels-<span>Farms</span>
+</h1>
+
+<div class="farm-count-container">
+    <h3>
+        Total
+        <span id="farm-count">0</span>
+    </h3>
+    <h3>
+        Ready
+        <span id="farms-ready">0</span>
+    </h3>
+    <h3>
+        Started
+        <span id="farms-started">0</span>
+    </h3>
+</div>
+<div class="mass-edit-container">
+    <div>
+        <button id="select-all-farms" disabled>Select All</button>
+        <div class="extra-buttons">
+            <button id="delete-all-farms">Delete</button>
+            <button id="edit-all-farms">Edit</button>
+            <button id="start-all-farms">Start</button>
+        </div>
+        <div class="links">
+            <a class="general-store" target="_blank" href="https://play.pixels.online/generalstore">General Store</a>
+            <span>|</span>
+            <a target="_blank" href="/w3g">W3G Farms</a>
+        </div>
+    </div>
+</div>
+
+<div class="global-container">
+    <div class="farm-list">
+
+        <!-- <div class="farm" data-id="0">
+                <input type="checkbox" name="select-farm" class="select-farm">
+                <h4>Farm 1545</h4>
+                <div class="crop-type scarrot"></div>
+                <div class="timer">5:00</div>
+                <div class="notes">
+                    <div class="color"></div>
+                    <div class="info">
+                        <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="24px" height="24px">    <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"/></svg>
+                        <div class="content">
+                            <p>deons farm</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui">
+                    <button class="delete-farm btn-icon" title="Delete Farm">
+                        <img src="/dist/images/icons/trash.png" alt="Delete Farm">
+                    </button>
+                    <button class="edit-farm btn-icon" title="Edit Farm">
+                        <img src="/dist/images/icons/edit.png" alt="Edit Farm">
+                    </button>
+                    <button class="open-farm btn-icon" title="Open Farm">
+                        <img src="/dist/images/icons/link.png" alt="Open Farm">
+                    </button>
+                    <button class="start-farm btn-icon" title="Start Farm">
+                        <img src="/dist/images/icons/stopwatch.png" alt="Start Farm">
+                    </button>
+                </div>
+            </div> -->
+
+    </div>
+
+    <div class="form-container">
+        <div class="fix">
+            <div>
+                {% include './_components/molecules/add-farm.html' %}
+                <div class="export-buttons">
+                    <button id="export-farms">Export Farms</button>
+                    <button id="import-farms">Import Farms</button>
+                </div>
+                <button id="reset">Reset Farms</button>
+            </div>
+
+            {% include './_components/organisms/guide.html' %}
+        </div>
+    </div>
+</div>
+
+<div id="error-handling">
+    <p>This is an error</p>
+</div>
+{% endblock %}

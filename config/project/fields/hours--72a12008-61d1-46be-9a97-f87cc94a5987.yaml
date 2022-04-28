@@ -1,0 +1,20 @@
+columnSuffix: pjducsqm
+contentColumnType: smallint(2)
+fieldGroup: cda801fc-47b5-488d-a1e1-066860ab8050 # Crops
+handle: hours
+instructions: ''
+name: Hours
+searchable: false
+settings:
+  decimals: 0
+  defaultValue: null
+  max: 24
+  min: 0
+  prefix: null
+  previewCurrency: ''
+  previewFormat: decimal
+  size: null
+  suffix: null
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Number

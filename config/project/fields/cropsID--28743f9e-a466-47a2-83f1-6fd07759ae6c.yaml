@@ -1,0 +1,20 @@
+columnSuffix: zcakvozz
+contentColumnType: integer(10)
+fieldGroup: cda801fc-47b5-488d-a1e1-066860ab8050 # Crops
+handle: cropsID
+instructions: ''
+name: 'Crop ID'
+searchable: false
+settings:
+  decimals: 0
+  defaultValue: null
+  max: null
+  min: 0
+  prefix: null
+  previewCurrency: ''
+  previewFormat: decimal
+  size: null
+  suffix: null
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Number

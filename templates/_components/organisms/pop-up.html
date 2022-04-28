@@ -1,0 +1,9 @@
+<div id="edit-pop-up" class="pop-up">
+    <div class="screen"></div>
+    <div class="container">
+        <button id="close-pop" class="pop-close">&#x2715;</button>
+        {% if content == 'edit-form' %}
+            {% include './_components/molecules/edit-form.html'%}
+        {% endif %}
+    </div>
+</div>

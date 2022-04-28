@@ -1,0 +1,12 @@
+defaultPlacement: end
+enableVersioning: true
+handle: crops
+name: Crops
+propagationMethod: all
+siteSettings:
+  47900d8a-89a6-4d23-b94c-200c0d4e0728: # Pixels Tools
+    enabledByDefault: true
+    hasUrls: false
+    template: null
+    uriFormat: null
+type: channel

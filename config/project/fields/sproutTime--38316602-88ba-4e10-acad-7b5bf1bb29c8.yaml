@@ -1,0 +1,14 @@
+columnSuffix: vzyqupdu
+contentColumnType: time
+fieldGroup: cda801fc-47b5-488d-a1e1-066860ab8050 # Crops
+handle: sproutTime
+instructions: ''
+name: 'Sprout Time'
+searchable: false
+settings:
+  max: null
+  min: null
+  minuteIncrement: 5
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Time

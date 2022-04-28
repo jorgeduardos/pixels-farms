@@ -4,21 +4,52 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "development": "mix",
+    "watch": "mix watch",
+    "watch-poll": "mix watch -- --watch-options-poll=1000",
+    "hot": "mix watch --hot",
+    "production": "mix --production"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "makefile",
+    "laravel-mix",
+    "webpack",
+    "craft cms"
+  ],
+  "author": "Anuar Reyes <anuar@hey.com>",
   "license": "ISC",
   "devDependencies": {
-    "browser-sync": "^2.27.9",
+    "@babel/core": "^7.17.5",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-function-bind": "^7.16.7",
+    "@babel/plugin-proposal-object-rest-spread": "^7.17.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/plugin-transform-template-literals": "^7.16.7",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/runtime": "^7.17.2",
+    "babel-loader": "^8.2.3",
+    "browser-sync": "^2.27.7",
     "browser-sync-webpack-plugin": "^2.3.0",
     "laravel-mix": "^6.0.43",
+    "laravel-mix-banner": "^0.1.4",
+    "laravel-mix-criticalcss": "^1.0.2",
+    "laravel-mix-purgecss": "^6.0.0",
     "resolve-url-loader": "^5.0.0",
-    "sass": "^1.49.11",
+    "sass": "^1.49.9",
     "sass-loader": "^12.6.0"
   },
   "dependencies": {
     "array-move": "^4.0.0",
-    "sortablejs": "^1.15.0"
+    "sortablejs": "^1.15.0",
+    "@accessible360/accessible-slick": "^1.0.1",
+    "a11y-dialog": "^7.4.0",
+    "fontfaceobserver": "^2.1.0",
+    "gsap": "^3.9.1",
+    "jquery": "^3.6.0",
+    "lazysizes": "^5.3.2",
+    "node-marquee": "^3.0.6",
+    "youtube-player": "^5.5.2"
   }
 }

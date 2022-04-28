@@ -1,0 +1,9 @@
+{% do image.setTransform({ width: width, height: height }) %} 
+{{ tag('img', {
+    src: image.url,
+    width: image.width,
+    height: image.height,
+    srcset: image.getSrcset(sizes),
+    alt: image.title,
+    class: class
+}) }}

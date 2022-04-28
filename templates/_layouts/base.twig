@@ -1,0 +1,62 @@
+{%- minify -%}
+
+{% set env = getenv('ENVIRONMENT') %}
+{% set baseUrl = url() %}
+
+{% header "Link: <#{baseUrl}>; rel=dns-prefetch;,<#{baseUrl}>; rel=preconnect; crossorigin;" %}
+
+{%- endminify -%}
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	{%- minify -%}
+	<link rel="dns-prefetch" href="{{ baseUrl }}" crossorigin>
+	<link rel="preconnect" href="{{ baseUrl }}" crossorigin>
+
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{# -- SEO meta tags -- #}
+	{# <title>{{ entry.title }} — {{ mainName }}</title> #}
+	{% hook 'seo' %}
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+	{# -- Inline CSS block used by templates for Critical CSS #}
+	{# -- Only use Critical CSS & LoadCSS when we have it available to prevent flashing #}
+	{% set inline_css = "" %}
+	{% if env != "local" %}
+		{% set inline_css =  block("inline_css") is defined ? block("inline_css") : "" %}
+	{% endif %}
+	{% if inline_css|trim is not empty %}
+		<style>{{ inline_css | raw }}</style>
+		<link rel="preload" href="{{ mix('/css/main.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<noscript><link rel="stylesheet" href="{{ mix('/css/main.css') }}"></noscript>
+		<script>!function(n){"use strict";n.loadCSS||(n.loadCSS=function(){});var o=loadCSS.relpreload={};if(o.support=function(){var e;try{e=n.document.createElement("link").relList.supports("preload")}catch(t){e=!1}return function(){return e}}(),o.bindMediaToggle=function(t){var e=t.media||"all";function a(){t.media=e}t.addEventListener?t.addEventListener("load",a):t.attachEvent&&t.attachEvent("onload",a),setTimeout(function(){t.rel="stylesheet",t.media="only x"}),setTimeout(a,3e3)},o.poly=function(){if(!o.support())for(var t=n.document.getElementsByTagName("link"),e=0;e<t.length;e++){var a=t[e];"preload"!==a.rel||"style"!==a.getAttribute("as")||a.getAttribute("data-loadcss")||(a.setAttribute("data-loadcss",!0),o.bindMediaToggle(a))}},!o.support()){o.poly();var t=n.setInterval(o.poly,500);n.addEventListener?n.addEventListener("load",function(){o.poly(),n.clearInterval(t)}):n.attachEvent&&n.attachEvent("onload",function(){o.poly(),n.clearInterval(t)})}"undefined"!=typeof exports?exports.loadCSS=loadCSS:n.loadCSS=loadCSS}("undefined"!=typeof global?global:this);</script>
+	{% else %}
+		<link rel="stylesheet" href="{{ mix('/css/main.css') }}">
+	{% endif %}
+	{%- endminify -%}
+
+	{% include "_meta/favicon" %}
+
+</head>
+<body>
+		
+  {% block body %}{% endblock %}
+
+	
+	
+  {% include "_meta/typekit" %}
+
+  {# Use async or defer attribute
+    Async: Load-first order. Non-blocking.
+    Defer: Document Order. Non-blocking.
+  #}
+	<script src="/assets/js/utils/easytimer.min.js"></script>
+  	<script type="module" src="{{ mix('js/main.js') }}" defer></script>
+</body>
+</html>

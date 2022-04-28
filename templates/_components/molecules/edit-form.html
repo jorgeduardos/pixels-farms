@@ -1,0 +1,32 @@
+<form action="" id="edit-farm-form">
+    <h2 data-farm="" data-objtype="">Edit Farm</h2>
+    <div class="radios">
+        <label for="popberry-p">
+            <input type="radio" value="0" name="type" id="popberry-p">
+            <div><img src="/assets/images/crops/popberry.png" alt="Popberry"></div>
+        </label>
+        <label for="grumpkin-p">
+            <input type="radio" value="1" name="type" id="grumpkin-p">
+            <div><img src="/assets/images/crops/grumpkin.png" alt="Grumpkin"></div>
+        </label>
+        <label for="scarrot-p">
+            <input type="radio" value="2" name="type" id="scarrot-p">
+            <div><img src="/assets/images/crops/scarrot.png" alt="Scarrot"></div>
+        </label>
+    </div>
+    <div class="notes-container">
+        <div>
+            <button type="button" class="add-color"></button>
+            <div>
+                <label for="farm-color-edit" class="farm-color-label">Identifier color</label>
+                <input class="farm-color-input" type="color" name="farmColor" data-color="null" value="#e66465"
+                    id="farm-color-edit">
+            </div>
+        </div>
+        <label for="farm-notes" class="farm-notes-label">
+            <span>Farm Notes</span>
+            <textarea name="farmNotes" id="farm-notes" cols="30" rows="3"></textarea>
+        </label>
+    </div>
+    <button id="confirm-edit" type="submit">Confirm</button>
+</form>
