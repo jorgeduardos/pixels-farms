@@ -1,9 +1,13 @@
-<div id="edit-pop-up" class="pop-up">
+<div id="{{id}}" class="pop-up" data-type="{{type}}">
     <div class="screen"></div>
     <div class="container">
         <button id="close-pop" class="pop-close">&#x2715;</button>
         {% if content == 'edit-form' %}
             {% include './_components/molecules/edit-form.html'%}
+        {% elseif content == 'mass-edit-form' %}
+            {% include './_components/molecules/mass-edit-form.html'%}
+        {% elseif content == 'import-form' %}
+            {% include './_components/molecules/import-form.html'%}
         {% endif %}
     </div>
 </div>

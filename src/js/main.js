@@ -1,25 +1,35 @@
 import Sortable from 'sortablejs';
 import { arrayMoveMutable } from 'array-move';
+import { startFarm } from './farm-events';
+import CROPS from './crops';
+import { farmListDom, farmInput, editPopUpDom, importPopUpDom, selectAllFarmsDom, 
+    errorDom, addColorInputDom, editColorInputDom, regex,
+    farmCountDom, farmReadytDom, farmStartedDom
+} from './consts';
 
 var dev = false;
-const farmListDom = document.querySelector('.farm-list');
-const farmInput = document.getElementById('farmNumber');
-const editPopUpDom = document.getElementById('edit-pop-up');
-const importPopUpDom = document.getElementById('import-pop-up');
-const selectAllFarmsDom = document.getElementById('select-all-farms');
-const errorDom = document.getElementById('error-handling');
-const addColorInputDom = document.getElementById('farm-color');
-const editColorInputDom = document.getElementById('farm-color-edit');
-var farmCountDom = document.getElementById('farm-count');
-var farmReadytDom = document.getElementById('farms-ready');
-var farmStartedDom = document.getElementById('farms-started');
+// const farmListDom = document.querySelector('.farm-list');
+// const farmInput = document.getElementById('farmNumber');
+// const editPopUpDom = document.getElementById('edit-pop-up');
+// const importPopUpDom = document.getElementById('import-pop-up');
+// const selectAllFarmsDom = document.getElementById('select-all-farms');
+// const errorDom = document.getElementById('error-handling');
+// const addColorInputDom = document.getElementById('farm-color');
+// const editColorInputDom = document.getElementById('farm-color-edit');
+// const regex = /(?<=farm)[^/\s]*/i;
+// const farmCountDom = document.getElementById('farm-count');
+// const farmReadytDom = document.getElementById('farms-ready');
+// const farmStartedDom = document.getElementById('farms-started');
 
 var storedFarms = JSON.parse(localStorage.getItem("farms"));
 var FARMS = [];
 var FARMStoUpdate = [];
 
+
+// ************************************** //
+//             GENERATE FARMS             //
+// ************************************** //
 // generate farms if there are farms saved
-// console.log(storedFarms)
 
 if (storedFarms != null) {
 
@@ -28,12 +38,14 @@ if (storedFarms != null) {
         console.log('farms on load: ', FARMS);
     }
     FARMS.forEach(farm => {
+        //build old farms with new structure
         if (farm.crop.sproutTime.seconds == undefined) {
             farm.crop.sproutTime.seconds = 0;
         }
         if (farm.info == undefined) {
             farm.info = {};
         }
+
         farmListDom.appendChild(createFarmNode(farm));
 
         if (farm.startTime != undefined && farm.startTime != null) {
@@ -41,46 +53,18 @@ if (storedFarms != null) {
         }
     });
 
+    //update far counters after creating farm nodes
     updateFarmCount(FARMS);
-    if (FARMS.length > 0) {
+
+    if (FARMS.length > 1) {
         selectAllFarmsDom.disabled = false;
     }
 }
 
 
-const regex = /(?<=farm)[^/\s]*/i;
-
-const crops = [
-    {
-        id: 0,
-        name: 'Popberry',
-        sproutTime: {
-            hours: 2,
-            minutes: 0,
-            seconds: 0
-        }, // in hours
-    },
-    {
-        id: 1,
-        name: 'Grumpkin',
-        sproutTime: {
-            hours: 4,
-            minutes: 0,
-            seconds: 0
-        },  // in hours
-    },
-    {
-        id: 2,
-        name: 'Scarrot',
-        sproutTime: {
-            hours: 5,
-            minutes: 20,
-            seconds: 0
-        },  // in hours
-    }
-]
-
-//sortab
+// ************************************** //
+//                SORTABLE                //
+// ************************************** //
 var sortable = new Sortable(farmListDom, {
     animation: 150,
     ghostClass: 'ghost',
@@ -93,9 +77,11 @@ var sortable = new Sortable(farmListDom, {
     },
 });
 
-//form submission
-let form = document.getElementById('add-farm');
-form.addEventListener('submit', function (e) {
+// ************************************** //
+//             ADD FARM  FORM             //
+// ************************************** //
+const addForm = document.getElementById('add-farm');
+addForm.addEventListener('submit', function (e) {
 
     e.preventDefault();
 
@@ -109,16 +95,20 @@ form.addEventListener('submit', function (e) {
     addFarm(formProps);
 })
 
+
+// **************************************  //
+//             ADD COLOR                   //
+// ************************************** //
 document.querySelectorAll('.add-color').forEach(el => {
     el.addEventListener('click', e => {
         let button = e.target;
         let parent = button.parentElement;
         let colorInputDom = parent.querySelector('input');
-    
-        if(parent.classList.contains('show')){
+
+        if (parent.classList.contains('show')) {
             parent.classList.remove('show')
             colorInputDom.setAttribute('data-color', null)
-        }else{
+        } else {
             parent.classList.add('show')
             colorInputDom.click();
             colorInputDom.setAttribute('data-color', colorInputDom.value)
@@ -129,7 +119,7 @@ document.querySelectorAll('.add-color').forEach(el => {
 })
 
 document.querySelectorAll('.farm-color-input').forEach(el => {
-    el.addEventListener('change', (e)=>{
+    el.addEventListener('change', (e) => {
         let imput = e.target;
         imput.setAttribute('data-color', imput.value)
         // console.log(imput.getAttribute('data-color'))
@@ -137,20 +127,22 @@ document.querySelectorAll('.farm-color-input').forEach(el => {
 })
 
 
-//add farm to list
+// ************************************** //
+//             ADD FARM                   //
+// ************************************** //
 function addFarm(form) {
 
-    let crop = crops[form.type]
+    let crop = CROPS[form.type]
 
     var match = regex.exec(form.farmNumber);
     let number = match == null ? form.farmNumber : match[0];
 
-    //errpr handling
-    if(isNaN(number*1)){
+    //errOr handling
+    if (isNaN(number * 1)) {
         return showError('Invalid Farm');
-    }else if((number*1) > 5000 || (number*1) < 0){
+    } else if ((number * 1) > 5000 || (number * 1) < 0) {
         return showError('Invalid Farm');
-    }else if(FARMS.length > 0 && findFarm(number, FARMS) != null){
+    } else if (FARMS.length > 0 && findFarm(number, FARMS) != null) {
         return showError('Farm already exists');
     }
 
@@ -169,11 +161,13 @@ function addFarm(form) {
 
     FARMS.push(farm);
     updateFarmCount(FARMS);
+
+    //reset form fields
     document.getElementById('farmNumber').value = ''
     document.getElementById('farm-notes').value = ''
     document.getElementById('farmNumber').focus
 
-    if(FARMS.length > 1 ){
+    if (FARMS.length > 1) {
         selectAllFarmsDom.disabled = false;
     }
 
@@ -183,47 +177,20 @@ function addFarm(form) {
         console.log('farms after add: ', FARMS);
     }
 
+    //create dom element and add it
     farmListDom.appendChild(createFarmNode(farm));
 }
 
-// start and delete farm function
+// ************************************** //
+//          FARM EVENT LISTENERS          //
+// ************************************** //
 farmListDom.addEventListener('click', function (e) {
 
     //start farm
     if (e.target.classList.contains('start-farm')) {
 
-        let target = e.target;
-        target.disabled = true;
-
-        let farmDom = e.target.parentElement.parentElement;
-        farmDom.classList.remove('completed');
-        let farm = findFarm(farmDom.id, FARMS).farm;
-
-        let timerDom = farmDom.querySelector('.timer');
-        let timer = new easytimer.Timer();
-
-        //saving timer pointer in farm
-        farm.timer = timer;
-        farm.startTime = Date();
-
-        //saving farm in localStorage
-        localStorage.setItem("farms", JSON.stringify(FARMS));
-
-        // timer.start({ countdown: true, startValues: {seconds: 10} });
-        timer.start({ countdown: true, startValues: farm.crop.sproutTime });
-
-        timer.addEventListener('secondsUpdated', handleTimerStart(timerDom, timer));
-        farmDom.classList.add('started');
-
-        timer.addEventListener('targetAchieved', function (e) {
-            target.disabled = false;
-            farmDom.classList.add('completed');
-            farmDom.classList.remove('started');
-            updateFarmCount(FARMS);
-        });
-
-        updateFarmCount(FARMS);
-        openFarm(farm.number);
+       //start farm from farm-events.js
+       startFarm(e.target, FARMS)
 
     } else if (e.target.classList.contains('delete-farm')) {
 
@@ -265,26 +232,24 @@ farmListDom.addEventListener('click', function (e) {
         let colorPickerButton = editPopUpDom.querySelector('.add-color');
         let colorParent = colorPickerButton.parentElement;
         let colorInputDom = colorParent.querySelector('input');
-        
+
         h2.innerHTML = `Edit Farm ${farmDom.id}`;
         h2.setAttribute('data-farm', farmDom.id);
         h2.setAttribute('data-objtype', 'obj');
 
         textarea.value = farm.info.notes;
 
-        if(farm.info.color != null){
+        if (farm.info.color != null) {
             colorParent.classList.add('show')
             // colorInputDom.click();
             colorInputDom.value = farm.info.color
             colorInputDom.setAttribute('data-color', colorInputDom.value)
-        }else{
+        } else {
             colorParent.classList.remove('show')
             colorInputDom.setAttribute('data-color', null)
         }
 
-        // console.log(farm)
-
-        editPopUpDom.classList.add('open');
+        openPop(editPopUpDom)
 
     } else if (e.target.classList.contains('select-farm')) {
 
@@ -437,9 +402,9 @@ function updateFarmCount(arr) {
     farmCountDom.innerHTML = farmCount;
 
     farmsDom.forEach(farm => {
-        if(farm.classList.contains('started')){
+        if (farm.classList.contains('started')) {
             startedFarms++;
-        }else if(farm.classList.contains('completed')){
+        } else if (farm.classList.contains('completed')) {
             readyFarms++;
         }
     })
@@ -489,20 +454,45 @@ function timerCalculate(fDate, oDate, sproutTimer) {
     }
 }
 
-// edit farm pop up
-document.getElementById('close-pop').addEventListener('click', function (e) {
-    editPopUpDom.classList.remove('open')
-})
-document.querySelector('#edit-pop-up .container').addEventListener('click', function (e) {
-    e.stopPropagation();
-})
+// ************************************** //
+//               POP UPS                  //
+// ************************************** //
 
-document.querySelectorAll('.pop-up .screen').forEach(element => {
-    element.addEventListener('click', function (e) {
-        console.log( element.parentElement);
-        element.parentElement.classList.remove('open')
+const popUps = document.querySelectorAll('.pop-up');
+popUps.forEach(element => {
+    let closePopBtn = element.querySelector('.pop-close');
+    let screen = element.querySelector('.screen');
+    let container = element.querySelector('.container');
+
+    //close button event
+    closePopBtn.addEventListener('click', () => {
+        closePop(element);
+    })
+
+    //container propagation
+    container.addEventListener('click', function (e) {
+        e.stopPropagation();
+    })
+
+    screen.addEventListener('click', function (e) {
+        closePop(element);
     })
 })
+
+const openPopButtons = document.querySelectorAll('.open-pop');
+openPopButtons.forEach(element => {
+    let popUp = document.getElementById(element.getAttribute('data-pop'));
+    let popUpType = popUp.getAttribute('data-type');
+
+    element.addEventListener('click', function () {
+        console.log(popUpType)
+        if(popUpType == 'edit'){
+            cleanEditForm(popUp.querySelector('form'))
+        }
+        openPop(popUp);
+    })
+})
+
 
 
 document.getElementById('edit-farm-form').addEventListener('submit', function (e) {
@@ -554,7 +544,7 @@ document.getElementById('delete-all-farms').addEventListener('click', function (
     FARMStoUpdate = [];
 
     document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
-    
+
 
     if (FARMS.length == 0) {
         selectAllFarmsDom.disabled = true;
@@ -566,25 +556,6 @@ document.getElementById('delete-all-farms').addEventListener('click', function (
     updateFarmCount(FARMS);
 })
 
-// mass editing
-document.getElementById('edit-all-farms').addEventListener('click', function (e) {
-    let h2 = editPopUpDom.querySelector('h2');
-    let textarea = editPopUpDom.querySelector('textarea');
-    let colorPickerButton = editPopUpDom.querySelector('.add-color');
-    let colorParent = colorPickerButton.parentElement;
-    let colorInputDom = colorParent.querySelector('input');
-
-    h2.innerHTML = `Edit Farms`;
-    h2.setAttribute('data-objtype', 'arr');
-
-    textarea.value = '';
-
-    colorParent.classList.remove('show')
-    colorInputDom.setAttribute('data-color', null)
-
-
-    openPop(editPopUpDom);
-})
 
 //mass starting
 document.getElementById('start-all-farms').addEventListener('click', function (e) {
@@ -692,8 +663,8 @@ function updateFarmDom(farmToUpdate, data) {
 
 
     //update farm in the arr (type and startTimer)
-    if( data.type != undefined){
-        farm.crop = crops[data.type];
+    if (data.type != undefined) {
+        farm.crop = CROPS[data.type];
         let cropTimer = farm.crop.sproutTime;
         farm.startTime = null;
         farm.timer = null;
@@ -735,18 +706,17 @@ function handleTimerStart(timerDom, timer) {
 
 //export import farms
 document.getElementById('export-farms').addEventListener('click', function (e) {
-    if(FARMS.length > 0){
+    if (FARMS.length > 0) {
         let farmsToExport = localStorage.getItem("farms");
         download('exported-farms', farmsToExport)
     }
 })
 
-document.getElementById('import-farms').addEventListener('click', function (e) {
-    openPop(importPopUpDom);
-})
-document.getElementById('close-import-pop').addEventListener('click', function (e) {
-    closePop(importPopUpDom);
-})
+
+// document.getElementById('import-farms').addEventListener('click', function (e) {
+//     openPop(importPopUpDom);
+// })
+
 
 //mass import farm type
 var examplePlaceholder = '[{"number":"3084","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null},{"number":"3223","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null}';
@@ -754,9 +724,9 @@ var examplePlaceholder2 = 'https://play.pixels.online/farm1688\nhttps://play.pix
 var importTextArea = document.getElementById('import-data');
 document.querySelector(".file-type-container").addEventListener('click', function (event) {
     if (event.target && event.target.matches("input[type='radio']")) {
-        if(event.target.value == 'exported'){
+        if (event.target.value == 'exported') {
             importTextArea.setAttribute('placeholder', examplePlaceholder)
-        }else{
+        } else {
             importTextArea.setAttribute('placeholder', examplePlaceholder2)
         }
     }
@@ -779,7 +749,7 @@ document.getElementById('import-form').addEventListener('submit', function (e) {
 //reset farms
 document.getElementById('reset').addEventListener('click', function (e) {
 
-    if(FARMS.length > 0){
+    if (FARMS.length > 0) {
 
         FARMS.forEach(farm => {
             farm.startTime = null;
@@ -804,20 +774,20 @@ function download(filename, text) {
     document.body.removeChild(element);
 }
 
-function openPop(container){
+function openPop(container) {
     container.classList.add('open');
 }
 
-function closePop(container){
+function closePop(container) {
     container.classList.remove('open');
 }
 
-function importClean(data, fileType){
+function importClean(data, fileType) {
     let farmsToClean = [];
     let sameFarms = [];
 
     //chekc if data is of type string or array
-    if(fileType == 'exported'){
+    if (fileType == 'exported') {
         try {
             JSON.parse(data);
         } catch (e) {
@@ -826,13 +796,13 @@ function importClean(data, fileType){
 
         farmsToClean = JSON.parse(data);
 
-        if(FARMS == 0){
+        if (FARMS == 0) {
             localStorage.setItem("farms", JSON.stringify(farmsToClean));
             window.location.reload();
         }
 
-        for(var i = farmsToClean.length -1; i >= 0 ; i--){
-            if(findFarm(farmsToClean[i].number, FARMS) != null){
+        for (var i = farmsToClean.length - 1; i >= 0; i--) {
+            if (findFarm(farmsToClean[i].number, FARMS) != null) {
                 sameFarms.push(farmsToClean[i]);
                 farmsToClean.splice(i, 1);
             }
@@ -847,29 +817,29 @@ function importClean(data, fileType){
         localStorage.setItem("farms", JSON.stringify(FARMS));
         window.location.reload();
 
-    }else{
+    } else {
         data.split(/\r?\n/).forEach(link => {
             var match = regex.exec(link);
-            if(match != null){
+            if (match != null) {
                 let farm = {
                     number: match[0],
-                    crop: crops[0],
+                    crop: CROPS[0],
                     timer: null,
                     startTime: null,
-                }  
-                
+                }
+
                 farmsToClean.push(farm);
             }
-            
+
         })
 
-        if(FARMS == 0){
+        if (FARMS == 0) {
             localStorage.setItem("farms", JSON.stringify(farmsToClean));
             window.location.reload();
         }
 
-        for(var i = farmsToClean.length -1; i >= 0 ; i--){
-            if(findFarm(farmsToClean[i].number, FARMS) != null){
+        for (var i = farmsToClean.length - 1; i >= 0; i--) {
+            if (findFarm(farmsToClean[i].number, FARMS) != null) {
                 sameFarms.push(farmsToClean[i]);
                 farmsToClean.splice(i, 1);
             }
@@ -882,20 +852,39 @@ function importClean(data, fileType){
 
 }
 
+// ************************************** //
+//              ERROR HANDLING            //
+// ************************************** //
 
-function showError(errorMessage, errorCode){
+function showError(errorMessage, errorCode) {
     errorDom.querySelector('p').innerHTML = errorMessage;
 
-    if(errorCode == 0){
+    if (errorCode == 0) {
         errorDom.classList.add('show', 'error');
-    }else if(errorCode == 1){
+    } else if (errorCode == 1) {
         errorDom.classList.add('show', 'warning');
-    }else{
+    } else {
 
         errorDom.classList.add('show', 'error');
     }
 
-    setTimeout(function(){
+    setTimeout(function () {
         errorDom.classList.remove('show', 'error', 'warning');
     }, 5000)
+}
+
+// ************************************** //
+//             EDIT FORM PREP             //
+// ************************************** //
+
+function cleanEditForm(form) {
+    let textarea = form.querySelector('textarea');
+    let colorPickerButton = form.querySelector('.add-color');
+    let colorParent = colorPickerButton.parentElement;
+    let colorInputDom = colorParent.querySelector('input');
+
+    textarea.value = '';
+
+    colorParent.classList.remove('show')
+    colorInputDom.setAttribute('data-color', null)
 }

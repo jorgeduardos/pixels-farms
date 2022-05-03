@@ -1,0 +1,52 @@
+div.mass-edit-container.mass-edit-ui{
+    padding: 1rem 4rem;
+    position: sticky;
+    top: 0rem;
+    background-color: rgb(216, 216, 216);
+    z-index: 2;
+
+    >div{
+        display: flex;
+        align-items: center;
+    }
+
+    button{
+        font-size: 1rem;
+    }
+
+    #select-all-farms{
+        margin-right: 1rem;
+
+    }
+
+    .extra-buttons{
+        display: none;
+
+        &.show{
+            display: inline-flex;
+        }
+
+        button{
+            margin-right: 1rem;
+        }
+    }
+
+    .links{
+        justify-content: flex-end;
+        align-items: center;
+        flex-grow: 1;
+        display: flex;
+
+        a{
+            text-decoration: none;
+            color: #4E1E86;
+        }
+
+        span{
+            color: #4E1E86;
+            margin:  0 1rem;
+        }
+    }
+
+
+}

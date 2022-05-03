@@ -2,50 +2,16 @@
 
 {% block content %}
 
-{% include './_components/organisms/pop-up.html' with {content: 'edit-form'} %}
 
+{% include './_components/organisms/pop-up.html' with {id: 'edit-pop-up', content: 'edit-form', type: 'edit'} %}
+{% include './_components/organisms/pop-up.html' with {id: 'mass-edit-pop-up', content: 'mass-edit-form', type: 'edit'} %}
+{% include './_components/organisms/pop-up.html' with {id: 'import-pop-up', content: 'import-form', type: 'import'} %}
 
-<div id="import-pop-up" class="pop-up">
-    <div class="screen"></div>
-    <div class="container">
-        <button id="close-import-pop" class="pop-close">&#x2715;</button>
-        {% include './_components/molecules/import-form.html'%}
-    </div>
-</div>
+<h1>Pixels-<span>Farms</span></h1>
 
-<h1>
-    {#<img src="/dist/images/pixels-logo.png" alt="Pixels">#}Pixels-<span>Farms</span>
-</h1>
+{% include './_components/organisms/farm-counter.html' %}
 
-<div class="farm-count-container">
-    <h3>
-        Total
-        <span id="farm-count">0</span>
-    </h3>
-    <h3>
-        Ready
-        <span id="farms-ready">0</span>
-    </h3>
-    <h3>
-        Started
-        <span id="farms-started">0</span>
-    </h3>
-</div>
-<div class="mass-edit-container">
-    <div>
-        <button id="select-all-farms" disabled>Select All</button>
-        <div class="extra-buttons">
-            <button id="delete-all-farms">Delete</button>
-            <button id="edit-all-farms">Edit</button>
-            <button id="start-all-farms">Start</button>
-        </div>
-        <div class="links">
-            <a class="general-store" target="_blank" href="https://play.pixels.online/generalstore">General Store</a>
-            <span>|</span>
-            <a target="_blank" href="/w3g">W3G Farms</a>
-        </div>
-    </div>
-</div>
+{% include './_components/organisms/mass-edit-ui.html' %}
 
 <div class="global-container">
     <div class="farm-list">
@@ -87,9 +53,10 @@
         <div class="fix">
             <div>
                 {% include './_components/molecules/add-farm.html' %}
+
                 <div class="export-buttons">
                     <button id="export-farms">Export Farms</button>
-                    <button id="import-farms">Import Farms</button>
+                    <button class="open-pop" data-pop="import-pop-up">Import Farms</button>
                 </div>
                 <button id="reset">Reset Farms</button>
             </div>
