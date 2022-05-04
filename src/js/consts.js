@@ -1,6 +1,7 @@
 export const farmListDom = document.querySelector('.farm-list');
 export const farmInput = document.getElementById('farmNumber');
 export const editPopUpDom = document.getElementById('edit-pop-up');
+export const massEditPopUpDom = document.getElementById('mass-edit-pop-up');
 export const importPopUpDom = document.getElementById('import-pop-up');
 export const selectAllFarmsDom = document.getElementById('select-all-farms');
 export const errorDom = document.getElementById('error-handling');

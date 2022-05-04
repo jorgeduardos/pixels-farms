@@ -11,8 +11,8 @@ const compileSeparateFiles = function (dir) {
 }
 
 // // PERFORMANCE JS
-compileSeparateFiles('./src/js/utils').forEach(function (filepath) {
-  mix.js('./src/js/utils/' + filepath, 'js')
+compileSeparateFiles('./src/js/vendors').forEach(function (filepath) {
+  mix.js('./src/js/vendors/' + filepath, 'js')
     .setPublicPath('./web/assets/')
 });
 

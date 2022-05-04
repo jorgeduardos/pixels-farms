@@ -1,25 +1,20 @@
 import Sortable from 'sortablejs';
 import { arrayMoveMutable } from 'array-move';
-import { startFarm } from './farm-events';
-import CROPS from './crops';
-import { farmListDom, farmInput, editPopUpDom, importPopUpDom, selectAllFarmsDom, 
+import {
+    farmListDom, farmInput, editPopUpDom, massEditPopUpDom, importPopUpDom, selectAllFarmsDom,
     errorDom, addColorInputDom, editColorInputDom, regex,
     farmCountDom, farmReadytDom, farmStartedDom
 } from './consts';
+import CROPS from './crops';
+import { openPop, closePop, updateFarmCount, clearCheckBoxes, download, importClean, cleanEditForm } from './misc'
+import { startFarm, deleteFarm, editSingleFarmForm, selectFarm } from './farm-events';
+import {
+    openFarm, editFarm, createFarmNode, updateFarmDom, findFarm,
+    continueFarmTimer, addFarm
+} from './farm-helpers';
 
+// is in dev mode to print console logs
 var dev = false;
-// const farmListDom = document.querySelector('.farm-list');
-// const farmInput = document.getElementById('farmNumber');
-// const editPopUpDom = document.getElementById('edit-pop-up');
-// const importPopUpDom = document.getElementById('import-pop-up');
-// const selectAllFarmsDom = document.getElementById('select-all-farms');
-// const errorDom = document.getElementById('error-handling');
-// const addColorInputDom = document.getElementById('farm-color');
-// const editColorInputDom = document.getElementById('farm-color-edit');
-// const regex = /(?<=farm)[^/\s]*/i;
-// const farmCountDom = document.getElementById('farm-count');
-// const farmReadytDom = document.getElementById('farms-ready');
-// const farmStartedDom = document.getElementById('farms-started');
 
 var storedFarms = JSON.parse(localStorage.getItem("farms"));
 var FARMS = [];
@@ -78,7 +73,7 @@ var sortable = new Sortable(farmListDom, {
 });
 
 // ************************************** //
-//             ADD FARM  FORM             //
+//             ADD FARM FORM             //
 // ************************************** //
 const addForm = document.getElementById('add-farm');
 addForm.addEventListener('submit', function (e) {
@@ -92,7 +87,7 @@ addForm.addEventListener('submit', function (e) {
 
     // console.log(addColorInputDom.getAttribute('data-color'))
     formProps.farmColor = addColorInputDom.getAttribute('data-color');
-    addFarm(formProps);
+    addFarm(formProps, FARMS, dev);
 })
 
 
@@ -127,59 +122,6 @@ document.querySelectorAll('.farm-color-input').forEach(el => {
 })
 
 
-// ************************************** //
-//             ADD FARM                   //
-// ************************************** //
-function addFarm(form) {
-
-    let crop = CROPS[form.type]
-
-    var match = regex.exec(form.farmNumber);
-    let number = match == null ? form.farmNumber : match[0];
-
-    //errOr handling
-    if (isNaN(number * 1)) {
-        return showError('Invalid Farm');
-    } else if ((number * 1) > 5000 || (number * 1) < 0) {
-        return showError('Invalid Farm');
-    } else if (FARMS.length > 0 && findFarm(number, FARMS) != null) {
-        return showError('Farm already exists');
-    }
-
-    //regex url
-
-    let farm = {
-        number: number,
-        crop: crop,
-        timer: null,
-        startTime: null,
-        info: {
-            color: form.farmColor == 'null' ? null : form.farmColor,
-            notes: form.farmNotes
-        }
-    }
-
-    FARMS.push(farm);
-    updateFarmCount(FARMS);
-
-    //reset form fields
-    document.getElementById('farmNumber').value = ''
-    document.getElementById('farm-notes').value = ''
-    document.getElementById('farmNumber').focus
-
-    if (FARMS.length > 1) {
-        selectAllFarmsDom.disabled = false;
-    }
-
-    localStorage.setItem("farms", JSON.stringify(FARMS));
-
-    if (dev) {
-        console.log('farms after add: ', FARMS);
-    }
-
-    //create dom element and add it
-    farmListDom.appendChild(createFarmNode(farm));
-}
 
 // ************************************** //
 //          FARM EVENT LISTENERS          //
@@ -189,33 +131,13 @@ farmListDom.addEventListener('click', function (e) {
     //start farm
     if (e.target.classList.contains('start-farm')) {
 
-       //start farm from farm-events.js
-       startFarm(e.target, FARMS)
+        //start farm from farm-events.js
+        startFarm(e.target, FARMS)
 
     } else if (e.target.classList.contains('delete-farm')) {
 
-        let farmDom = e.target.parentElement.parentElement;
-        let farm = findFarm(farmDom.id, FARMS);
-
-        if (dev) {
-            console.log('deleting farms ...')
-            console.log('farm node to be deleted: ', farmDom);
-            console.log('farm to be deleted: ', farm)
-        }
-
-        FARMS.splice(farm.i, 1);
-
-        if (FARMS.length == 0) {
-            selectAllFarmsDom.disabled = true;
-        }
-
-        if (dev) {
-            console.log('farms after delete: ', FARMS);
-        }
-
-        localStorage.setItem("farms", JSON.stringify(FARMS));
-        farmDom.remove();
-        updateFarmCount(FARMS);
+        //delete frm from farm-events.js
+        deleteFarm(e.target, FARMS, dev)
 
     } else if (e.target.classList.contains('open-farm')) {
 
@@ -224,235 +146,17 @@ farmListDom.addEventListener('click', function (e) {
 
     } else if (e.target.classList.contains('edit-farm')) {
 
-        let farmDom = e.target.parentElement.parentElement;
-        let farm = findFarm(farmDom.id, FARMS).farm;
-
-        let h2 = editPopUpDom.querySelector('h2');
-        let textarea = editPopUpDom.querySelector('textarea');
-        let colorPickerButton = editPopUpDom.querySelector('.add-color');
-        let colorParent = colorPickerButton.parentElement;
-        let colorInputDom = colorParent.querySelector('input');
-
-        h2.innerHTML = `Edit Farm ${farmDom.id}`;
-        h2.setAttribute('data-farm', farmDom.id);
-        h2.setAttribute('data-objtype', 'obj');
-
-        textarea.value = farm.info.notes;
-
-        if (farm.info.color != null) {
-            colorParent.classList.add('show')
-            // colorInputDom.click();
-            colorInputDom.value = farm.info.color
-            colorInputDom.setAttribute('data-color', colorInputDom.value)
-        } else {
-            colorParent.classList.remove('show')
-            colorInputDom.setAttribute('data-color', null)
-        }
-
-        openPop(editPopUpDom)
+        editSingleFarmForm(e.target, FARMS);
 
     } else if (e.target.classList.contains('select-farm')) {
 
-        let farmDom = e.target.parentElement;
-
-        if (e.target.checked == true) {
-            // add farm to FARMStoUpdate
-            let farm = findFarm(farmDom.id, FARMS);
-            FARMStoUpdate.push(farm.farm);
-
-            console.log('adding farm to FARMStoUpdate: ', FARMStoUpdate)
-
-        } else {
-            // remove farm from FARMStoUpdate
-            let farm = findFarm(farmDom.id, FARMStoUpdate);
-            FARMStoUpdate.splice(farm.i, 1);
-
-            console.log('removing farm to FARMStoUpdate: ', FARMStoUpdate)
-        }
-
-        if (FARMStoUpdate.length > 1) {
-            document.querySelector('.mass-edit-container .extra-buttons').classList.add('show');
-        } else {
-            document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
-        }
+        selectFarm(e.target, FARMStoUpdate, FARMS, dev);
 
     }
 })
 
-// find farm in array, returns farm and index
-function findFarm(id, arr) {
-    let farm = null;
-    arr.forEach((item, index) => {
-        if (id == item.number) {
-            farm = {
-                farm: item,
-                i: index
-            }
-            return;
-        }
-    });
-    return farm;
-}
-
-//create dom element
-function createFarmNode(farm) {
-    var tag = document.createElement("div");
-    tag.classList.add('farm');
-    tag.setAttribute('id', farm.number);
-    tag.setAttribute('data-id', farm.number);
-
-    let cropName = farm.crop.name.toLowerCase();
-    let cropTimer;
-
-    let colorDom = farm.info.color == undefined || farm.info.color == null ? '' : `<div class="color" style="background-color: ${farm.info.color};"></div>`
-    let notesDom = farm.info.notes == undefined || farm.info.notes == '' ? '' : ` <div class="info"><svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="24px" height="24px">    <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"/></svg><div class="content"><p>${farm.info.notes}</p></div></div>`
-    // console.log(farm);
-
-    // if crop timer was started, use it
-
-    if (farm.startTime != undefined && farm.startTime != null) {
-        cropTimer = {
-            hours: '',
-            minutes: '',
-            seconds: ''
-        }
-
-    } else {
-        cropTimer = farm.crop.sproutTime;
-    }
-
-    tag.innerHTML = `<input type="checkbox" id="check-${farm.number}" name="select-farm" class="select-farm">
-        <label for="check-${farm.number}"><h4>Farm ${farm.number}</h4></label>
-        <div class="crop-type ${cropName}"></div>
-        <div class="timer">${cropTimer.hours == 0 ? '00' : cropTimer.hours}:${cropTimer.minutes == 0 ? '00' : cropTimer.minutes}:${cropTimer.seconds == 0 ? '00' : cropTimer.seconds}</div>
-
-        <div class="notes">
-            ${colorDom}
-            ${notesDom}
-        </div>
-
-        <div class="ui">
-            <button class="delete-farm btn-icon" title="Delete Farm">
-                <img src="/assets/images/icons/trash.png" alt="Delete Farm">
-            </button>
-            <button class="edit-farm btn-icon" title="Edit Farm">
-                <img src="/assets/images/icons/edit.png" alt="Edit Farm">
-            </button>
-            <button class="open-farm btn-icon" title="Open Farm">
-                <img src="/assets/images/icons/link.png" alt="Open Farm">
-            </button>
-            <button class="start-farm btn-icon" title="Start Farm">
-                <img src="/assets/images/icons/stopwatch.png" alt="Start Farm">
-            </button>
-        </div>`;
-
-    return tag;
-
-}
-
-function openFarm(farmNumber) {
-    window.open(`https://play.pixels.online/farm${farmNumber}`, "_blank");
-}
-
-function continueFarmTimer(farm) {
-    let farmDom = document.getElementById(farm.number);
-    let timerDom = farmDom.querySelector('.timer');
-    let now = Date();
-
-    let farmTimer = timerCalculate(now, farm.startTime, farm.crop.sproutTime);
-
-    //saving timer pointer in farm
-    if (
-        (Math.sign(farmTimer.hours) == 0 || Math.sign(farmTimer.hours) == -1) &&
-        (Math.sign(farmTimer.minutes) == 0 || Math.sign(farmTimer.minutes) == -1) &&
-        (Math.sign(farmTimer.seconds) == 0 || Math.sign(farmTimer.seconds) == -1)
-    ) {
-        farmDom.classList.add('completed');
-        timerDom.innerHTML = '00:00:00';
-        return
-    }
-
-    let timer = new easytimer.Timer();
-    farm.timer = timer;
-    farmDom.querySelector('.start-farm').disabled = true;
-
-    // timer.start({ countdown: true, startValues: {seconds: 10} });
-    timer.start({ countdown: true, startValues: farmTimer });
-
-    timer.addEventListener('secondsUpdated', function (e) {
-        timerDom.innerHTML = timer.getTimeValues().toString();
-    });
-
-    farmDom.classList.add('started');
-
-    timer.addEventListener('targetAchieved', function (e) {
-        farmDom.querySelector('.start-farm').disabled = false;
-        farmDom.classList.add('completed');
-        farmDom.classList.remove('started');
-    });
-}
-
-//set farm counts
-function updateFarmCount(arr) {
-    let farmCount = arr.length;
-    let farmsDom = farmListDom.querySelectorAll('.farm');
-    let readyFarms = 0;
-    let startedFarms = 0;
-
-    farmCountDom.innerHTML = farmCount;
-
-    farmsDom.forEach(farm => {
-        if (farm.classList.contains('started')) {
-            startedFarms++;
-        } else if (farm.classList.contains('completed')) {
-            readyFarms++;
-        }
-    })
-
-    // console.log(readyFarms);
-
-    farmReadytDom.innerHTML = readyFarms;
-    farmStartedDom.innerHTML = startedFarms;
-
-}
 
 
-function timerCalculate(fDate, oDate, sproutTimer) {
-    // get total seconds between the times
-    let futureDate = new Date(fDate);
-    let oldDate = new Date(oDate);
-
-    var delta = Math.abs(futureDate - oldDate) / 1000;
-
-    // calculate (and subtract) whole hours
-    var hours = Math.floor(delta / 3600) % 24;
-    delta -= hours * 3600;
-
-    // calculate (and subtract) whole minutes
-    var minutes = Math.floor(delta / 60) % 60;
-    delta -= minutes * 60;
-
-    // what's left is seconds
-    var seconds = delta % 60;  // in theory the modulus is not required
-
-    //create date with sprout timer
-    var sproutDate = new Date(1994, 4, 20, sproutTimer.hours, sproutTimer.minutes, sproutTimer.seconds, 0);
-    //create date with time that has passes since start
-    var startDate = new Date(1994, 4, 20, hours, minutes, seconds, 0);
-
-    var newTimer = sproutDate.getTime() - startDate.getTime();
-
-    var nseconds = ~~(newTimer / 1000);
-    var nhour = ~~(nseconds / 60 / 60);
-    var nmin = ~~((nseconds - 60 * 60 * nhour) / 60);
-    nseconds = ~~(((nseconds - 60 * 60 * nhour) - nmin * 60));
-
-    return {
-        hours: nhour,
-        minutes: nmin,
-        seconds: nseconds
-    }
-}
 
 // ************************************** //
 //               POP UPS                  //
@@ -485,8 +189,8 @@ openPopButtons.forEach(element => {
     let popUpType = popUp.getAttribute('data-type');
 
     element.addEventListener('click', function () {
-        console.log(popUpType)
-        if(popUpType == 'edit'){
+        // console.log(popUpType)
+        if (popUpType == 'edit') {
             cleanEditForm(popUp.querySelector('form'))
         }
         openPop(popUp);
@@ -494,37 +198,59 @@ openPopButtons.forEach(element => {
 })
 
 
+// ************************************** //
+//            EDIT FARM FORM              //
+// ************************************** //
+document.querySelectorAll('.edit-farms').forEach(form => {
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        let formData = new FormData(e.target);
+        let formProps = Object.fromEntries(formData);
 
-document.getElementById('edit-farm-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    let formData = new FormData(e.target);
-    let formProps = Object.fromEntries(formData);
-    // let crop = crops[formProps.type];
+        formProps.farmColor = editColorInputDom.getAttribute('data-color');
 
-    formProps.farmColor = editColorInputDom.getAttribute('data-color');
+        let typeOfEdit = formProps.objtype;
 
-    let typeOfEdit = editPopUpDom.querySelector('h2').getAttribute('data-objtype');
+        if (dev) {
+            console.log('type of Edit: ', typeOfEdit)
+        }
 
-    if (typeOfEdit == 'obj') {
 
-        let farmId = editPopUpDom.querySelector('h2').getAttribute('data-farm');
-        let farm = findFarm(farmId, FARMS).farm;
-        // editFarm(farm, crop);
-        editFarm(farm, formProps);
+        if (typeOfEdit == 'obj') {
 
-    } else if (typeOfEdit == 'arr') {
+            let farmId = formProps.farm;
+            let farm = findFarm(farmId, FARMS).farm;
 
-        editFarm(FARMStoUpdate, formProps);
-        let checkBoxes = farmListDom.querySelectorAll('.select-farm');
-        let selectButton = document.getElementById('select-all-farms');
+            updateFarmDom(farm, formProps, FARMS);
 
-        clearCheckBoxes(checkBoxes, selectButton);
-    }
+            closePop(editPopUpDom);
 
+        } else if (typeOfEdit == 'arr') {
+
+            let farmArr = FARMStoUpdate;
+
+            farmArr.forEach(farm => {
+                updateFarmDom(farm, formProps, FARMS);
+            });
+
+            FARMStoUpdate = [];
+
+            let checkBoxes = farmListDom.querySelectorAll('.select-farm');
+            let selectButton = document.getElementById('select-all-farms');
+
+            clearCheckBoxes(checkBoxes, selectButton);
+
+            closePop(massEditPopUpDom);
+        }
+
+    })
 })
 
 
-// mass deleting
+
+// ************************************** //
+//             MASS DELETING              //
+// ************************************** //
 document.getElementById('delete-all-farms').addEventListener('click', function (e) {
 
     for (let i = 0; i < FARMStoUpdate.length; i++) {
@@ -557,7 +283,9 @@ document.getElementById('delete-all-farms').addEventListener('click', function (
 })
 
 
-//mass starting
+// ************************************** //
+//             MASS STARTING              //
+// ************************************** //
 document.getElementById('start-all-farms').addEventListener('click', function (e) {
 
     FARMStoUpdate.forEach(farm => {
@@ -606,7 +334,9 @@ document.getElementById('start-all-farms').addEventListener('click', function (e
     FARMStoUpdate = [];
 })
 
-// mass select
+// ************************************** //
+//             MASS SELECT                //
+// ************************************** //
 selectAllFarmsDom.addEventListener('click', function (e) {
     let button = e.target;
     let checkBoxes = farmListDom.querySelectorAll('.select-farm');
@@ -634,77 +364,9 @@ selectAllFarmsDom.addEventListener('click', function (e) {
 
 })
 
-//edit farm function
-function editFarm(obj, data) {
-
-    if (Array.isArray(obj)) {
-        console.log('type array');
-        let farmArr = obj;
-
-        farmArr.forEach(farm => {
-            updateFarmDom(farm, data);
-        });
-
-        FARMStoUpdate = [];
-
-    } else {
-        // console.log(data)
-        updateFarmDom(obj, data);
-    }
-    closePop(editPopUpDom);
-}
-
-function updateFarmDom(farmToUpdate, data) {
-    let farm = farmToUpdate;
-    let prevCrop = farm.crop;
-    let farmColor = data.farmColor == 'null' ? null : data.farmColor;
-    let farmDom = document.getElementById(farm.number);
-    let nextDomE = farmDom.nextElementSibling;
-
-
-    //update farm in the arr (type and startTimer)
-    if (data.type != undefined) {
-        farm.crop = CROPS[data.type];
-        let cropTimer = farm.crop.sproutTime;
-        farm.startTime = null;
-        farm.timer = null;
-    }
-
-    farm.info.color = farmColor == null ? farm.info.color : farmColor;
-    farm.info.notes = data.farmNotes;
-
-
-    //save in local localStorage
-    localStorage.setItem("farms", JSON.stringify(FARMS));
-
-    //build dom tree
-    farmDom.remove();
-    farmListDom.insertBefore(createFarmNode(farm), nextDomE)
-
-    // farmDom.classList.remove('completed');
-    // farmDom.querySelector('.start-farm').disabled = false;
-    // farmDom.querySelector('.crop-type').classList.remove(prevCrop.name.toLowerCase());
-    // farmDom.querySelector('.crop-type').classList.add(farm.crop.name.toLowerCase());
-    // farmDom.querySelector('.timer').innerHTML = `${cropTimer.hours == 0 ? '00' : cropTimer.hours}:${cropTimer.minutes == 0 ? '00' : cropTimer.minutes}:${cropTimer.seconds == 0 ? '00' : cropTimer.seconds}`
-}
-
-function clearCheckBoxes(arr, selectButton) {
-    arr.forEach(element => {
-        element.checked = false
-    });
-
-    document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
-    selectButton.classList.remove('all-selected');
-    selectButton.innerHTML = 'Select All';
-}
-
-function handleTimerStart(timerDom, timer) {
-    return function () {
-        timerDom.innerHTML = timer.getTimeValues().toString();
-    }
-}
-
-//export import farms
+// ************************************** //
+//             EXPORT FARMS               //
+// ************************************** //
 document.getElementById('export-farms').addEventListener('click', function (e) {
     if (FARMS.length > 0) {
         let farmsToExport = localStorage.getItem("farms");
@@ -713,12 +375,9 @@ document.getElementById('export-farms').addEventListener('click', function (e) {
 })
 
 
-// document.getElementById('import-farms').addEventListener('click', function (e) {
-//     openPop(importPopUpDom);
-// })
-
-
-//mass import farm type
+// ************************************** //
+//             MASS IMPORT FARMS          //
+// ************************************** //
 var examplePlaceholder = '[{"number":"3084","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null},{"number":"3223","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null}';
 var examplePlaceholder2 = 'https://play.pixels.online/farm1688\nhttps://play.pixels.online/farm2766\nhttps://play.pixels.online/farm2130\nhttps://play.pixels.online/farm3535';
 var importTextArea = document.getElementById('import-data');
@@ -746,7 +405,9 @@ document.getElementById('import-form').addEventListener('submit', function (e) {
     // window.location.reload();
 })
 
-//reset farms
+// ************************************** //
+//             RESET FARMS                //
+// ************************************** //
 document.getElementById('reset').addEventListener('click', function (e) {
 
     if (FARMS.length > 0) {
@@ -760,97 +421,6 @@ document.getElementById('reset').addEventListener('click', function (e) {
         window.location.reload();
     }
 })
-
-function download(filename, text) {
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
-}
-
-function openPop(container) {
-    container.classList.add('open');
-}
-
-function closePop(container) {
-    container.classList.remove('open');
-}
-
-function importClean(data, fileType) {
-    let farmsToClean = [];
-    let sameFarms = [];
-
-    //chekc if data is of type string or array
-    if (fileType == 'exported') {
-        try {
-            JSON.parse(data);
-        } catch (e) {
-            return showError('Invalid data');
-        }
-
-        farmsToClean = JSON.parse(data);
-
-        if (FARMS == 0) {
-            localStorage.setItem("farms", JSON.stringify(farmsToClean));
-            window.location.reload();
-        }
-
-        for (var i = farmsToClean.length - 1; i >= 0; i--) {
-            if (findFarm(farmsToClean[i].number, FARMS) != null) {
-                sameFarms.push(farmsToClean[i]);
-                farmsToClean.splice(i, 1);
-            }
-        }
-
-        FARMS = FARMS.concat(farmsToClean)
-
-        // if(sameFarms.length > 0){
-        //     showError('Duplicated farms were ommited', 1);
-        // }
-
-        localStorage.setItem("farms", JSON.stringify(FARMS));
-        window.location.reload();
-
-    } else {
-        data.split(/\r?\n/).forEach(link => {
-            var match = regex.exec(link);
-            if (match != null) {
-                let farm = {
-                    number: match[0],
-                    crop: CROPS[0],
-                    timer: null,
-                    startTime: null,
-                }
-
-                farmsToClean.push(farm);
-            }
-
-        })
-
-        if (FARMS == 0) {
-            localStorage.setItem("farms", JSON.stringify(farmsToClean));
-            window.location.reload();
-        }
-
-        for (var i = farmsToClean.length - 1; i >= 0; i--) {
-            if (findFarm(farmsToClean[i].number, FARMS) != null) {
-                sameFarms.push(farmsToClean[i]);
-                farmsToClean.splice(i, 1);
-            }
-        }
-
-        FARMS = FARMS.concat(farmsToClean)
-        localStorage.setItem("farms", JSON.stringify(FARMS));
-        window.location.reload();
-    }
-
-}
 
 // ************************************** //
 //              ERROR HANDLING            //
@@ -873,18 +443,3 @@ function showError(errorMessage, errorCode) {
     }, 5000)
 }
 
-// ************************************** //
-//             EDIT FORM PREP             //
-// ************************************** //
-
-function cleanEditForm(form) {
-    let textarea = form.querySelector('textarea');
-    let colorPickerButton = form.querySelector('.add-color');
-    let colorParent = colorPickerButton.parentElement;
-    let colorInputDom = colorParent.querySelector('input');
-
-    textarea.value = '';
-
-    colorParent.classList.remove('show')
-    colorInputDom.setAttribute('data-color', null)
-}
