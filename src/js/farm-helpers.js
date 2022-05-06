@@ -23,6 +23,7 @@ export function openFarm(farmNumber) {
 }
 
 export function updateFarmDom(farmToUpdate, data, farms) {
+
     let farm = farmToUpdate;
     let prevCrop = farm.crop;
     let farmColor = data.farmColor == 'null' ? null : data.farmColor;

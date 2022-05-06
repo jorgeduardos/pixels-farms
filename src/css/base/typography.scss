@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+    font-family: $sans-serif;
+    color: $black;
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 1;
+}
+
+h1, .h1 {
+    @include fontsize(3rem, 3.5rem, 4rem);
+}
+h2, .h2 {
+    @include fontsize(2rem, 3rem, 4rem);
+}
+h3, .h3 {
+    @include fontsize(2.4rem, 2.8rem, 3.2rem);
+}
+h4, .h4  {
+    @include fontsize(2rem, 2.2rem, 2.4rem);
+}
+h5, .h5 {
+    @include fontsize(1.6rem, 2rem, 2.4rem);
+}
+h6, .h6 {
+    @include fontsize(1.4rem, 1.7rem, 2rem);
+}
+
+ol, ul, li {
+    @include fontsize(1.6rem, 1.7rem, 2rem);
+    font-weight: 500;
+}
+
+/**
+ * ACCENTS
+ */
+p {
+    @include fontsize(16rem, 16rem, 16rem);
+}

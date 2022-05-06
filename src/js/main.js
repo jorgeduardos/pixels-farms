@@ -2,7 +2,7 @@ import Sortable from 'sortablejs';
 import { arrayMoveMutable } from 'array-move';
 import {
     farmListDom, farmInput, editPopUpDom, massEditPopUpDom, importPopUpDom, selectAllFarmsDom,
-    errorDom, addColorInputDom, editColorInputDom, regex,
+    errorDom, addColorInputDom, regex,
     farmCountDom, farmReadytDom, farmStartedDom
 } from './consts';
 import CROPS from './crops';
@@ -109,7 +109,7 @@ document.querySelectorAll('.add-color').forEach(el => {
             colorInputDom.setAttribute('data-color', colorInputDom.value)
         }
 
-        // console.log(colorInputDom.getAttribute('data-color'))
+        console.log(colorInputDom.getAttribute('data-color'))
     })
 })
 
@@ -117,7 +117,7 @@ document.querySelectorAll('.farm-color-input').forEach(el => {
     el.addEventListener('change', (e) => {
         let imput = e.target;
         imput.setAttribute('data-color', imput.value)
-        // console.log(imput.getAttribute('data-color'))
+        console.log(imput.getAttribute('data-color'))
     })
 })
 
@@ -206,8 +206,9 @@ document.querySelectorAll('.edit-farms').forEach(form => {
         e.preventDefault();
         let formData = new FormData(e.target);
         let formProps = Object.fromEntries(formData);
+        let colorInput = e.target.querySelector('input[type=color]')
 
-        formProps.farmColor = editColorInputDom.getAttribute('data-color');
+        formProps.farmColor = colorInput.getAttribute('data-color');
 
         let typeOfEdit = formProps.objtype;
 

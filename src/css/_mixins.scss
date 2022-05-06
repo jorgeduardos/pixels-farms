@@ -1,0 +1,12 @@
+/*-----------------------------------*\
+	TYPOGRAPHY
+\*-----------------------------------*/
+@mixin fontsize($fsm, $fst, $fsd){
+    font-size: $fsm;
+    @media screen and (min-width: $tablet-BP){
+        font-size: $fst; 
+    }
+    @media screen and (min-width: $desktop-BP){
+        font-size: $fsd; 
+    }
+}
