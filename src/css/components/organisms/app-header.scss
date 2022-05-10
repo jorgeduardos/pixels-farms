@@ -1,0 +1,29 @@
+div.app-header{
+
+    >div{
+        display: flex;
+        justify-content: space-between;
+
+        .buttons-container{
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    h1{
+        margin-bottom: 1rem;
+    }
+
+    p{
+        margin: 0;
+    }
+
+    .btn{
+
+        height: 50px;
+
+        &:nth-child(1){
+            margin-right: 2rem;
+        }
+    }
+}

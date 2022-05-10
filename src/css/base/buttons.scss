@@ -1,0 +1,42 @@
+.btn{
+    font-size: 1.6rem;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    line-height: 1;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    color: $black;
+    font-weight: 400;
+    cursor: pointer;
+    // position: relative;
+
+    &.fill-white{
+        background-color: $white;
+        border-radius: 8px;
+        box-shadow: 0px 12px 40px #cdd0d5;
+        transition: all 0.2s ease-in-out;
+
+        &:hover{
+            transform: scale(1.02);
+        }
+    }
+
+    &.arrow-right{
+        svg{
+            display: inline-block;
+            margin-left: 10px;
+            width: 7px;
+        }
+    }
+
+    &.img{
+        img{
+            width: 3rem;
+            display: inline-block;
+            margin-right: 1rem;
+        }
+    }
+}

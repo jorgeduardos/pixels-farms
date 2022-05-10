@@ -1,4 +1,4 @@
-dateModified: 1651807700
+dateModified: 1652152336
 email:
   fromEmail: jorgeduardo.1994@gmail.com
   fromName: 'Pixels Tools'
@@ -22,6 +22,7 @@ meta:
     bbcf1668-e766-4952-afde-576ee16361c7: app # app
     c1ace2f2-2cda-4869-84e0-42e69977523b: Home # Home
     cda801fc-47b5-488d-a1e1-066860ab8050: Crops # Crops
+    e741494a-9a5f-4b19-bb87-7992c9722c03: Globals # Globals
 plugins:
   minify:
     edition: standard
