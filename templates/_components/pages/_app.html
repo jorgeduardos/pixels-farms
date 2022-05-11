@@ -3,19 +3,20 @@
 {% block content %}
 
 <div class="home">
-    <nav class="grid-child nav">
-        <p>test</p>
-    </nav>
+
+    {% include './_components/organisms/main-nav.html' %}
 
     <div class="main-grid">
        {% include './_components/organisms/app-header.html' %}
     
         <div class="farms-container grid-child">
-    
+            {% include './_components/organisms/farms-ui.html' %}
+
+            {% include './_components/organisms/farms.html' %}
         </div>
     
         <div class="add-farm-container grid-child">
-    
+            
         </div>
     
         <div class="import-container grid-child">

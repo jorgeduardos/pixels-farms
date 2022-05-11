@@ -1,0 +1,55 @@
+div.farms{
+
+    >div{
+
+        display: flex;
+        align-items: center;
+        border-radius: 12px;
+
+        // >div{
+        //     margin-right: auto;
+        // }
+
+        &:nth-child(odd){
+            background-color: $gray;
+        }
+    }
+
+    div.farm-labels{
+        padding: 1rem;
+
+        p{
+            text-transform: uppercase;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+    }
+
+    div{
+
+        &.input{
+            margin-right: 3rem;
+        }
+
+        &.crop{
+            width: 40px;
+            margin-right: 3rem;
+        }
+
+        &.number{
+            width: 175px;
+            margin-right: auto;
+        }
+
+        &.time{
+            width: 125px;
+            margin-right: auto;
+        }
+
+        &.action{
+            width: 135px;
+            margin-right: auto;
+        }
+    }
+}

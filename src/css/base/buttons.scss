@@ -11,11 +11,11 @@
     color: $black;
     font-weight: 400;
     cursor: pointer;
+    border-radius: 8px;
     // position: relative;
 
     &.fill-white{
         background-color: $white;
-        border-radius: 8px;
         box-shadow: 0px 12px 40px #cdd0d5;
         transition: all 0.2s ease-in-out;
 
@@ -32,8 +32,15 @@
         }
     }
 
-    &.img{
-        img{
+    &.img-right{
+        img, svg:not(.arrow-svg){
+            width: 3rem;
+            display: inline-block;
+            margin-left: 1rem;
+        }
+    }
+    &.img-left{
+        img, svg:not(.arrow-svg){
             width: 3rem;
             display: inline-block;
             margin-right: 1rem;

@@ -1,0 +1,81 @@
+div.farms-ui {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom:  3rem;
+
+    .buttons-container {
+        display: flex;
+
+        >button {
+            margin-left: 2rem;
+            border-radius: 5px;
+        }
+    }
+
+    .bulk-actions {
+        box-shadow: 0 1px 5px 0px rgb(0 0 0 / 12%);
+        display: inline-flex;
+        border-radius: 5px;
+
+        button {
+            border: none;
+            padding: 1rem;
+            background-color: $white;
+            position: relative;
+
+            &:nth-child(1),
+            &:nth-child(2) {
+                &::after {
+                    position: absolute;
+                    height: 60%;
+                    width: 1px;
+                    content: '';
+                    background-color: $gray;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto 0;
+                }
+            }
+
+            &:hover {
+                img{
+                    transform: scale(1.05);
+                }
+            }
+
+            img {
+                width: 20px;
+                transition: all 0.2s ease-in-out;
+            }
+        }
+    }
+
+    button {
+
+        &:not(.bulk) {
+            box-shadow: 0 1px 5px 0px rgb(0 0 0 / 12%);
+        }
+
+        &.export-farms {
+            color: $blue;
+
+            img {
+                width: 20px;
+            }
+        }
+
+        &.filter-farms{
+            img{
+                width: 15px;
+            }
+        }
+
+        span {
+            color: #ABABAB;
+            display: inline-block;
+            margin-right: 3px;
+        }
+    }
+}
