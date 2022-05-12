@@ -28,6 +28,14 @@
 @import './base/typography.scss';
 @import './base/buttons.scss';
 
+//atoms
+@import './components/atoms/crop-radio.scss';
+@import './components/atoms/color-picker-radio.scss';
+
+//molecules
+@import './components/molecules/farm.scss';
+@import './components/molecules/add-farm.scss';
+
 //organisms
 @import './components/organisms/app-header.scss';
 @import './components/organisms/main-nav.scss';

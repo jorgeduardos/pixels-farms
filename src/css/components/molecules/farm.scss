@@ -2,17 +2,81 @@
     display: flex;
     align-items: center;
     width: 100%;
-    border-bottom: 1px solid #ccc;
-    margin: 0 auto;
-    grid-column: 1 / 2;
-    padding: 15px;
-    padding-left: 5px;
+    margin: 0.5rem auto;
+    padding: 1rem;
     position: relative;
     cursor: move;
-    font-size: 1.4rem;
 
     &.completed{
-        background-color: #92FC7A;
+        background-color: $green !important;
+
+        button:not(.start-farm){
+            color: $white;
+
+            &:hover{
+                background-color: #58D372;
+            }
+        }
+
+        .farm-header{
+
+            .color{
+                border-color: $white;
+            }
+
+            .notes{
+
+                .content{
+                    box-shadow: 0 12px 40px #11111154;
+                }
+
+                svg path{
+                    stroke: $white;
+                }
+            }
+
+            button svg path{
+                fill: $white;
+            }
+
+        }
+
+        .time{
+            .clock-svg{
+                path{
+                    fill: $white;
+                }
+            }
+
+            button{
+                svg{
+                    &.completed-svg{
+                        display: inline-block;
+                    }
+                    &.play-svg{
+                        display: none;
+                    }
+                }
+            }
+
+            p{
+                color: $white;
+            }
+        }
+
+        .action{
+            .edit-farm{
+                svg path{
+                    fill: $white;
+                }
+            }
+            .open-farm{
+                svg path{
+                    stroke: $white;
+                }
+            }
+        }
+
     }
 
     &.selected-drag{
@@ -20,29 +84,55 @@
         border-color: orange;
     }
 
-    .select-farm{
-        margin-right: 1.5rem;
+    // .select-farm{
+    //     margin-right: 1.5rem;
+    // }
+
+    .container{
+        display: inline-flex;
+        align-items: center;
     }
 
-    label{
+    p{
+        font-weight: 500;
+    }
+
+    button{
+        background-color: inherit;
+        padding: 0.8rem;
+        box-shadow: none;
+        border-radius: 50%;
+        border: none;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        font-size: 1.6rem;
         cursor: pointer;
+        transition: transform 0.2s ease-out;
+
+        svg, img{
+            width: 20px;
+        }
+
+        &:not(.start-farm){
+            border: 1px solid #F3F3F3;
+        }
+
+        &:hover{
+            transform: scale(1.03);
+        }
     }
 
-    h4 {
-        margin: 0;
-        margin-right: 1.5rem;
-    }
 
     .crop-type {
-        margin-right: 1.5rem;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
 
         &:after{
             content: '';
-            padding-bottom: 50px;
-            width: 50px;
+            padding-bottom: 40px;
+            width: 40px;
             display: block;
         }
 
@@ -57,103 +147,123 @@
         }
     }
 
-    .notes{
-        margin-left: 10px;
-        display: inline-flex;
-        align-items: center;
+    .farm-header{
+
+        >div{
+            display: inherit;
+            align-items: center;
+            width: 140px;
+        }
+
         .color{
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 1px solid black;
-            // background-color: #92FC7A;
-            margin-right: 10px;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #B0B7C3;
+            border-radius: 2px;
+            margin-right: 1rem;
         }
 
-        .info{
-            position: relative;
-            cursor: default;
-
-            &:hover{
-                .content{
-                    opacity: 1;
-                    visibility: visible;
-                }
-            }
-        }
-
-        .content{
-            position: absolute;
-            top: calc(100% + 5px);
-            background-color: rgb(189, 189, 189);
-            transform: translateX(-50%);
-            left: 50%;
-            max-width: 300px;
-            width: 300px;
-            padding: 2rem;
-            cursor: auto;
-            pointer-events: none;
-            box-shadow: 5px 5px 15px #868686;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease-in-out;
-            z-index: 10;
-
-            &:before{
-                content: '';
-                width: 0; 
-                height: 0; 
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                position: absolute;
-                bottom: 100%;
-                left: 50%;
-                transform: translateX(-50%);
-                border-bottom: 5px solid rgb(189, 189, 189);
-            }
-
-            p{
-                font-size: 1rem;
-                white-space: pre-wrap;
-                line-height: 1.3;
-                margin: 0;
-            }
-        }
-    }
-
-    .ui{
-        // margin-left: auto;
-        display: flex;
-        flex-grow: 1;
-
-        .btn-icon{
-            border: unset;
+        label{
             cursor: pointer;
-            padding: 0;
-            margin-left: 10px;
+        }
 
-            &:disabled{
-                pointer-events: none;
-                img{
-                    opacity: 0.3;
+        .notes{
+            margin: 0 1rem;
+            display: inline-flex;
+            align-items: center;
+    
+            svg{
+                width: 20px;
+            }
+    
+            .info{
+                position: relative;
+                cursor: default;
+    
+                &:hover{
+                    .content{
+                        opacity: 1;
+                        visibility: visible;
+                    }
                 }
             }
-
-            &.delete-farm {
-                margin-right: auto;
-            }
-
-            img{
-                transition: all 0.2s ease-in;
-                width: 30px;
+    
+            .content{
+                border-radius: 10px;
+                position: absolute;
+                top: calc(100% + 5px);
+                background-color: $white;
+                transform: translateX(-50%);
+                left: 50%;
+                max-width: 300px;
+                width: 300px;
+                padding: 2rem;
+                cursor: auto;
                 pointer-events: none;
-            }
-
-            &:hover{
-                img{
-                    transform: scale(1.05);
+                box-shadow: 0 12px 40px #cdd0d5;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease-in-out;
+                z-index: 10;
+    
+                &:before{
+                    content: '';
+                    width: 0; 
+                    height: 0; 
+                    border-left: 5px solid transparent;
+                    border-right: 5px solid transparent;
+                    position: absolute;
+                    bottom: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    border-bottom: 5px solid $white;
+                }
+    
+                p{
+                    font-size: 1rem;
+                    white-space: pre-wrap;
+                    line-height: 1.3;
+                    margin: 0;
                 }
             }
         }
     }
+
+    .time{
+        >svg{
+            margin-right: 0.5rem;
+            width: 30px;
+        }
+
+        .timer{
+            margin-right: 0.8rem;
+        }
+
+        .start-farm{
+            svg{
+                &.completed-svg{
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .action{
+
+        .edit-farm{
+            margin-right: 4px;
+        }
+
+        button.open-farm{
+            
+            border-radius: 32px;
+            margin-left: 5px;
+            font-weight: 300;
+
+            svg{
+                margin-right: 3px;
+            }
+        }
+    }
+
 }

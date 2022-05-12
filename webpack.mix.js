@@ -22,14 +22,14 @@ mix
     let getDirectories = (dir) => {
       return fs.readdirSync(dir);
     }
-    const cssFragmentsDirectories = getDirectories('./src/css/components');
-    if(cssFragmentsDirectories.length) {
-      cssFragmentsDirectories.forEach((directoryName) => {
-        compileSeparateFiles(`./src/css/components/${directoryName}`).forEach((filepath) => {
-          mix.sass(`./src/css/components/${directoryName}/${filepath}`, `css/components/${directoryName}`)
-        });
-      });
-    }
+    // const cssFragmentsDirectories = getDirectories('./src/css/components');
+    // if(cssFragmentsDirectories.length) {
+    //   cssFragmentsDirectories.forEach((directoryName) => {
+    //     compileSeparateFiles(`./src/css/components/${directoryName}`).forEach((filepath) => {
+    //       mix.sass(`./src/css/components/${directoryName}/${filepath}`, `css/components/${directoryName}`)
+    //     });
+    //   });
+    // }
   })
   .sass('./src/css/main.scss', 'css')
   .js('./src/js/main.js', 'js')

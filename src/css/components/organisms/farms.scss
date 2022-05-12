@@ -1,5 +1,8 @@
 div.farms{
 
+    // overflow: scroll;
+    // height: calc(100% - 7rem);
+
     >div{
 
         display: flex;
@@ -17,6 +20,10 @@ div.farms{
 
     div.farm-labels{
         padding: 1rem;
+        position: sticky;
+        top: 0rem;
+        z-index: 2;
+        box-shadow: 0px 2px 5px -2px rgb(0 0 0 / 12%);
 
         p{
             text-transform: uppercase;
@@ -35,6 +42,7 @@ div.farms{
         &.crop{
             width: 40px;
             margin-right: 3rem;
+            text-align: center;
         }
 
         &.number{
@@ -43,13 +51,13 @@ div.farms{
         }
 
         &.time{
-            width: 125px;
+            width: 140px;
             margin-right: auto;
         }
 
         &.action{
-            width: 135px;
-            margin-right: auto;
+            width: 185px;
+            // margin-right: auto;
         }
     }
 }

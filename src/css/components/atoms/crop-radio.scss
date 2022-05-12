@@ -1,0 +1,27 @@
+label.crop-radio{
+    img {
+        height: 50px;
+        width: 50px;
+        object-fit: contain;
+        object-position: center;
+    }
+
+    [type=radio] {
+        position: absolute;
+        opacity: 0;
+    }
+
+    [type=radio]+div {
+        cursor: pointer;
+        padding: 5px 10px;
+        border: 1px solid $gray;
+        border-radius: 8px;
+        // width: 82px;
+        // height: 67px;
+    }
+
+    [type=radio]:checked+div {
+        border: 1px solid #1B84FF;
+        background-color: #D1E6FF;
+    }
+}
