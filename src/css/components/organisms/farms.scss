@@ -13,51 +13,8 @@ div.farms{
         //     margin-right: auto;
         // }
 
-        &:nth-child(odd){
+        &:nth-child(even){
             background-color: $gray;
-        }
-    }
-
-    div.farm-labels{
-        padding: 1rem;
-        position: sticky;
-        top: 0rem;
-        z-index: 2;
-        box-shadow: 0px 2px 5px -2px rgb(0 0 0 / 12%);
-
-        p{
-            text-transform: uppercase;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: 1px;
-        }
-    }
-
-    div{
-
-        &.input{
-            margin-right: 3rem;
-        }
-
-        &.crop{
-            width: 40px;
-            margin-right: 3rem;
-            text-align: center;
-        }
-
-        &.number{
-            width: 175px;
-            margin-right: auto;
-        }
-
-        &.time{
-            width: 140px;
-            margin-right: auto;
-        }
-
-        &.action{
-            width: 185px;
-            // margin-right: auto;
         }
     }
 }

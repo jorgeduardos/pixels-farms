@@ -60,3 +60,7 @@ p {
 .is-rock{
     color: $rockGray;
 }
+
+input, textarea{
+    font-family: $sans-serif;
+}

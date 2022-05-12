@@ -11,33 +11,35 @@ div.form-container {
         flex-direction: column;
         padding: 3rem;
 
+        input, textarea {
+            width: 100%;
+            border-radius: 8px;
+            background-color: $gray;
+            box-shadow: none;
+            border: none;
+            padding: 1rem;
+
+            &::placeholder {
+                color: #C0C0C1;
+            }
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
         .section-label {
             margin: 0;
             color: #504F54;
-            margin-bottom: .8rem;
+            margin-bottom: 1rem;
         }
 
 
         .farm-number-container {
             font-weight: 300;
-            margin-bottom: 1.5rem;
-
-            input {
-                width: 100%;
-                border-radius: 8px;
-                background-color: $gray;
-                box-shadow: none;
-                border: none;
-                padding: 1rem;
-
-                &::placeholder {
-                    color: #C0C0C1;
-                }
-            }
         }
 
         .radios {
-            margin-bottom: 1.5rem;
             >div {
                 display: flex;
                 margin-top: 10px;
@@ -50,31 +52,87 @@ div.form-container {
             }
         }
 
-        .color-container{
-            margin-bottom: 1.5rem;
-            
-            >div{
+        .color-container {
+
+            >div {
                 display: flex;
                 width: 100%;
+                justify-content: space-between;
+
+                &:nth-child(1) {
+                    align-items: flex-start;
+
+                    button {
+                        border: none;
+                        padding: 0;
+                        color: red;
+                        background-color: $white;
+                        cursor: pointer;
+                    }
+                }
             }
 
-            .color-indicator{
-                margin-right: 2rem;
-                >div{
-                    width: 72px;
-                    height: 72px;
+            .color-indicator {
+                // margin-right: 3rem;
+
+                >div {
+                    width: 65px;
+                    height: 65px;
                     background-color: $black;
                     border-radius: 8px;
                 }
             }
 
-            .colors-grid{
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
+            .colors-grid {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                grid-template-rows: auto;
+                column-gap: 1.5rem;
+                row-gap: 8px;
 
-                label{
-                    margin-right: 1.5rem;
+                .extra-color {
+                    cursor: pointer;
+                    >div {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: #ebebeb;
+                        border-color: #ebebeb;
+                    }
+                    input{
+                        width: 1px;
+                    }
+                }
+            }
+        }
+
+        .notes-container{
+            textarea{
+                resize: none;
+            }
+        }
+
+        .submit-form-btn{
+            border: none;
+            background-color: $blue;
+            color: $white;
+            padding: 1.2rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease-out;
+
+            &:hover{
+                transform: scale(1.02);
+            }
+
+            svg {
+                margin-right: 1rem;
+                width: 10px;
+                path{
+                    fill: $white;
                 }
             }
         }

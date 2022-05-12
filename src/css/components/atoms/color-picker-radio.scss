@@ -1,13 +1,14 @@
 label.color-picker-radio{
     width: 30px;
     height: 30px;
+    cursor: pointer;
 
-    [type=radio] {
+    [type=radio] , [type=color]{
         position: absolute;
         opacity: 0;
     }
 
-    [type=radio]+div {
+    [type=radio]+div, [type=color]+div {
         cursor: pointer;
         width: 100%;
         height: 100%;
@@ -23,7 +24,7 @@ label.color-picker-radio{
         // height: 67px;
     }
 
-    [type=radio]:checked+div {
+    [type=radio]:checked+div, [type=color]:checked+div {
         border: 3px solid;
     }
 }
