@@ -1,40 +1,7 @@
-import { farmListDom, farmCountDom, farmReadytDom, farmStartedDom } from './consts';
+import { farmListDom, farmCountDom, farmReadytDom, farmStartedDom, errorDom } from './consts';
 
-export function timerCalculate(fDate, oDate, sproutTimer) {
-    // get total seconds between the times
-    let futureDate = new Date(fDate);
-    let oldDate = new Date(oDate);
-
-    var delta = Math.abs(futureDate - oldDate) / 1000;
-
-    // calculate (and subtract) whole hours
-    var hours = Math.floor(delta / 3600) % 24;
-    delta -= hours * 3600;
-
-    // calculate (and subtract) whole minutes
-    var minutes = Math.floor(delta / 60) % 60;
-    delta -= minutes * 60;
-
-    // what's left is seconds
-    var seconds = delta % 60;  // in theory the modulus is not required
-
-    //create date with sprout timer
-    var sproutDate = new Date(1994, 4, 20, sproutTimer.hours, sproutTimer.minutes, sproutTimer.seconds, 0);
-    //create date with time that has passes since start
-    var startDate = new Date(1994, 4, 20, hours, minutes, seconds, 0);
-
-    var newTimer = sproutDate.getTime() - startDate.getTime();
-
-    var nseconds = ~~(newTimer / 1000);
-    var nhour = ~~(nseconds / 60 / 60);
-    var nmin = ~~((nseconds - 60 * 60 * nhour) / 60);
-    nseconds = ~~(((nseconds - 60 * 60 * nhour) - nmin * 60));
-
-    return {
-        hours: nhour,
-        minutes: nmin,
-        seconds: nseconds
-    }
+export function secondsToHourFormat(seconds){
+    return new Date(seconds * 1000).toISOString().substr(11, 8).split(":");
 }
 
 export function handleTimerStart(timerDom, timer) {
@@ -74,14 +41,14 @@ export function updateFarmCount(arr) {
 
 }
 
-export function clearCheckBoxes(arr, selectButton) {
+export function clearCheckBoxes(arr) {
     arr.forEach(element => {
         element.checked = false
     });
 
-    document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
-    selectButton.classList.remove('all-selected');
-    selectButton.innerHTML = 'Select All';
+    // document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
+    // selectButton.classList.remove('all-selected');
+    // selectButton.innerHTML = 'Select All';
 }
 
 export function download(filename, text) {
@@ -168,13 +135,30 @@ export function importClean(data, fileType) {
 }
 
 export function cleanEditForm(form) {
-    let textarea = form.querySelector('textarea');
+    // let textarea = form.querySelector('textarea');
     let colorPickerButton = form.querySelector('.add-color');
-    let colorParent = colorPickerButton.parentElement;
-    let colorInputDom = colorParent.querySelector('input');
 
-    textarea.value = '';
+    let colorIndicator = form.querySelector('.color-indicator div');
+    let colorInputDom = form.querySelector('input[type=color]');
 
-    colorParent.classList.remove('show')
-    colorInputDom.setAttribute('data-color', null)
+    // textarea.value = '';
+
+    colorInputDom.setAttribute('data-color', '')
+}
+
+export function showError(errorMessage, errorCode) {
+    errorDom.querySelector('p').innerHTML = errorMessage;
+
+    if (errorCode == 0) {
+        errorDom.classList.add('show', 'error');
+    } else if (errorCode == 1) {
+        errorDom.classList.add('show', 'warning');
+    } else {
+
+        errorDom.classList.add('show', 'error');
+    }
+
+    setTimeout(function () {
+        errorDom.classList.remove('show', 'error', 'warning');
+    }, 5000)
 }

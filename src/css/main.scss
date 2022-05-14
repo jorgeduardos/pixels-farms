@@ -35,6 +35,11 @@
 //molecules
 @import './components/molecules/farm.scss';
 @import './components/molecules/add-farm.scss';
+@import './components/molecules/add-crop.scss';
+@import './components/molecules/add-color.scss';
+@import './components/molecules/add-notes.scss';
+@import './components/molecules/edit-form.scss';
+@import './components/molecules/error-handling.scss';
 
 //organisms
 @import './components/organisms/app-header.scss';
@@ -42,6 +47,7 @@
 @import './components/organisms/farms-ui.scss';
 @import './components/organisms/farms.scss';
 @import './components/organisms/import-farms.scss';
+@import './components/organisms/pop-up.scss';
 
 
 // PAGES

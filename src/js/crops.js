@@ -6,7 +6,9 @@ const CROPS = [
             hours: 2,
             minutes: 0,
             seconds: 0
-        }, // in hours
+        },
+        // sproutTimeSeconds: 7200
+        sproutTimeSeconds: 70
     },
     {
         id: 1,
@@ -15,7 +17,8 @@ const CROPS = [
             hours: 4,
             minutes: 0,
             seconds: 0
-        },  // in hours
+        },
+        sproutTimeSeconds: 14400
     },
     {
         id: 2,
@@ -25,6 +28,7 @@ const CROPS = [
             minutes: 20,
             seconds: 0
         },  // in hours
+        sproutTimeSeconds: 19200
     }
 ]
 

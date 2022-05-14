@@ -2,20 +2,20 @@
     <h5>My Farms</h5>
     <div class="buttons-container">
         <div class="bulk-actions">
-            <button class="btn bulk delete" title="delete farms">
+            <button class="btn bulk delete" title="delete farms" id="delete-all-farms">
                 <img src="/assets/images/icons/v2/trash.svg" alt="delete farms">
             </button>
             
-            <button class="btn bulk edit" title="edit farms">
+            <button class="btn bulk edit open-pop" data-pop="mass-edit-pop-up" title="edit farms" id="edit-all-farms">
                 <img src="/assets/images/icons/v2/edit.svg" alt="edit farms">    
             </button>
 
-            <button class="btn bulk start">
+            <button class="btn bulk start" title="start farms" id="start-all-farms">
                 <img src="/assets/images/icons/v2/play-circle.svg" alt="start farms">
             </button>
         </div> 
 
-        <button class="btn fill-white img-left export-farms" title="export farms">
+        <button class="btn fill-white img-left export-farms" id="export-farms" title="export farms">
             <img src="/assets/images/icons/v2/exports.svg" alt="export farms">
             Export Farms
         </button>
@@ -29,7 +29,7 @@
 
     <div class="row farm-labels">
         <div class="label input">
-            <input type="checkbox" name="" id="">
+            <input type="checkbox" id="select-all-farms" name="">
         </div>
         <div class="label crop"><p class="is-small">Crop</p></div>
         <div class="label number"><p class="is-small">Farm NO.</p></div>

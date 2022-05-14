@@ -1,0 +1,63 @@
+div.add-color {
+
+    .section-label {
+        margin: 0;
+        color: #504F54;
+        margin-bottom: 1rem;
+    }
+
+    >div {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        &:nth-child(1) {
+            align-items: flex-start;
+
+            button {
+                border: none;
+                padding: 0;
+                color: red;
+                font-size: 1.4rem;
+                background-color: $white;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .color-indicator {
+        // margin-right: 3rem;
+
+        >div {
+            width: 65px;
+            height: 65px;
+            background: $black;
+            background-image: url('/assets/images/misc/empty-color-2.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+        }
+    }
+
+    .colors-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: auto auto;
+        column-gap: 1.5rem;
+        row-gap: 8px;
+
+        .extra-color {
+            cursor: pointer;
+            >div {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #ebebeb;
+                border-color: #ebebeb;
+            }
+            input{
+                width: 1px;
+            }
+        }
+    }
+}

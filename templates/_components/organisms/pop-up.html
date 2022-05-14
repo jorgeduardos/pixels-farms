@@ -1,7 +1,12 @@
 <div id="{{id}}" class="pop-up" data-type="{{type}}">
     <div class="screen"></div>
     <div class="container">
-        <button id="close-pop" class="pop-close">&#x2715;</button>
+        <div class="pop-up-header">
+            <h6>{{header}}</h6>
+            <button id="close-pop" class="pop-close" aria-label="close popup">
+                <img src="/assets/images/icons/v2/close.svg" alt="">
+            </button>
+        </div>
         {% if content == 'edit-form' %}
             {% include './_components/molecules/edit-form.html'%}
         {% elseif content == 'mass-edit-form' %}

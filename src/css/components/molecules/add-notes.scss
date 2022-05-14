@@ -1,0 +1,24 @@
+.notes-container{
+
+    .section-label {
+        margin: 0;
+        color: #504F54;
+        margin-bottom: 1rem;
+    }
+
+    textarea {
+        width: 100%;
+        border-radius: 8px;
+        background-color: $gray;
+        box-shadow: none;
+        border: none;
+        padding: 1rem;
+        resize: none;
+        color: #3F3F44;
+        font-size: 1.2rem;
+
+        &::placeholder {
+            color: #C0C0C1;
+        }
+    }
+}

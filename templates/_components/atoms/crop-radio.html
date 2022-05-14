@@ -1,4 +1,4 @@
 <label for="{{id}}" class="crop-radio">
-    <input type="radio" value="{{value}}" name="type" id="{{id}}" required checked>
+    <input type="radio" value="{{value}}" name="type" id="{{id}}" {% if required %}required{% endif %} >
     <div><img src="{{img}}" alt="{{id}}"></div>
 </label>

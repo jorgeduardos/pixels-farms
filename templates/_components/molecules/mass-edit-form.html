@@ -1,33 +1,17 @@
-<form action="" class="edit-farms" id="mass-edit-farm-form">
-    <input type="text" name="objtype" value="arr" hidden>
-    <h2>Edit Farms</h2>
-    <div class="radios">
-        <label for="popberry-mass">
-            <input type="radio" value="0" name="type" id="popberry-mass">
-            <div><img src="/assets/images/crops/popberry.png" alt="Popberry"></div>
-        </label>
-        <label for="grumpkin-mass">
-            <input type="radio" value="1" name="type" id="grumpkin-mass">
-            <div><img src="/assets/images/crops/grumpkin.png" alt="Grumpkin"></div>
-        </label>
-        <label for="scarrot-mass">
-            <input type="radio" value="2" name="type" id="scarrot-mass">
-            <div><img src="/assets/images/crops/scarrot.png" alt="Scarrot"></div>
-        </label>
+<form action=""  class="edit-farms" id="mass-edit-farm-form">
+    <input type="text" value="arr" name="objtype" hidden>
+    <input class="farmInput" type="text" value="" name="farm" hidden>
+    <div class="fields">
+        {% include './_components/molecules/add-crop.html' with {id: 'mass-edit-farm-crop', required: true} %}
+
+        {#{% include './_components/molecules/add-color.html' with {extra: true, id: 'mass-edit-farm-color'} %}#}
+
+        {#{% include './_components/molecules/add-notes.html' %}#}
     </div>
-    <div class="notes-container">
-        <div>
-            <button type="button" class="add-color"></button>
-            <div>
-                <label for="farm-color-edit-mass" class="farm-color-label">Identifier color</label>
-                <input class="farm-color-input" type="color" name="farmColor" data-color="null" value="#e66465"
-                    id="farm-color-edit-mass">
-            </div>
-        </div>
-        <label for="farm-notes" class="farm-notes-label">
-            <span>Farm Notes</span>
-            <textarea name="farmNotes" id="farm-notes" cols="30" rows="3"></textarea>
-        </label>
+    <div class="button">
+        <button type="submit" class="submit-form-btn">
+            <img src="/assets/images/icons/v2/save.svg" alt="">
+            Save
+        </button>
     </div>
-    <button id="confirm-edit" type="submit">Confirm</button>
 </form>

@@ -26,9 +26,9 @@
 
             .notes{
 
-                .content{
-                    box-shadow: 0 12px 40px #11111154;
-                }
+                // .content{
+                //     box-shadow: 0 12px 40px #11111154;
+                // }
 
                 svg path{
                     stroke: $white;
@@ -97,32 +97,11 @@
         font-weight: 500;
     }
 
-    button{
-        background-color: inherit;
-        padding: 0.8rem;
-        box-shadow: none;
-        border-radius: 50%;
-        border: none;
-        line-height: 1;
-        display: inline-flex;
-        align-items: center;
-        font-size: 1.6rem;
-        cursor: pointer;
-        transition: transform 0.2s ease-out;
-
-        svg, img{
-            width: 20px;
-        }
-
-        &:not(.start-farm){
-            border: 1px solid #F3F3F3;
-        }
-
-        &:hover{
-            transform: scale(1.03);
+    .btn-icon{
+        svg,img{
+            pointer-events: none;
         }
     }
-
 
     .crop-type {
         background-size: contain;
@@ -200,7 +179,8 @@
                 padding: 2rem;
                 cursor: auto;
                 pointer-events: none;
-                box-shadow: 0 12px 40px #cdd0d5;
+                // box-shadow: 0 12px 40px #cdd0d5;
+                box-shadow: 0 12px 40px #11111154;
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.3s ease-in-out;
@@ -236,10 +216,18 @@
         }
 
         .timer{
-            margin-right: 0.8rem;
+            // margin-right: 0.8rem;
+            width: 80px;
         }
 
         .start-farm{
+
+            &:disabled{
+                pointer-events: none;
+                svg path{
+                    fill: #D6D6D8;
+                }
+            }
             svg{
                 &.completed-svg{
                     display: none;
@@ -255,14 +243,7 @@
         }
 
         button.open-farm{
-            
-            border-radius: 32px;
             margin-left: 5px;
-            font-weight: 300;
-
-            svg{
-                margin-right: 3px;
-            }
         }
     }
 

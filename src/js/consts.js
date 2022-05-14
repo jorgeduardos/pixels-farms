@@ -1,11 +1,12 @@
 export const farmListDom = document.querySelector('.farm-list');
-export const farmInput = document.getElementById('farmNumber');
+// export const farmInput = document.getElementById('farmNumber');
 export const editPopUpDom = document.getElementById('edit-pop-up');
 export const massEditPopUpDom = document.getElementById('mass-edit-pop-up');
 export const importPopUpDom = document.getElementById('import-pop-up');
 export const selectAllFarmsDom = document.getElementById('select-all-farms');
+export const exportAllFarms = document.getElementById('export-farms');
 export const errorDom = document.getElementById('error-handling');
-export const addColorInputDom = document.getElementById('farm-color');
+// export const addColorInputDom = document.getElementById('farm-color');
 // export const editColorInputDom = document.getElementById('farm-color-edit');
 export const farmCountDom = document.getElementById('farm-count');
 export const farmReadytDom = document.getElementById('farms-ready');

@@ -21,7 +21,8 @@ div.farms-ui {
 
     .bulk-actions {
         box-shadow: 0 1px 5px 0px rgb(0 0 0 / 12%);
-        display: inline-flex;
+        // display: inline-flex;
+        display: none;
         border-radius: 5px;
 
         button {

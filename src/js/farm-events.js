@@ -1,11 +1,12 @@
 // import findFarm, updateFarmCount, openFarm, Timer
 import './vendors/easytimer.min';
-import { handleTimerStart, openPop, updateFarmCount} from './misc';
+import { handleTimerStart, openPop, secondsToHourFormat} from './misc';
 import { findFarm, openFarm } from './farm-helpers';
 import { selectAllFarmsDom, editPopUpDom } from './consts';
 
 
 export function startFarm(button, farms) {
+    // console.log('clicking start');
     let target = button;
     target.disabled = true;
 
@@ -18,13 +19,17 @@ export function startFarm(button, farms) {
 
     //saving timer pointer in farm
     farm.timer = timer;
-    farm.startTime = Date();
+    farm.startTime = new Date().getTime()/1000;
+
+    
 
     //saving farm in localStorage
     localStorage.setItem("farms", JSON.stringify(farms));
 
-    // timer.start({ countdown: true, startValues: {seconds: 10} });
-    timer.start({ countdown: true, startValues: farm.crop.sproutTime });
+    let hourFormat = secondsToHourFormat(farm.crop.sproutTimeSeconds);
+
+    // // timer.start({ countdown: true, startValues: {seconds: 10} });
+    timer.start({ countdown: true, startValues: {hours: hourFormat[0], minutes: hourFormat[1], seconds: hourFormat[2]}});
 
     timer.addEventListener('secondsUpdated', handleTimerStart(timerDom, timer));
     farmDom.classList.add('started');
@@ -33,10 +38,10 @@ export function startFarm(button, farms) {
         target.disabled = false;
         farmDom.classList.add('completed');
         farmDom.classList.remove('started');
-        updateFarmCount(farms);
+        // updateFarmCount(farms);
     });
 
-    updateFarmCount(farms);
+    // updateFarmCount(farms);
     openFarm(farm.number);
 }
 
@@ -64,7 +69,7 @@ export function deleteFarm(button, farms, dev = false) {
 
     localStorage.setItem("farms", JSON.stringify(farms));
     farmDom.remove();
-    updateFarmCount(farms);
+    // updateFarmCount(farms);
 }
 
 export function editSingleFarmForm(button, farms, dev = false) {
@@ -72,39 +77,60 @@ export function editSingleFarmForm(button, farms, dev = false) {
     let farmDom = target.parentElement.parentElement;
     let farm = findFarm(farmDom.id, farms).farm;
 
-    let h2 = editPopUpDom.querySelector('h2');
-    let farmValueInput = editPopUpDom.querySelector('#farmValue');
-    let textarea = editPopUpDom.querySelector('textarea');
-    let colorPickerButton = editPopUpDom.querySelector('.add-color');
-    let colorParent = colorPickerButton.parentElement;
-    let colorInputDom = colorParent.querySelector('input');
+    let popToOpen = target.getAttribute('data-poptoopen');
+    let popUp = document.getElementById(popToOpen);
 
-    h2.innerHTML = `Edit Farm ${farmDom.id}`;
-    farmValueInput.value = farmDom.id;
+    let h2 = popUp.querySelector('h2');
+    let farmInput = popUp.querySelector('.farmInput');
+    let cropDom = popUp.querySelector('.crop-info img');
+    let timerDom = popUp.querySelector('.time p');
+    let textarea = popUp.querySelector('textarea');
+
+    let colorIndicator = popUp.querySelector('.color-indicator div');
+    let colorInputDom = popUp.querySelector('input[type=color]');
+
+    popUp.querySelectorAll('.crop-radio input').forEach(e => {
+        e.checked = false;
+    })
+
+
+    h2.innerHTML = `Farm ${farmDom.id}`;
+    farmInput.value = farmDom.id;
+    cropDom.setAttribute('src', `/assets/images/crops/${farm.crop.name}.png`)
+
+    let hourFormat = secondsToHourFormat(farm.crop.sproutTimeSeconds);
+    timerDom.innerHTML = `${hourFormat[0]}:${hourFormat[1]}:${hourFormat[2]}`
 
     textarea.value = farm.info.notes;
 
     if (farm.info.color != null) {
-        colorParent.classList.add('show')
+        colorIndicator.style.background = farm.info.color;
         // colorInputDom.click();
         colorInputDom.value = farm.info.color
-        colorInputDom.setAttribute('data-color', colorInputDom.value)
+        colorInputDom.setAttribute('data-color', farm.info.color)
     } else {
-        colorParent.classList.remove('show')
-        colorInputDom.setAttribute('data-color', null)
+        colorInputDom.setAttribute('data-color', '')
     }
 
-    openPop(editPopUpDom)
+    openPop(popUp);
 }
 
 export function selectFarm(button, farmsToUpdate, farms, dev = false){
     let target = button;
-    let farmDom = target.parentElement;
+    let farmDom = target.parentElement.parentElement;
 
     if (target.checked == true) {
         // add farm to FARMStoUpdate
         let farm = findFarm(farmDom.id, farms);
         farmsToUpdate.push(farm.farm);
+
+        if(farmsToUpdate.length > 1){
+            document.querySelector('.bulk-actions').style.display = 'inline-flex';
+        }
+
+        if(farmsToUpdate.length == farms.length){
+            selectAllFarmsDom.checked = true;
+        }
 
         if(dev){
             console.log('adding farm to FARMStoUpdate: ', farmsToUpdate)
@@ -115,14 +141,23 @@ export function selectFarm(button, farmsToUpdate, farms, dev = false){
         let farm = findFarm(farmDom.id, farmsToUpdate);
         farmsToUpdate.splice(farm.i, 1);
 
+        if(farmsToUpdate.length < 2){
+            document.querySelector('.bulk-actions').style.display = 'none';
+        }
+
+        if(farmsToUpdate.length < farms.length){
+            selectAllFarmsDom.checked = false;
+        }
+
         if(dev){
             console.log('removing farm to FARMStoUpdate: ', farmsToUpdate)
         }
     }
 
-    if (farmsToUpdate.length > 1) {
-        document.querySelector('.mass-edit-container .extra-buttons').classList.add('show');
-    } else {
-        document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
-    }
+    // console.log('fars to update', farmsToUpdate)
+    // if (farmsToUpdate.length > 1) {
+    //     document.querySelector('.mass-edit-container .extra-buttons').classList.add('show');
+    // } else {
+    //     document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
+    // }
 }

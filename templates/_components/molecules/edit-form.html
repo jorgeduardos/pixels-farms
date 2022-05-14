@@ -1,5 +1,39 @@
 <form action=""  class="edit-farms" id="edit-farm-form">
-    <input type="text" name="objtype" value="obj" hidden>
+    <input type="text" value="obj" name="objtype" hidden>
+    <input class="farmInput" type="text" value="" name="farm" hidden>
+    <div class="farm-info">
+        <div class="crop-info">
+            <img src="/assets/images/crops/grumpkin.png" alt="Grumpkin">
+        </div>
+        <div class="farm-number">
+            <h2>Farm 344</h2>
+            <div class="time">
+                <img src="/assets/images/icons/v2/timer.svg" alt="">
+                <p>4:00:00</p>
+            </div>
+        </div>
+        <div class="open-container">
+            <button class="open-farm btn-icon text" title="Open Farm">
+                <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="export"><path id="Vector" d="M7.58325 6.91666L12.3666 2.13333" stroke="#292D32" stroke-width="1.06944" stroke-linecap="round" stroke-linejoin="round"/><path id="Vector_2" d="M12.8332 4.46666V1.66666H10.0332" stroke="#292D32" stroke-width="1.06944" stroke-linecap="round" stroke-linejoin="round"/><path id="Vector_3" d="M6.41675 1.66666H5.25008C2.33341 1.66666 1.16675 2.83332 1.16675 5.74999V9.24999C1.16675 12.1667 2.33341 13.3333 5.25008 13.3333H8.75008C11.6667 13.3333 12.8334 12.1667 12.8334 9.24999V8.08332" stroke="#292D32" stroke-width="1.06944" stroke-linecap="round" stroke-linejoin="round"/></g></svg>
+                Open Farm
+            </button>
+        </div>
+    </div>
+    <div class="fields">
+
+        {% include './_components/molecules/add-crop.html' with {id: 'edit-farm-crop', required: false} %}
+
+        {% include './_components/molecules/add-color.html' with {extra: true, id: 'edit-farm-color'} %}
+
+        {% include './_components/molecules/add-notes.html' %}
+    </div>
+    <div class="button">
+        <button type="submit" class="submit-form-btn">
+            <img src="/assets/images/icons/v2/save.svg" alt="">
+            Save
+        </button>
+    </div>
+    <!-- <input type="text" name="objtype" value="obj" hidden>
     <input id="farmValue" type="text" name="farm" value="" hidden>
     <h2>Edit Farm</h2>
     <div class="radios">
@@ -30,5 +64,5 @@
             <textarea name="farmNotes" id="farm-notes" cols="30" rows="3"></textarea>
         </label>
     </div>
-    <button id="confirm-edit" type="submit">Confirm</button>
+    <button id="confirm-edit" type="submit">Confirm</button> -->
 </form>

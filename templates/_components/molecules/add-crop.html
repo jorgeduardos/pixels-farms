@@ -1,0 +1,8 @@
+<div class="radios form-section add-crop">
+    <p class="section-label is-medium">Select Crop</p>
+    <div>
+        {% include './_components/atoms/crop-radio.html' with {id: 'popberry-'~id, img: '/assets/images/crops/popberry.png', value: 0, required: required} %}
+        {% include './_components/atoms/crop-radio.html' with {id: 'grumpkin-'~id, img: '/assets/images/crops/grumpkin.png', value: 1} %}
+        {% include './_components/atoms/crop-radio.html' with {id: 'scarrot-'~id, img: '/assets/images/crops/scarrot.png', value: 2} %}
+    </div>
+</div>

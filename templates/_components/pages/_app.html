@@ -2,6 +2,9 @@
 
 {% block content %}
 
+{% include './_components/organisms/pop-up.html' with {id: 'edit-pop-up', content: 'edit-form', type: 'edit', header: 'Edit Farm'} %}
+{% include './_components/organisms/pop-up.html' with {id: 'mass-edit-pop-up', content: 'mass-edit-form', type: 'edit', header: 'Edit Farms'} %}
+
 <div class="home">
 
     {% include './_components/organisms/main-nav.html' %}
