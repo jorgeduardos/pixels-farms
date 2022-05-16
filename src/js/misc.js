@@ -1,4 +1,5 @@
 import { farmListDom, farmCountDom, farmReadytDom, farmStartedDom, errorDom } from './consts';
+import { findFarm } from './farm-helpers';
 
 export function secondsToHourFormat(seconds){
     return new Date(seconds * 1000).toISOString().substr(11, 8).split(":");
@@ -64,7 +65,7 @@ export function download(filename, text) {
     document.body.removeChild(element);
 }
 
-export function importClean(data, fileType) {
+export function importClean(data, fileType, farms) {
     let farmsToClean = [];
     let sameFarms = [];
 
@@ -78,25 +79,25 @@ export function importClean(data, fileType) {
 
         farmsToClean = JSON.parse(data);
 
-        if (FARMS == 0) {
+        if (farms == 0) {
             localStorage.setItem("farms", JSON.stringify(farmsToClean));
             window.location.reload();
         }
 
         for (var i = farmsToClean.length - 1; i >= 0; i--) {
-            if (findFarm(farmsToClean[i].number, FARMS) != null) {
+            if (findFarm(farmsToClean[i].number, farms) != null) {
                 sameFarms.push(farmsToClean[i]);
                 farmsToClean.splice(i, 1);
             }
         }
 
-        FARMS = FARMS.concat(farmsToClean)
+        farms = farms.concat(farmsToClean)
 
         // if(sameFarms.length > 0){
         //     showError('Duplicated farms were ommited', 1);
         // }
 
-        localStorage.setItem("farms", JSON.stringify(FARMS));
+        localStorage.setItem("farms", JSON.stringify(farms));
         window.location.reload();
 
     } else {
@@ -115,20 +116,20 @@ export function importClean(data, fileType) {
 
         })
 
-        if (FARMS == 0) {
+        if (farms == 0) {
             localStorage.setItem("farms", JSON.stringify(farmsToClean));
             window.location.reload();
         }
 
         for (var i = farmsToClean.length - 1; i >= 0; i--) {
-            if (findFarm(farmsToClean[i].number, FARMS) != null) {
+            if (findFarm(farmsToClean[i].number, farms) != null) {
                 sameFarms.push(farmsToClean[i]);
                 farmsToClean.splice(i, 1);
             }
         }
 
-        FARMS = FARMS.concat(farmsToClean)
-        localStorage.setItem("farms", JSON.stringify(FARMS));
+        farms = farms.concat(farmsToClean)
+        localStorage.setItem("farms", JSON.stringify(farms));
         window.location.reload();
     }
 

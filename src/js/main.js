@@ -1,11 +1,13 @@
 import Sortable from 'sortablejs';
-import Dropzone from "dropzone";
+import PizZip from 'pizzip';
+import JSZip from 'jszip';
+import Docxtemplater from 'docxtemplater';
 import { arrayMoveMutable } from 'array-move';
 import {
     farmListDom, editPopUpDom, massEditPopUpDom, importPopUpDom, selectAllFarmsDom, exportAllFarms
 } from './consts';
 import CROPS from './crops';
-import { openPop, closePop, clearCheckBoxes, download, secondsToHourFormat, handleTimerStart, showError } from './misc'
+import { openPop, closePop, clearCheckBoxes, download, secondsToHourFormat, handleTimerStart, showError, importClean } from './misc'
 import { startFarm, deleteFarm, editSingleFarmForm, selectFarm } from './farm-events';
 import {
     openFarm, editFarm, createFarmNode, updateFarmDom, findFarm,
@@ -35,8 +37,8 @@ if (storedFarms != null) {
         //build old farms with new structure
         if (farm.crop.sproutTimeSeconds == undefined) {
             CROPS.forEach(crop => {
-                if(crop.id == farm.crop.id)
-                farm.crop.sproutTimeSeconds = crop.sproutTimeSeconds;
+                if (crop.id == farm.crop.id)
+                    farm.crop.sproutTimeSeconds = crop.sproutTimeSeconds;
             })
         }
         if (farm.info == undefined) {
@@ -116,12 +118,12 @@ document.querySelectorAll('.farm-color-input').forEach(el => {
 document.querySelectorAll('.colors-grid input[type=radio]').forEach(el => {
     el.addEventListener('click', (e) => {
 
-        
+
         let value = e.target.value;
         let indicator = e.target.parentElement.parentElement.parentElement.querySelector('.color-indicator div');
         let input = e.target.parentElement.parentElement.querySelector('.farm-color-input');
 
-        
+
         indicator.style.background = e.target.value;
         input.setAttribute('data-color', e.target.value)
         input.value = value;
@@ -153,7 +155,7 @@ farmListDom.addEventListener('click', function (e) {
 
     //start farm
     if (e.target.classList.contains('start-farm')) {
-    
+
         //start farm from farm-events.js
         startFarm(e.target, FARMS)
 
@@ -317,30 +319,30 @@ document.getElementById('start-all-farms').addEventListener('click', function (e
 
             let timerDom = farmDom.querySelector('.timer');
             let timer = new easytimer.Timer();
-        
+
             //saving timer pointer in farm
             farm.timer = timer;
-            farm.startTime = new Date().getTime()/1000;
-    
-        
+            farm.startTime = new Date().getTime() / 1000;
+
+
             let hourFormat = secondsToHourFormat(farm.crop.sproutTimeSeconds);
-        
+
             // // timer.start({ countdown: true, startValues: {seconds: 10} });
-            timer.start({ countdown: true, startValues: {hours: hourFormat[0], minutes: hourFormat[1], seconds: hourFormat[2]}});
-        
+            timer.start({ countdown: true, startValues: { hours: hourFormat[0], minutes: hourFormat[1], seconds: hourFormat[2] } });
+
             timer.addEventListener('secondsUpdated', handleTimerStart(timerDom, timer));
             farmDom.classList.add('started');
-        
+
             timer.addEventListener('targetAchieved', function (e) {
                 startButton.disabled = false;
                 farmDom.classList.add('completed');
                 farmDom.classList.remove('started');
                 // updateFarmCount(farms);
             });
-        
+
             // updateFarmCount(farms);
             openFarm(farm.number);
-        }else{
+        } else {
             farmsStarted += 1;
         }
     });
@@ -353,7 +355,7 @@ document.getElementById('start-all-farms').addEventListener('click', function (e
 
     localStorage.setItem("farms", JSON.stringify(FARMS));
 
-    if(farmsStarted == FARMStoUpdate.length){
+    if (farmsStarted == FARMStoUpdate.length) {
         showError('All timers are currently running', 1);
     }
 
@@ -384,7 +386,7 @@ selectAllFarmsDom.addEventListener('change', function (e) {
             element.checked = true
         });
 
-        if(FARMStoUpdate.length > 1){
+        if (FARMStoUpdate.length > 1) {
             document.querySelector('.bulk-actions').style.display = 'inline-flex';
         }
 
@@ -407,53 +409,82 @@ exportAllFarms.addEventListener('click', function (e) {
 //             MASS IMPORT FARMS          //
 // ************************************** //
 let importForm = document.getElementById('import-farms');
-let myDropzone = new Dropzone("#import-farms", {
-    autoProcessQueue: false,
-    uploadMultiple: false,
-    clickable: true,
-    acceptedFiles: '.txt, .xml, .doc',
-    // disablePreviews: true,
+let importContainer = importForm.querySelector('.file-upload');
+let droppedFile;
 
-    init: function() {
-        var myDropzone = this;
-    
-        // First change the button to actually tell Dropzone to process the queue.
-        this.element.querySelector("button[type=submit]").addEventListener("click", function(e) {
-          // Make sure that the form isn't actually being sent.
-          e.preventDefault();
-          e.stopPropagation();
-        //   myDropzone.processQueue();
-        });
-    
-        // Listen to the sendingmultiple event. In this case, it's the sendingmultiple event instead
-        // of the sending event because uploadMultiple is set to true.
-        this.on("sendingmultiple", function() {
-          // Gets triggered when the form is actually being sent.
-          // Hide the success button or the complete form.
-        });
-        this.on("successmultiple", function(files, response) {
-          // Gets triggered when the files have successfully been sent.
-          // Redirect user or notify of success.
-        });
-        this.on("errormultiple", function(files, response) {
-          // Gets triggered when there was an error sending the files.
-          // Maybe show form again, and notify user of error
-        });
+importForm.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    importContainer.classList.add('is-dragover');
+}, false)
+importForm.addEventListener('dragenter', function (e) {
+    e.preventDefault();
+    importContainer.classList.add('is-dragover');
+}, false)
+importForm.addEventListener('dragleave', function (e) {
+    e.preventDefault();
+    importContainer.classList.remove('is-dragover');
+}, false)
+importForm.addEventListener('dragend', function (e) {
+    e.preventDefault();
+    importContainer.classList.remove('is-dragover');
+}, false)
+
+importForm.addEventListener('drop', function (e) {
+    e.preventDefault();
+    importContainer.classList.remove('is-dragover');
+    droppedFile = e.dataTransfer.files[0];
+
+    //check file extension
+    let ext = droppedFile.name.split('.')[1];
+    console.log(ext);
+
+    if (ext != 'txt') {
+        importForm.querySelector('button').disabled = true;
+        alert('Unsuported file extension');
+        return
     }
-});
 
-myDropzone.on("addedfile", file => {
-    console.log(file)
-    importForm.querySelector('button').disabled = false
-    if(file.accepted){
-        importForm.querySelector('p').innerHTML = `<span class="blue">${file.name}</span>`
-    }else{
-        importForm.querySelector('p').innerHTML = `File not permitted <br>please add another one`;
-    }
-});
+    console.log('accepted file')
+    importForm.querySelector('p').innerHTML = `<span>${droppedFile.name}</span>`;
+    importForm.querySelector('button').disabled = false;
+
+  
+}, false)
+
+document.getElementById('file')
+    .addEventListener('change', function () {
+        let ext = this.files[0].name.split('.')[1];
+
+        //check file extension
+        if (ext != 'txt') {
+            importForm.querySelector('button').disabled = true;
+            alert('Unsuported file extension');
+            return
+        }
 
 
+        console.log('accepted file')
+        importForm.querySelector('p').innerHTML = `<span>${droppedFile.name}</span>`;
+        importForm.querySelector('button').disabled = false;
 
+        var fr = new FileReader();
+        fr.readAsText(this.files[0]);
+        fr.onload = function () {
+            console.log(fr.result)
+        }
+    })
+
+function handleFile(file) {
+    // var zip = new JSZip();
+
+    var zip = new PizZip(file);
+
+    // zip.file(file);
+    var doc = new Docxtemplater(file)
+    var text = doc.getFullText();
+    console.log(text)
+
+}
 
 
 // var examplePlaceholder = '[{"number":"3084","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null},{"number":"3223","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null}';
@@ -471,18 +502,23 @@ myDropzone.on("addedfile", file => {
 
 //mass import event
 
-// document.getElementById('import-form').addEventListener('submit', function (e) {
-//     e.preventDefault();
-//     let formData = new FormData(e.target);
-//     let formProps = Object.fromEntries(formData);
-//     let textarea = e.target.querySelector('textarea');
+importForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    let formData = new FormData(e.target);
+    let formProps = Object.fromEntries(formData);
+    
+    var fr = new FileReader();
+    fr.readAsText(droppedFile != undefined || droppedFile != null ? droppedFile : formProps.file);
+    fr.onload = function () {
+        // importForm.querySelector('p').innerHTML = `<span>Click here to upload </span> or drag and drop <br>txt file`;
+        // importForm.querySelector('button').disabled = false;
+        importClean(fr.result, 'exported', FARMS);
+    }
 
-//     textarea.value = '';
+    // importClean(formProps.farms, formProps.file);
 
-//     importClean(formProps.farms, formProps.file);
-
-//     // window.location.reload();
-// })
+    // window.location.reload();
+})
 
 // ************************************** //
 //             RESET FARMS                //

@@ -22,6 +22,22 @@ div.import-farms {
             // border: 1px dashed #8F92A1;
             background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='9' ry='9' stroke='#8F92A1' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
             border-radius: 8px;
+            transition: all 0.2s linear;
+
+            &.is-dragover{
+                background-color: #c6ceff;
+                label{
+                    .img-container{
+                        background-color: #c6ceff;
+
+                        svg{
+                           path:nth-child(2){
+                                animation: upload 1s ease-out infinite;
+                           } 
+                        }
+                    }
+                }
+            }
 
             label {
                 width: 100%;
@@ -43,9 +59,11 @@ div.import-farms {
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
+                    transition: all 0.2s linear;
 
-                    img {
+                    svg {
                         width: 24px;
+                        overflow: visible;
                     }
                 }
 
@@ -66,5 +84,14 @@ div.import-farms {
             }
         }
 
+    }
+
+    @keyframes upload {
+        0%{
+            transform: translateY(-10px);
+        }
+        100%{
+            transform: translateY(0px);
+        }
     }
 }
