@@ -1,0 +1,12 @@
+defaultPlacement: end
+enableVersioning: true
+handle: videoLibrary
+name: 'Video Library'
+propagationMethod: all
+siteSettings:
+  47900d8a-89a6-4d23-b94c-200c0d4e0728: # Pixels Tools
+    enabledByDefault: true
+    hasUrls: true
+    template: _components/pages/video-library.html
+    uriFormat: video-library
+type: single

@@ -5,7 +5,7 @@ import { findFarm, openFarm } from './farm-helpers';
 import { selectAllFarmsDom, editPopUpDom } from './consts';
 
 
-export function startFarm(button, farms) {
+export function startFarm(button, farms, localStorageKey) {
     // console.log('clicking start');
     let target = button;
     target.disabled = true;
@@ -24,7 +24,7 @@ export function startFarm(button, farms) {
     
 
     //saving farm in localStorage
-    localStorage.setItem("farms", JSON.stringify(farms));
+    localStorage.setItem(localStorageKey, JSON.stringify(farms));
 
     let hourFormat = secondsToHourFormat(farm.crop.sproutTimeSeconds);
 
@@ -45,7 +45,7 @@ export function startFarm(button, farms) {
     openFarm(farm.number);
 }
 
-export function deleteFarm(button, farms, dev = false) {
+export function deleteFarm(button, farms, localStorageKey, dev = false) {
     let target = button;
     let farmDom = target.parentElement.parentElement;
     let farm = findFarm(farmDom.id, farms);
@@ -67,7 +67,7 @@ export function deleteFarm(button, farms, dev = false) {
         console.log('farms after delete: ', farms);
     }
 
-    localStorage.setItem("farms", JSON.stringify(farms));
+    localStorage.setItem(localStorageKey, JSON.stringify(farms));
     farmDom.remove();
     // updateFarmCount(farms);
 }
@@ -96,7 +96,7 @@ export function editSingleFarmForm(button, farms, dev = false) {
 
     h2.innerHTML = `Farm ${farmDom.id}`;
     farmInput.value = farmDom.id;
-    cropDom.setAttribute('src', `/assets/images/crops/${farm.crop.name}.png`)
+    cropDom.setAttribute('src', `/assets/images/crops/${farm.crop.name.toLowerCase()}.png`)
 
     let hourFormat = secondsToHourFormat(farm.crop.sproutTimeSeconds);
     timerDom.innerHTML = `${hourFormat[0]}:${hourFormat[1]}:${hourFormat[2]}`

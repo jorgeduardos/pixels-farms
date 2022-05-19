@@ -10,7 +10,7 @@
     width: auto;
     padding: 1rem 3rem;
     transform: translateX(100%);
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
     z-index: 1000;
     color: $white;
 
@@ -26,6 +26,12 @@
     &.error{
         background-color: rgb(255, 109, 109);
         border: 1px solid red;
+    }
+
+    &.success{
+        background-color: #E5F9F6;
+        border: none;
+        color: #75C178;
     }
     &.warning{
         background-color: rgb(254, 238, 128);

@@ -3,7 +3,7 @@
 {% endif %}
 
 {% if type == 'button' %}
-<button class="btn {{class}} arrow-right">
+<button class="btn {{class}} arrow-right" {% if data is defined and data|length %}{{data}}{% endif %}>
     {% if img is defined %}
         <img src="{{img.url}}" alt="{{img.title}}">
     {% endif %}

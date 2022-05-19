@@ -7,6 +7,10 @@
     position: relative;
     cursor: move;
 
+    &.hidden{
+        display: none !important;
+    }
+
     &.completed{
         background-color: $green !important;
 

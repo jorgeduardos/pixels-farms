@@ -1,0 +1,19 @@
+columnSuffix: xhnllydv
+contentColumnType: text
+fieldGroup: 53bb1464-b0cd-4052-809a-dab32005fc02 # Common
+handle: appHeader
+instructions: ''
+name: 'App Header'
+searchable: false
+settings:
+  byteLimit: null
+  charLimit: null
+  code: ''
+  columnType: null
+  initialRows: '4'
+  multiline: ''
+  placeholder: null
+  uiMode: normal
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\PlainText

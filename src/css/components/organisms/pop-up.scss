@@ -19,6 +19,23 @@ div.pop-up{
             width: 500px;
         }
     }
+    &#about-pop-up{
+        .container{
+            height: 90%; 
+            width: 650px;
+            overflow: scroll;
+        }
+        //delete
+        // visibility: visible;
+        // .screen{
+        //     opacity: 1;
+        //     transition: all 0.4s linear;
+        // }
+        // .container{
+        //     transform: translateY(0%);
+        //     opacity: 1;
+        // }
+    }
 
     &.open{
         // display: block;

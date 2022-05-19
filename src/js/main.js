@@ -1,10 +1,8 @@
 import Sortable from 'sortablejs';
-import PizZip from 'pizzip';
-import JSZip from 'jszip';
-import Docxtemplater from 'docxtemplater';
 import { arrayMoveMutable } from 'array-move';
 import {
-    farmListDom, editPopUpDom, massEditPopUpDom, importPopUpDom, selectAllFarmsDom, exportAllFarms
+    farmListDom, editPopUpDom, massEditPopUpDom, importPopUpDom, selectAllFarmsDom, exportAllFarms,
+    filterFarmsDom, defaultFarmKey as mainFarmKey
 } from './consts';
 import CROPS from './crops';
 import { openPop, closePop, clearCheckBoxes, download, secondsToHourFormat, handleTimerStart, showError, importClean } from './misc'
@@ -17,7 +15,7 @@ import {
 // is in dev mode to print console logs
 var dev = false;
 
-var storedFarms = JSON.parse(localStorage.getItem("farms"));
+var storedFarms = JSON.parse(localStorage.getItem(mainFarmKey));
 var FARMS = [];
 var FARMStoUpdate = [];
 
@@ -37,12 +35,17 @@ if (storedFarms != null) {
         //build old farms with new structure
         if (farm.crop.sproutTimeSeconds == undefined) {
             CROPS.forEach(crop => {
-                if (crop.id == farm.crop.id)
+                if (crop.id == farm.crop.id) {
                     farm.crop.sproutTimeSeconds = crop.sproutTimeSeconds;
+                }
             })
         }
         if (farm.info == undefined) {
             farm.info = {};
+        }
+
+        if(typeof(farm.startTime) == 'string'){
+            farm.startTime = new Date(farm.startTime).getTime()/1000;
         }
 
         farmListDom.appendChild(createFarmNode(farm));
@@ -70,7 +73,7 @@ var sortable = new Sortable(farmListDom, {
     ghostClass: 'ghost',
     onEnd: function (e) {
         arrayMoveMutable(FARMS, e.oldIndex, e.newIndex)
-        localStorage.setItem("farms", JSON.stringify(FARMS));
+        localStorage.setItem(mainFarmKey, JSON.stringify(FARMS));
         if (dev) {
             console.log('farms after move: ', FARMS);
         }
@@ -93,7 +96,7 @@ addForm.addEventListener('submit', function (e) {
 
     // console.log(e.target)
     formProps.farmColor = formColorImput.getAttribute('data-color');
-    addFarm(e.target, formProps, FARMS, dev);
+    addFarm(e.target, formProps, FARMS, mainFarmKey, dev);
 })
 
 
@@ -157,12 +160,12 @@ farmListDom.addEventListener('click', function (e) {
     if (e.target.classList.contains('start-farm')) {
 
         //start farm from farm-events.js
-        startFarm(e.target, FARMS)
+        startFarm(e.target, FARMS, mainFarmKey)
 
     } else if (e.target.classList.contains('delete-farm')) {
 
         //delete frm from farm-events.js
-        deleteFarm(e.target, FARMS, dev)
+        deleteFarm(e.target, FARMS, mainFarmKey, dev)
 
     } else if (e.target.classList.contains('open-farm')) {
 
@@ -211,13 +214,9 @@ popUps.forEach(element => {
 const openPopButtons = document.querySelectorAll('.open-pop');
 openPopButtons.forEach(element => {
     let popUp = document.getElementById(element.getAttribute('data-pop'));
-    let popUpType = popUp.getAttribute('data-type');
+    // let popUpType = popUp.getAttribute('data-type');
 
     element.addEventListener('click', function () {
-        // console.log(popUpType)
-        // if (popUpType == 'edit') {
-        //     cleanEditForm(popUp.querySelector('form'))
-        // }
         openPop(popUp);
     })
 })
@@ -245,7 +244,7 @@ document.querySelectorAll('.edit-farms').forEach(form => {
             let farmId = formProps.farm;
             let farm = findFarm(farmId, FARMS).farm;
 
-            updateFarmDom(farm, formProps, FARMS);
+            updateFarmDom(farm, formProps, FARMS, mainFarmKey);
 
             closePop(editPopUpDom);
 
@@ -254,7 +253,7 @@ document.querySelectorAll('.edit-farms').forEach(form => {
             let farmArr = FARMStoUpdate;
 
             farmArr.forEach(farm => {
-                updateFarmDom(farm, formProps, FARMS);
+                updateFarmDom(farm, formProps, FARMS, mainFarmKey);
             });
 
             FARMStoUpdate = [];
@@ -271,12 +270,73 @@ document.querySelectorAll('.edit-farms').forEach(form => {
     })
 })
 
+// ************************************** //
+//             FILTER FARMS               //
+// ************************************** //
+filterFarmsDom.addEventListener('click', function (e) {
+    let button = e.currentTarget;
+    let label = button.querySelector('span');
+    let filterType = button.getAttribute('data-filter');
+    switch (filterType) {
+        case 'completed':
+
+            filterFarms(filterType)
+
+            // console.log('filtering by completed')
+            button.setAttribute('data-filter', 'started')
+            label.innerHTML = capitalizeFirstLetter(filterType)
+            break;
+        case 'started':
+            filterFarms(filterType)
+            // console.log('filtering by started')
+            button.setAttribute('data-filter', 'default')
+            label.innerHTML = capitalizeFirstLetter(filterType)
+            break;
+        default:
+            filterFarms('default')
+            // console.log('filtering by default')
+            button.setAttribute('data-filter', 'completed')
+            label.innerHTML = capitalizeFirstLetter('default')
+            break;
+    }
+})
+
+function filterFarms(filterBy) {
+    console.log(filterBy)
+    if (filterBy == 'default') {
+        FARMS.forEach(farm => {
+            let dom = document.getElementById(farm.number);
+            dom.classList.remove('hidden');
+        })
+
+        return
+    }
+
+    FARMS.forEach(farm => {
+        let dom = document.getElementById(farm.number);
+        console.log(dom.classList.contains(filterBy))
+        if (!dom.classList.contains(filterBy)) {
+            dom.classList.add('hidden');
+        } else {
+            dom.classList.remove('hidden');
+        }
+    })
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 
 // ************************************** //
 //             MASS DELETING              //
 // ************************************** //
 document.getElementById('delete-all-farms').addEventListener('click', function (e) {
+
+    let message = "Are you sure you want to delete the selected farms? This can't be undone";
+    if (!confirm(message)) {
+        return
+    }
 
     for (let i = 0; i < FARMStoUpdate.length; i++) {
         let farmToDelete = FARMStoUpdate[i].number;
@@ -298,7 +358,7 @@ document.getElementById('delete-all-farms').addEventListener('click', function (
     document.querySelector('.bulk-actions').style.display = 'none';
 
 
-    localStorage.setItem("farms", JSON.stringify(FARMS));
+    localStorage.setItem(mainFarmKey, JSON.stringify(FARMS));
     // updateFarmCount(FARMS);
 })
 
@@ -353,7 +413,7 @@ document.getElementById('start-all-farms').addEventListener('click', function (e
 
     clearCheckBoxes(checkBoxes);
 
-    localStorage.setItem("farms", JSON.stringify(FARMS));
+    localStorage.setItem(mainFarmKey, JSON.stringify(FARMS));
 
     if (farmsStarted == FARMStoUpdate.length) {
         showError('All timers are currently running', 1);
@@ -399,7 +459,7 @@ selectAllFarmsDom.addEventListener('change', function (e) {
 // ************************************** //
 exportAllFarms.addEventListener('click', function (e) {
     if (FARMS.length > 0) {
-        let farmsToExport = localStorage.getItem("farms");
+        let farmsToExport = localStorage.getItem(mainFarmKey);
         download('exported-farms', farmsToExport)
     }
 })
@@ -439,8 +499,10 @@ importForm.addEventListener('drop', function (e) {
     console.log(ext);
 
     if (ext != 'txt') {
+        droppedFile = null;
         importForm.querySelector('button').disabled = true;
-        alert('Unsuported file extension');
+        importForm.querySelector('p').innerHTML = `<span>Click here to upload </span> or drag and drop <br>txt file`;
+        showError('Unsuported file extension');
         return
     }
 
@@ -448,23 +510,26 @@ importForm.addEventListener('drop', function (e) {
     importForm.querySelector('p').innerHTML = `<span>${droppedFile.name}</span>`;
     importForm.querySelector('button').disabled = false;
 
-  
+
 }, false)
 
 document.getElementById('file')
     .addEventListener('change', function () {
         let ext = this.files[0].name.split('.')[1];
+        let file = this.files[0];
+        console.log()
 
         //check file extension
         if (ext != 'txt') {
             importForm.querySelector('button').disabled = true;
-            alert('Unsuported file extension');
+            importForm.querySelector('p').innerHTML = `<span>Click here to upload </span> or drag and drop <br>txt file`;
+            showError('Unsuported file extension');
             return
         }
 
 
         console.log('accepted file')
-        importForm.querySelector('p').innerHTML = `<span>${droppedFile.name}</span>`;
+        importForm.querySelector('p').innerHTML = `<span>${file.name}</span>`;
         importForm.querySelector('button').disabled = false;
 
         var fr = new FileReader();
@@ -473,18 +538,6 @@ document.getElementById('file')
             console.log(fr.result)
         }
     })
-
-function handleFile(file) {
-    // var zip = new JSZip();
-
-    var zip = new PizZip(file);
-
-    // zip.file(file);
-    var doc = new Docxtemplater(file)
-    var text = doc.getFullText();
-    console.log(text)
-
-}
 
 
 // var examplePlaceholder = '[{"number":"3084","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null},{"number":"3223","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null}';
@@ -506,18 +559,14 @@ importForm.addEventListener('submit', function (e) {
     e.preventDefault();
     let formData = new FormData(e.target);
     let formProps = Object.fromEntries(formData);
-    
+
     var fr = new FileReader();
     fr.readAsText(droppedFile != undefined || droppedFile != null ? droppedFile : formProps.file);
     fr.onload = function () {
         // importForm.querySelector('p').innerHTML = `<span>Click here to upload </span> or drag and drop <br>txt file`;
         // importForm.querySelector('button').disabled = false;
-        importClean(fr.result, 'exported', FARMS);
+        importClean(fr.result, FARMS, mainFarmKey);
     }
-
-    // importClean(formProps.farms, formProps.file);
-
-    // window.location.reload();
 })
 
 // ************************************** //
@@ -532,13 +581,54 @@ importForm.addEventListener('submit', function (e) {
 //             farm.timer = null;
 //         })
 
-//         localStorage.setItem("farms", JSON.stringify(FARMS));
+//         localStorage.setItem(mainFarmKey, JSON.stringify(FARMS));
 //         window.location.reload();
 //     }
 // })
 
 // ************************************** //
-//              ERROR HANDLING            //
+//              ACCOIRDIONS               //
 // ************************************** //
+let aboutPop = document.getElementById('about-pop-up')
+let categoriesBtn = document.querySelectorAll('#about-pop-up .categories button');
+let categoriesContainers = document.querySelectorAll('#about-pop-up .categories-content >div');
+categoriesBtn.forEach(button => {
+    button.addEventListener('click', function (e) {
+        e.preventDefault();
+        categoriesBtn.forEach(btn => {
+            btn.classList.remove('active')
+        })
+        categoriesContainers.forEach(el => {
+            el.classList.remove('active')
+        })
 
+        let container = document.getElementById(button.getAttribute('data-cat'));
+
+        e.target.classList.add('active')
+        container.classList.add('active')
+
+    })
+})
+
+let accordionItems = document.querySelectorAll('#about-pop-up .acordion-item');
+accordionItems.forEach(item => {
+    item.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var current = e.currentTarget;
+        accordionItems.forEach(el => {
+            if (el == current) {
+                if (current.classList.contains('open')) {
+                    current.classList.remove('open')
+                } else {
+                    current.classList.add('open')
+                }
+            } else {
+                el.classList.remove('open')
+            }
+        })
+
+
+
+    })
+})
 

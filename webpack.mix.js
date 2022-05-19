@@ -11,10 +11,10 @@ const compileSeparateFiles = function (dir) {
 }
 
 // // PERFORMANCE JS
-compileSeparateFiles('./src/js/vendors').forEach(function (filepath) {
-  mix.js('./src/js/vendors/' + filepath, 'js')
-    .setPublicPath('./web/assets/')
-});
+// compileSeparateFiles('./src/js/vendors').forEach(function (filepath) {
+//   mix.js('./src/js/vendors/' + filepath, 'js')
+//     .setPublicPath('./web/assets/')
+// });
 
 mix
   .before(() => {
@@ -33,14 +33,16 @@ mix
   })
   .sass('./src/css/main.scss', 'css')
   .js('./src/js/main.js', 'js')
-  .setPublicPath('./web/assets/')
+  .js('./src/js/w3g.js', 'js')
+  .setPublicPath('./web/')
+  .copy('./src/js/vendors', './web/js/vendors/')
   .copy('./src/fonts', './web/assets/fonts/')
   .copy('./src/images', './web/assets/images/')
   .copy('./src/favicon', './web/assets/favicon/')
 
   .browserSync({
     proxy: process.env.PRIMARY_SITE_URL,
-    files: ['templates/{*,**/*}.{html,twig}', 'web/assets/css/**/*.css', 'web/assets/js/**/*.js'],
+    files: ['templates/{*,**/*}.{html,twig}', 'web/css/**/*.css', 'web/js/**/*.js'],
     browser: 'google chrome'
   })
 
@@ -64,8 +66,8 @@ mix
       path.join(__dirname, './src/images/**/*.svg'),
       path.join(__dirname, './web/assets/images/**/*.svg'),
     ],
-    content: ['./templates/**/*/.{html,twig}', './web/assets/images/**/*.svg', './src/images/**/*.svg', './web/assets/js/main.js'],
-    css: ['./web/assets/css/main.css'],
+    content: ['./templates/**/*/.{html,twig}', './web/assets/images/**/*.svg', './src/images/**/*.svg', './web/js/main.js'],
+    css: ['./web/css/main.css'],
     defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
     extensions: ['html', 'js', 'php', 'twig', 'scss', 'css'],
     whitelist: ['lazyloading', 'lazyloaded', 'lazyfade', 'lazyblur', 'lazyload']

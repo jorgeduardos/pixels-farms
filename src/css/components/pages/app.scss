@@ -1,4 +1,4 @@
-div.home {
+div.app {
     display: flex;
     background-color: $gray;
 
@@ -55,7 +55,7 @@ div.home {
             }
     
             &.number{
-                width: 175px;
+                width: 200px;
                 margin-right: auto;
             }
     

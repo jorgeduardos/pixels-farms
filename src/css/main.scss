@@ -40,6 +40,8 @@
 @import './components/molecules/add-notes.scss';
 @import './components/molecules/edit-form.scss';
 @import './components/molecules/error-handling.scss';
+@import './components/molecules/acordion.scss';
+@import './components/molecules/video-item.scss';
 
 //organisms
 @import './components/organisms/app-header.scss';
@@ -52,3 +54,4 @@
 
 // PAGES
 @import './components/pages/app.scss';
+@import './components/pages/video-library.scss';

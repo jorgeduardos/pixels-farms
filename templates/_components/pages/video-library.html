@@ -1,0 +1,46 @@
+{% extends "/index.twig" %}
+
+{% block content %}
+
+{% include './_components/organisms/pop-up.html' with {id: 'edit-pop-up', content: 'edit-form', type: 'edit', header: 'Edit Farm'} %}
+{% include './_components/organisms/pop-up.html' with {id: 'mass-edit-pop-up', content: 'mass-edit-form', type: 'edit', header: 'Edit Farms'} %}
+{% include './_components/organisms/pop-up.html' with {id: 'about-pop-up', content: 'about', type: 'about', header: 'How it works'} %}
+
+<div class="vide-library">
+
+    {% include './_components/organisms/main-nav.html' %}
+
+    <div class="main-grid">
+       {% include './_components/organisms/app-header.html' %}
+    
+        <div class="videos-container grid-child">
+            <div>
+                <a target="_blank" href="https://www.youtube.com/watch?v=kucHdA8S9Ww" class="video-item">
+                    <div class="preview-img">
+                        <img src="/assets/images/video-library/midnight-1.png" alt="thumbnail">
+                    </div>
+                    <div class="description">
+                        <h5>Pixels Crazy Farming Strategy</h5>
+                        <!-- <p class="is-medium">This video is about lorem ipsum</p> -->
+                        <p class="is-small author">author: midnghtclub09</p>
+                    </div>
+                </a>
+
+                <a target="_blank" href="https://www.youtube.com/watch?v=Z617UU-QPuc" class="video-item">
+                    <div class="preview-img">
+                        <img src="/assets/images/video-library/midnight-2.png" alt="thumbnail">
+                    </div>
+                    <div class="description">
+                        <h5>Pixels Quest Update</h5>
+                        <!-- <p class="is-medium">This video is about lorem ipsum</p> -->
+                        <p class="is-small author">author: midnghtclub09</p>
+                    </div>
+                </a>
+               
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

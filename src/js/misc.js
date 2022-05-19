@@ -1,4 +1,5 @@
-import { farmListDom, farmCountDom, farmReadytDom, farmStartedDom, errorDom } from './consts';
+import CROPS from './crops';
+import { farmListDom, farmCountDom, farmReadytDom, farmStartedDom, errorDom, regex } from './consts';
 import { findFarm } from './farm-helpers';
 
 export function secondsToHourFormat(seconds){
@@ -65,22 +66,28 @@ export function download(filename, text) {
     document.body.removeChild(element);
 }
 
-export function importClean(data, fileType, farms) {
+export function importClean(data, farms, localStorageKey) {
     let farmsToClean = [];
     let sameFarms = [];
+    let fileType;
 
     //chekc if data is of type string or array
+    try {
+        JSON.parse(data);
+        fileType = 'exported';
+    } catch (e) {
+        fileType = 'links';
+        // return showError('Invalid data');
+    }
+
+
     if (fileType == 'exported') {
-        try {
-            JSON.parse(data);
-        } catch (e) {
-            return showError('Invalid data');
-        }
 
         farmsToClean = JSON.parse(data);
+        console.log(farmsToClean)
 
         if (farms == 0) {
-            localStorage.setItem("farms", JSON.stringify(farmsToClean));
+            localStorage.setItem(localStorageKey, JSON.stringify(farmsToClean));
             window.location.reload();
         }
 
@@ -92,13 +99,16 @@ export function importClean(data, fileType, farms) {
         }
 
         farms = farms.concat(farmsToClean)
-
         // if(sameFarms.length > 0){
         //     showError('Duplicated farms were ommited', 1);
         // }
 
-        localStorage.setItem("farms", JSON.stringify(farms));
-        window.location.reload();
+        localStorage.setItem(localStorageKey, JSON.stringify(farms));
+        if(farmsToClean.length > 0){
+            window.location.reload();
+        }else{
+            showError('No farms imported, all farms were duplicates', 1);
+        }
 
     } else {
         data.split(/\r?\n/).forEach(link => {
@@ -117,7 +127,7 @@ export function importClean(data, fileType, farms) {
         })
 
         if (farms == 0) {
-            localStorage.setItem("farms", JSON.stringify(farmsToClean));
+            localStorage.setItem(localStorageKey, JSON.stringify(farmsToClean));
             window.location.reload();
         }
 
@@ -129,8 +139,13 @@ export function importClean(data, fileType, farms) {
         }
 
         farms = farms.concat(farmsToClean)
-        localStorage.setItem("farms", JSON.stringify(farms));
-        window.location.reload();
+        localStorage.setItem(localStorageKey, JSON.stringify(farms));
+
+        if(farmsToClean.length > 0){
+            window.location.reload();
+        }else{
+            showError('No farms imported, all farms were duplicates', 1);
+        }
     }
 
 }
@@ -154,12 +169,18 @@ export function showError(errorMessage, errorCode) {
         errorDom.classList.add('show', 'error');
     } else if (errorCode == 1) {
         errorDom.classList.add('show', 'warning');
-    } else {
+    } else if(errorCode == 2){
+        errorDom.classList.add('show', 'success');
+    }else {
 
         errorDom.classList.add('show', 'error');
     }
 
     setTimeout(function () {
-        errorDom.classList.remove('show', 'error', 'warning');
+        errorDom.classList.remove('show');
     }, 5000)
+
+    setTimeout(function () {
+        errorDom.classList.remove('error', 'warning', 'success');
+    }, 5500)
 }

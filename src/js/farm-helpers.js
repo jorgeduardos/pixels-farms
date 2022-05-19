@@ -22,7 +22,7 @@ export function openFarm(farmNumber) {
     window.open(`https://play.pixels.online/farm${farmNumber}`, "_blank");
 }
 
-export function updateFarmDom(farmToUpdate, data, farms) {
+export function updateFarmDom(farmToUpdate, data, farms, localStorageKey) {
 
     let farm = farmToUpdate;
     let prevCrop = farm.crop;
@@ -51,7 +51,7 @@ export function updateFarmDom(farmToUpdate, data, farms) {
 
 
     //save in local localStorage
-    localStorage.setItem("farms", JSON.stringify(farms));
+    localStorage.setItem(localStorageKey, JSON.stringify(farms));
 
     //build dom tree
     farmDom.remove();
@@ -169,7 +169,7 @@ export function continueFarmTimer(farm) {
     });
 }
 
-export function addFarm(formDom, form, farms, dev = false) {
+export function addFarm(formDom, form, farms, localStorageKey, dev = false) {
 
     let crop = CROPS[form.type]
 
@@ -210,12 +210,13 @@ export function addFarm(formDom, form, farms, dev = false) {
     //     selectAllFarmsDom.disabled = false;
     // }
 
-    localStorage.setItem("farms", JSON.stringify(farms));
+    localStorage.setItem(localStorageKey, JSON.stringify(farms));
 
     if (dev) {
         console.log('farms after add: ', farms);
     }
 
     //create dom element and add it
+    showError(`Farm ${number} added to the bottom`, 2);
     farmListDom.appendChild(createFarmNode(farm));
 }

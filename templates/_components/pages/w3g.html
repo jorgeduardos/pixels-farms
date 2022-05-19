@@ -1,0 +1,32 @@
+{% extends "/index.twig" %}
+
+{% block content %}
+
+{% include './_components/organisms/pop-up.html' with {id: 'edit-pop-up', content: 'edit-form', type: 'edit', header: 'Edit Farm'} %}
+{% include './_components/organisms/pop-up.html' with {id: 'mass-edit-pop-up', content: 'mass-edit-form', type: 'edit', header: 'Edit Farms'} %}
+{% include './_components/organisms/pop-up.html' with {id: 'about-pop-up', content: 'about', type: 'about', header: 'How it works'} %}
+
+<div class="w3g app">
+
+    {% include './_components/organisms/main-nav.html' %}
+
+    <div class="main-grid">
+       {% include './_components/organisms/app-header.html' %}
+    
+        <div class="farms-container grid-child">
+            {% include './_components/organisms/farms-ui.html' %}
+
+            {% include './_components/organisms/farms.html' %}
+        </div>
+    
+        <div class="add-farm-container grid-child">
+            {% include './_components/molecules/add-farm.html' %}
+        </div>
+    
+        <div class="import-container grid-child">
+            {% include './_components/organisms/import-farms.html' %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

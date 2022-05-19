@@ -1,6 +1,7 @@
 export const farmListDom = document.querySelector('.farm-list');
 // export const farmInput = document.getElementById('farmNumber');
 export const editPopUpDom = document.getElementById('edit-pop-up');
+export const filterFarmsDom = document.getElementById('filter-farms');
 export const massEditPopUpDom = document.getElementById('mass-edit-pop-up');
 export const importPopUpDom = document.getElementById('import-pop-up');
 export const selectAllFarmsDom = document.getElementById('select-all-farms');
@@ -11,4 +12,6 @@ export const errorDom = document.getElementById('error-handling');
 export const farmCountDom = document.getElementById('farm-count');
 export const farmReadytDom = document.getElementById('farms-ready');
 export const farmStartedDom = document.getElementById('farms-started');
+export const defaultFarmKey = 'farms';
+export const w3gFarmKey = 'w3gfarms';
 export const regex = /(?<=farm)[^/\s]*/i;

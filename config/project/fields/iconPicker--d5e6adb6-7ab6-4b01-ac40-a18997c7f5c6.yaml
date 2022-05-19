@@ -1,0 +1,15 @@
+columnSuffix: gdvnkpwn
+contentColumnType: string
+fieldGroup: aaae132f-cfb2-4a2c-8206-e4c8d3e834bd # About
+handle: iconPicker
+instructions: ''
+name: 'Icon Picker'
+searchable: false
+settings:
+  columnType: text
+  iconSets: '*'
+  remoteSets: ''
+  showLabels: '1'
+translationKeyFormat: null
+translationMethod: none
+type: verbb\iconpicker\fields\IconPickerField

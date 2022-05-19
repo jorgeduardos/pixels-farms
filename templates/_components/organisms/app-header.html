@@ -3,13 +3,13 @@
 <div class="app-header grid-child">
     <div>
         <div class="content">
-            <h1>Welcome to Pixel Farms</h1>
-            <p class="is-rock">We are glad you are enjoying this tool.</p>
+            <h1>{{entry.appHeader}}</h1>
+            <p class="is-rock">{{entry.appSubheader}}</p>
         </div>
 
         <div class="buttons-container">
-            {% include './_components/atoms/button-arrow-right.html' with {type: 'link', link: '/#', label: 'Discord Channel', class: 'fill-white img-left', img: discordIcon} %}
-            {% include './_components/atoms/button-arrow-right.html' with {type: 'button', label: 'How it works?', class: 'fill-white'} %}
+            {% include './_components/atoms/button-arrow-right.html' with {type: 'link', link: 'http://discord.gg/pixels', label: 'Discord Channel', class: 'fill-white img-left', img: discordIcon} %}
+            {% include './_components/atoms/button-arrow-right.html' with {type: 'button', label: 'How it works?', class: 'fill-white open-pop', data: 'data-pop=about-pop-up'} %}
         </div>
     </div>
 </div>

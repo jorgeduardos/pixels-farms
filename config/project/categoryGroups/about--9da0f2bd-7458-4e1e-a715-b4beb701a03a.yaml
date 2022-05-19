@@ -1,0 +1,50 @@
+defaultPlacement: end
+fieldLayouts:
+  6743f94f-b6cc-4311-a06f-abcdb326545d:
+    tabs:
+      -
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            disabled: false
+            id: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            readonly: false
+            requirable: false
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\TitleField
+            warning: null
+            width: 100
+          -
+            fieldUid: 8fcb881c-b94d-4ba7-bc40-1be1a96f7320 # About Accordion
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            warning: null
+            width: 100
+        name: Content
+        sortOrder: 1
+handle: about
+name: About
+siteSettings:
+  47900d8a-89a6-4d23-b94c-200c0d4e0728: # Pixels Tools
+    hasUrls: false
+    template: null
+    uriFormat: null
+structure:
+  maxLevels: 1
+  uid: 542e938a-02d9-4366-b4b0-a7fce66ff133

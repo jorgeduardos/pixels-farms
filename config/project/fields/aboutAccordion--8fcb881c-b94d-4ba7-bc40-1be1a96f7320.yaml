@@ -1,0 +1,16 @@
+columnSuffix: zcsuljqk
+contentColumnType: string
+fieldGroup: aaae132f-cfb2-4a2c-8206-e4c8d3e834bd # About
+handle: aboutAccordion
+instructions: ''
+name: 'About Accordion'
+searchable: false
+settings:
+  contentTable: '{{%matrixcontent_aboutaccordion}}'
+  maxBlocks: ''
+  minBlocks: ''
+  propagationKeyFormat: null
+  propagationMethod: all
+translationKeyFormat: null
+translationMethod: site
+type: craft\fields\Matrix
