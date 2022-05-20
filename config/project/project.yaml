@@ -1,4 +1,28 @@
-dateModified: 1652886612
+dateModified: 1653004313
+elementSources:
+  craft\elements\Asset:
+    -
+      key: 'volume:2a6dbe62-c3c1-440b-b595-39b8061bbbc0' # Crops
+      type: native
+    -
+      disabled: false
+      key: 'volume:e741494a-9a5f-4b19-bb87-7992c9722c03' # Globals
+      tableAttributes:
+        - filename
+        - id
+        - size
+        - dateModified
+        - link
+      type: native
+    -
+      key: 'volume:6d5619c6-6d9b-45f9-91e8-0df172a2b08e' # Icons
+      type: native
+    -
+      key: 'volume:70275dc7-a7c8-4cc4-867a-78991c380203' # Video Library
+      type: native
+    -
+      key: 'folder:7a45406d-e11f-499f-80ba-0cabff5fed7c'
+      type: native
 email:
   fromEmail: jorgeduardo.1994@gmail.com
   fromName: 'Pixels Tools'
@@ -8,30 +32,40 @@ fs:
     hasUrls: true
     name: Crops
     settings:
-      path: '@assetBasePath/images/crops'
+      path: '@webroot/assets/images/crops'
     type: craft\fs\Local
     url: '@assetBaseUrl/images/crops'
   globals:
     hasUrls: true
     name: Globals
     settings:
-      path: '@assetBasePath/images/globals'
+      path: '@webroot/assets/images/globals'
     type: craft\fs\Local
     url: '@assetBaseUrl/images/globals'
   icons:
     hasUrls: true
     name: Icons
     settings:
-      path: '@assetBasePath/images/icons/v2'
+      path: '@webroot/assets/images/icons/v2'
     type: craft\fs\Local
     url: '@assetBaseUrl/images/icons/v2'
+  videoLibrary:
+    hasUrls: true
+    name: 'Video Library'
+    settings:
+      path: '@webroot/assets/images/video-library'
+    type: craft\fs\Local
+    url: '@assetBaseUrl/images/video-library'
 meta:
   __names__:
+    0ea7f256-794a-459c-84f3-030adea7170f: Author # Author
     0eaf6050-ecac-48e0-81d3-c4c0c6fe12a3: 'Public Schema' # Public Schema
     2a6dbe62-c3c1-440b-b595-39b8061bbbc0: Crops # Crops
     2fd6534b-22cc-4fdf-84c1-2f9545b75bd1: 'Video Library' # Video Library
     5b773b1c-3e44-4c0c-bed8-91c9940a7a61: App # App
+    5d0f3cc5-8586-4d9e-bb43-dc1c59495285: Videos # Videos
     6d5619c6-6d9b-45f9-91e8-0df172a2b08e: Icons # Icons
+    7ca1c14b-705c-4b7b-aab9-a6c99b173d91: 'Video URL' # Video URL
     08f82119-a2df-4da8-990b-aca5231c953b: Default # Default
     8fcb881c-b94d-4ba7-bc40-1be1a96f7320: 'About Accordion' # About Accordion
     9da0f2bd-7458-4e1e-a715-b4beb701a03a: About # About
@@ -39,17 +73,21 @@ meta:
     53bb1464-b0cd-4052-809a-dab32005fc02: Common # Common
     61f1a4f7-2a73-4cb7-a7e4-74542135ccd6: w3g # w3g
     72a12008-61d1-46be-9a97-f87cc94a5987: Hours # Hours
+    136cd890-ddab-4673-89ad-220e8f56d68b: Description # Description
     149b3668-c786-4ca3-8a89-6bab166caa5b: 'Accordion Item' # Accordion Item
     0287dd5d-2c33-42d6-8978-4862e482ccc4: Image # Image
     0560f0d2-b031-47fd-9e82-8ce36f49cb14: 'Item Content' # Item Content
     1299b608-7157-4fe9-9a42-6299c974a09c: 'Video Library' # Video Library
+    27615b0c-35f3-444a-b2d9-746107c21ac3: 'Video Title' # Video Title
     28743f9e-a466-47a2-83f1-6fd07759ae6c: 'Crop ID' # Crop ID
     47900d8a-89a6-4d23-b94c-200c0d4e0728: 'Pixels Tools' # Pixels Tools
+    70275dc7-a7c8-4cc4-867a-78991c380203: 'Video Library' # Video Library
     73909da2-2188-47c2-b430-e2d10487305b: 'App subheader' # App subheader
     518081ba-c716-4eb2-9baf-9e2b6a599bc3: Home # Home
     3028913d-00b8-41f2-9d89-8165d3acf1dd: Seconds # Seconds
     38316602-88ba-4e10-acad-7b5bf1bb29c8: 'Sprout Time' # Sprout Time
     69818518-9a42-4d35-baaa-84a94214981c: Crops # Crops
+    91373590-fee4-4053-965d-b44852167de4: 'Vide Library' # Vide Library
     a2010028-13f0-42f3-a3e9-fc949380d98d: 'Pixels Tools' # Pixels Tools
     aaae132f-cfb2-4a2c-8206-e4c8d3e834bd: About # About
     bbcf1668-e766-4952-afde-576ee16361c7: App # App
@@ -57,15 +95,12 @@ meta:
     c85e8fbb-3446-42c2-a104-323ac7f69b1d: 'Item Header' # Item Header
     cda801fc-47b5-488d-a1e1-066860ab8050: Crops # Crops
     d5e6adb6-7ab6-4b01-ac40-a18997c7f5c6: 'Icon Picker' # Icon Picker
+    d5fc0c90-3565-4bc9-bf81-570187f7228e: Video # Video
+    d39655ad-2cf5-4eae-90dd-c59fdbe28075: 'Poster Image' # Poster Image
     dfaf12d4-4815-4d4d-966f-f7cb5f07d67c: w3g # w3g
     e663f665-5b34-4ab0-8696-35cd7c137cb6: 'App Header' # App Header
     e741494a-9a5f-4b19-bb87-7992c9722c03: Globals # Globals
 plugins:
-  icon-picker:
-    edition: standard
-    enabled: true
-    licenseKey: IS015025JULRKPUBEF411Q07
-    schemaVersion: 1.0.1
   minify:
     edition: standard
     enabled: true

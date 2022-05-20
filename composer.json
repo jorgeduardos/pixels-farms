@@ -5,7 +5,6 @@
         "ether/seo": "4.0.0",
         "leowebguy/mix-manifest": "1.0.1",
         "nystudio107/craft-minify": "^4.0.0-beta.2",
-        "verbb/icon-picker": "2.0.0-beta.2",
         "vlucas/phpdotenv": "^5.4.0"
     },
     "require-dev": {

@@ -1,0 +1,14 @@
+{% set img = video.posterImage.one() %}
+
+<a target="_blank" href="{{video.videoUrl}}" class="video-item">
+    <div class="preview-img">
+        <img src="{{img.url}}" alt="{{img.title}}">
+    </div>
+    <div class="description">
+        <h5>{{video.videoTitle}}</h5>
+        {% if video.description|length %}
+            <p class="is-medium">{{video.description}}</p>
+        {% endif %}
+        <p class="is-small author">author: {{video.author}}</p>
+    </div>
+</a>

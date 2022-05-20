@@ -24,6 +24,7 @@ fieldLayouts:
             tip: null
             title: null
             type: craft\fieldlayoutelements\entries\EntryTitleField
+            uid: 679bba87-3f1b-4eba-815e-427665313a3b
             warning: null
             width: 100
           -
@@ -33,6 +34,7 @@ fieldLayouts:
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
+            uid: d3ff736f-35ac-4b6b-ac3c-b6ce8b2b859d
             warning: null
             width: 100
           -
@@ -42,10 +44,24 @@ fieldLayouts:
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
+            uid: e5def97f-68df-4b4c-9b12-286545a12f55
+            warning: null
+            width: 100
+          -
+            type: craft\fieldlayoutelements\HorizontalRule
+            uid: db059962-a34b-4983-8fee-ae8d08de627c
+          -
+            fieldUid: 5d0f3cc5-8586-4d9e-bb43-dc1c59495285 # Videos
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 816fdfb9-cb93-4656-a47f-fe7655d86679
             warning: null
             width: 100
         name: Content
-        sortOrder: 1
+        uid: 4afc6f57-bb59-458b-a97d-4d72c6302c14
 handle: videoLibrary
 hasTitleField: false
 name: 'Video Library'

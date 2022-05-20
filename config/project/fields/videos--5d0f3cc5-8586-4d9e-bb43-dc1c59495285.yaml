@@ -1,0 +1,16 @@
+columnSuffix: null
+contentColumnType: string
+fieldGroup: 91373590-fee4-4053-965d-b44852167de4 # Vide Library
+handle: videos
+instructions: null
+name: Videos
+searchable: false
+settings:
+  contentTable: '{{%matrixcontent_videos}}'
+  maxBlocks: null
+  minBlocks: null
+  propagationKeyFormat: null
+  propagationMethod: all
+translationKeyFormat: null
+translationMethod: site
+type: craft\fields\Matrix

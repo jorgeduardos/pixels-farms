@@ -1,0 +1,185 @@
+field: 5d0f3cc5-8586-4d9e-bb43-dc1c59495285 # Videos
+fieldLayouts:
+  8d9748ca-8021-49d5-8b66-208bfbeda0cf:
+    tabs:
+      -
+        elements:
+          -
+            fieldUid: 27615b0c-35f3-444a-b2d9-746107c21ac3 # Video Title
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: c1c39fce-fb92-434b-9c02-306a4881edab
+            warning: null
+            width: 100
+          -
+            fieldUid: 7ca1c14b-705c-4b7b-aab9-a6c99b173d91 # Video URL
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 2f295841-56c2-4ad9-8159-32e7b59caa22
+            warning: null
+            width: 100
+          -
+            fieldUid: d39655ad-2cf5-4eae-90dd-c59fdbe28075 # Poster Image
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 050fdc6f-f897-4a96-8f5b-3f21da595fb4
+            warning: null
+            width: 100
+          -
+            fieldUid: 136cd890-ddab-4673-89ad-220e8f56d68b # Description
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: c5410321-9c1f-4935-ad2c-809903c3f873
+            warning: null
+            width: 100
+          -
+            fieldUid: 0ea7f256-794a-459c-84f3-030adea7170f # Author
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 315d9c66-0aa0-47dd-9f68-ba2af0d93448
+            warning: null
+            width: 100
+        name: Content
+        uid: fef7a7f7-d04e-4775-9ce3-6dc8b4c61a68
+fields:
+  0ea7f256-794a-459c-84f3-030adea7170f: # Author
+    columnSuffix: dkrgmrnn
+    contentColumnType: text
+    fieldGroup: null
+    handle: author
+    instructions: null
+    name: Author
+    searchable: false
+    settings:
+      byteLimit: null
+      charLimit: null
+      code: false
+      columnType: null
+      initialRows: 4
+      multiline: false
+      placeholder: null
+      uiMode: normal
+    translationKeyFormat: null
+    translationMethod: none
+    type: craft\fields\PlainText
+  7ca1c14b-705c-4b7b-aab9-a6c99b173d91: # Video URL
+    columnSuffix: yfgahidq
+    contentColumnType: string(255)
+    fieldGroup: null
+    handle: videoUrl
+    instructions: null
+    name: 'Video URL'
+    searchable: false
+    settings:
+      maxLength: 255
+      types:
+        - url
+    translationKeyFormat: null
+    translationMethod: none
+    type: craft\fields\Url
+  136cd890-ddab-4673-89ad-220e8f56d68b: # Description
+    columnSuffix: tkpmnbys
+    contentColumnType: text
+    fieldGroup: null
+    handle: description
+    instructions: null
+    name: Description
+    searchable: false
+    settings:
+      byteLimit: null
+      charLimit: null
+      code: false
+      columnType: null
+      initialRows: 4
+      multiline: false
+      placeholder: null
+      uiMode: normal
+    translationKeyFormat: null
+    translationMethod: none
+    type: craft\fields\PlainText
+  27615b0c-35f3-444a-b2d9-746107c21ac3: # Video Title
+    columnSuffix: zrcehfro
+    contentColumnType: text
+    fieldGroup: null
+    handle: videoTitle
+    instructions: null
+    name: 'Video Title'
+    searchable: false
+    settings:
+      byteLimit: null
+      charLimit: null
+      code: false
+      columnType: null
+      initialRows: 4
+      multiline: false
+      placeholder: null
+      uiMode: normal
+    translationKeyFormat: null
+    translationMethod: none
+    type: craft\fields\PlainText
+  d39655ad-2cf5-4eae-90dd-c59fdbe28075: # Poster Image
+    columnSuffix: null
+    contentColumnType: string
+    fieldGroup: null
+    handle: posterImage
+    instructions: null
+    name: 'Poster Image'
+    searchable: false
+    settings:
+      allowSelfRelations: false
+      allowSubfolders: false
+      allowUploads: true
+      allowedKinds:
+        - image
+      defaultUploadLocationSource: 'volume:2a6dbe62-c3c1-440b-b595-39b8061bbbc0' # Crops
+      defaultUploadLocationSubpath: null
+      localizeRelations: false
+      maxRelations: 1
+      minRelations: null
+      previewMode: full
+      restrictFiles: true
+      restrictLocation: true
+      restrictedDefaultUploadSubpath: null
+      restrictedLocationSource: 'volume:70275dc7-a7c8-4cc4-867a-78991c380203' # Video Library
+      restrictedLocationSubpath: null
+      selectionCondition:
+        __assoc__:
+          -
+            - elementType
+            - craft\elements\Asset
+          -
+            - fieldContext
+            - global
+          -
+            - class
+            - craft\elements\conditions\assets\AssetCondition
+      selectionLabel: null
+      showSiteMenu: false
+      showUnpermittedFiles: false
+      showUnpermittedVolumes: false
+      source: null
+      sources: '*'
+      targetSiteId: null
+      validateRelatedElements: false
+      viewMode: large
+    translationKeyFormat: null
+    translationMethod: site
+    type: craft\fields\Assets
+handle: video
+name: Video
+sortOrder: 1
