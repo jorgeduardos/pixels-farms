@@ -1,0 +1,20 @@
+columnSuffix: gdwzywtm
+contentColumnType: smallint(4)
+fieldGroup: cfe15f5d-1adf-433b-9762-020ffb8390a1 # Farm
+handle: number
+instructions: null
+name: Number
+searchable: false
+settings:
+  decimals: 0
+  defaultValue: null
+  max: 5000
+  min: 1
+  prefix: null
+  previewCurrency: null
+  previewFormat: decimal
+  size: null
+  suffix: null
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Number

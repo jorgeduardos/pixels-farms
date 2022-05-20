@@ -55,6 +55,10 @@ p {
     &.is-medium{
         @include fontsize(1.4rem, 1.4rem, 1.4rem);
     }
+
+    a{
+        color: $blue;
+    }
 }
 
 .is-rock{

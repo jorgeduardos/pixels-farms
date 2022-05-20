@@ -1,0 +1,12 @@
+columnSuffix: dvqkqmht
+contentColumnType: string(7)
+fieldGroup: cfe15f5d-1adf-433b-9762-020ffb8390a1 # Farm
+handle: colorIndicator
+instructions: null
+name: 'Color Indicator'
+searchable: false
+settings:
+  defaultColor: null
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Color

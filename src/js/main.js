@@ -5,7 +5,9 @@ import {
     filterFarmsDom, defaultFarmKey as mainFarmKey
 } from './consts';
 import CROPS from './crops';
-import { openPop, closePop, clearCheckBoxes, download, secondsToHourFormat, handleTimerStart, showError, importClean } from './misc'
+import { openPop, closePop, clearCheckBoxes, download, secondsToHourFormat, handleTimerStart, 
+    showError, importClean, updateFarmCount
+} from './misc'
 import { startFarm, deleteFarm, editSingleFarmForm, selectFarm } from './farm-events';
 import {
     openFarm, editFarm, createFarmNode, updateFarmDom, findFarm,
@@ -57,7 +59,7 @@ if (storedFarms != null) {
     });
 
     //update far counters after creating farm nodes
-    // updateFarmCount(FARMS);
+    updateFarmCount(FARMS);
 
     if (FARMS.length > 1) {
         selectAllFarmsDom.disabled = false;
@@ -359,7 +361,7 @@ document.getElementById('delete-all-farms').addEventListener('click', function (
 
 
     localStorage.setItem(mainFarmKey, JSON.stringify(FARMS));
-    // updateFarmCount(FARMS);
+    updateFarmCount(FARMS);
 })
 
 
@@ -397,10 +399,10 @@ document.getElementById('start-all-farms').addEventListener('click', function (e
                 startButton.disabled = false;
                 farmDom.classList.add('completed');
                 farmDom.classList.remove('started');
-                // updateFarmCount(farms);
+                updateFarmCount(FARMS);
             });
 
-            // updateFarmCount(farms);
+            updateFarmCount(FARMS);
             openFarm(farm.number);
         } else {
             farmsStarted += 1;

@@ -4,6 +4,18 @@ div.app-header{
         display: flex;
         justify-content: space-between;
 
+        >div{
+            p{
+                margin: 0;
+                max-width: 650px;
+                color: $rockGray;
+
+                em{
+                    font-size: 1.1rem;
+                }
+            }
+        }
+
         .buttons-container{
             display: flex;
             align-items: center;
@@ -14,10 +26,6 @@ div.app-header{
         margin-bottom: 1rem;
     }
 
-    p{
-        margin: 0;
-        max-width: 650px;
-    }
 
     .btn{
 

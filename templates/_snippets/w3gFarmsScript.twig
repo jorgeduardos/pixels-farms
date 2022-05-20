@@ -1,0 +1,30 @@
+{% set w3gFarms = craft.entries().section('w3gFarms').all() %}
+{% set lastUpdated = entry.lastUpdated|datetime('short') %}
+<script>
+
+    var forceUpdate = false;
+    if("{{lastUpdated}}" != localStorage.getItem('last-updated')){
+        localStorage.setItem('last-updated', "{{lastUpdated}}");
+        forceUpdate = true;
+    }
+
+    const w3gFarms = [
+        {% for farm in w3gFarms %}
+            {% set crop = farm.defaultCrop.one() %}
+            {
+                number: {{farm.number}},
+                crop: {
+                    id: {{crop.id}},
+                    name: "{{crop.title}}",
+                    sproutTimeSeconds: {{crop.sproutTimeSeconds}}
+                },
+                timer: null,
+                startTime: null,
+                info: {
+                    color: "{{farm.colorIndicator|length ? farm.colorIndicator : null}}",
+                    notes: "{{farm.notes|length ? farm.notes : ''}}"
+                }
+            },
+        {% endfor %}
+    ]
+</script>

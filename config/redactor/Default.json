@@ -12,8 +12,7 @@
   ],
   "plugins": [
     "fullscreen",
-    "video",
-    "icon-picker"
+    "video"
   ],
   "imageFigure": false,
   "linkNewTab": true,

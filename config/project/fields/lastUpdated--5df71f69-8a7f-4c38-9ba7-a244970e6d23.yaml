@@ -1,0 +1,17 @@
+columnSuffix: ezyrctab
+contentColumnType: datetime
+fieldGroup: 267f96de-0a6d-432d-91b5-5b9c341ea9f0 # W3G
+handle: lastUpdated
+instructions: null
+name: 'Last Updated'
+searchable: false
+settings:
+  max: null
+  min: null
+  minuteIncrement: 5
+  showDate: true
+  showTime: true
+  showTimeZone: false
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Date

@@ -10,6 +10,51 @@ div.farms-ui {
     background-color: $white;
     // margin-bottom:  3rem;
 
+    h5{
+        margin-right: 3rem;
+    }
+
+    .farm-counter{
+        display: flex;
+        margin-right: auto;
+        align-items: center;
+        color: #84818a;
+        border: 1px solid #F3F3F3;
+        border-radius: 8px;
+        padding: .8rem;
+
+        >div{
+            display: inherit;
+            align-items: center;
+            font-size: 1.4rem;
+            font-weight: 500;
+            padding: 0 1rem;
+            color: $black;
+            position: relative;
+
+            &:nth-child(1),
+            &:nth-child(2) {
+                &::after {
+                    position: absolute;
+                    height: 100%;
+                    width: 1px;
+                    content: '';
+                    background-color: #e4e4e4;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto 0;
+                }
+            }
+            // color: #84818a;
+
+            span{
+                margin-left: 3px;
+                color: $black;
+            }
+        }
+    }
+
     .buttons-container {
         display: flex;
 

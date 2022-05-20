@@ -112,9 +112,10 @@ export function createFarmNode(farm) {
             <p class="timer">${cropTimer.hours == 0 ? '00' : cropTimer.hours}:${cropTimer.minutes == 0 ? '00' : cropTimer.minutes}:${cropTimer.seconds == 0 ? '00' : cropTimer.seconds}</p>
 
 
-            <button class="start-farm btn-icon" title="Start Farm">
+            <button class="start-farm btn-icon text" title="Start Farm">
                 <svg class="play-svg" width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.97 0C5.44997 0 0.969971 4.48 0.969971 10C0.969971 15.52 5.44997 20 10.97 20C16.49 20 20.97 15.52 20.97 10C20.97 4.48 16.5 0 10.97 0ZM13.97 12.23L11.07 13.9C10.71 14.11 10.31 14.21 9.91997 14.21C9.51997 14.21 9.12997 14.11 8.76997 13.9C8.04997 13.48 7.61997 12.74 7.61997 11.9V8.55C7.61997 7.72 8.04997 6.97 8.76997 6.55C9.48997 6.13 10.35 6.13 11.08 6.55L13.98 8.22C14.7 8.64 15.13 9.38 15.13 10.22C15.13 11.06 14.7 11.81 13.97 12.23Z" fill="#4FBF67"/></svg>
                 <svg class="completed-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z" fill="white"/></svg>
+                start
             </button>
         </div>
         <div class="container action">
@@ -199,7 +200,7 @@ export function addFarm(formDom, form, farms, localStorageKey, dev = false) {
     }
 
     farms.push(farm);
-    // updateFarmCount(farms);
+    updateFarmCount(farms);
 
     //reset form fields
     formDom.querySelector('.farmNumber').value = ''

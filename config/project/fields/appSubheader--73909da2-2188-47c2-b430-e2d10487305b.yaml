@@ -2,18 +2,26 @@ columnSuffix: rgxocwpk
 contentColumnType: text
 fieldGroup: 53bb1464-b0cd-4052-809a-dab32005fc02 # Common
 handle: appSubheader
-instructions: ''
+instructions: null
 name: 'App subheader'
 searchable: false
 settings:
-  byteLimit: null
-  charLimit: null
-  code: ''
-  columnType: null
-  initialRows: '4'
-  multiline: ''
-  placeholder: null
-  uiMode: normal
+  availableTransforms: '*'
+  availableVolumes: ''
+  columnType: text
+  configSelectionMode: choose
+  defaultTransform: ''
+  manualConfig: ''
+  purifierConfig: null
+  purifyHtml: true
+  redactorConfig: Simple.json
+  removeEmptyTags: false
+  removeInlineStyles: false
+  removeNbsp: false
+  showHtmlButtonForNonAdmins: false
+  showUnpermittedFiles: false
+  showUnpermittedVolumes: false
+  uiMode: enlarged
 translationKeyFormat: null
 translationMethod: none
-type: craft\fields\PlainText
+type: craft\redactor\Field

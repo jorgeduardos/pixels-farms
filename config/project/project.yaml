@@ -1,4 +1,4 @@
-dateModified: 1653004313
+dateModified: 1653084960
 elementSources:
   craft\elements\Asset:
     -
@@ -22,6 +22,31 @@ elementSources:
       type: native
     -
       key: 'folder:7a45406d-e11f-499f-80ba-0cabff5fed7c'
+      type: native
+  craft\elements\Entry:
+    -
+      key: '*'
+      type: native
+    -
+      key: singles
+      type: native
+    -
+      heading: Channels
+      type: heading
+    -
+      key: 'section:69818518-9a42-4d35-baaa-84a94214981c' # Crops
+      type: native
+    -
+      heading: Structures
+      type: heading
+    -
+      disabled: false
+      key: 'section:a0860ef3-3c9d-4ab4-a971-81d23723c2f3' # W3G Farms
+      tableAttributes:
+        - 'field:4c9990d5-e7cf-4126-ae69-b11e34291f27' # Default Crop
+        - 'field:27f1f900-5a51-4a28-a79a-a96fa74eb615' # Color Indicator
+        - 'field:bbffa576-6915-45bb-9e6e-d24d714421f8' # Notes
+        - link
       type: native
 email:
   fromEmail: jorgeduardo.1994@gmail.com
@@ -62,19 +87,25 @@ meta:
     0eaf6050-ecac-48e0-81d3-c4c0c6fe12a3: 'Public Schema' # Public Schema
     2a6dbe62-c3c1-440b-b595-39b8061bbbc0: Crops # Crops
     2fd6534b-22cc-4fdf-84c1-2f9545b75bd1: 'Video Library' # Video Library
+    4c9990d5-e7cf-4126-ae69-b11e34291f27: 'Default Crop' # Default Crop
     5b773b1c-3e44-4c0c-bed8-91c9940a7a61: App # App
     5d0f3cc5-8586-4d9e-bb43-dc1c59495285: Videos # Videos
+    5df71f69-8a7f-4c38-9ba7-a244970e6d23: 'Last Updated' # Last Updated
     6d5619c6-6d9b-45f9-91e8-0df172a2b08e: Icons # Icons
     7ca1c14b-705c-4b7b-aab9-a6c99b173d91: 'Video URL' # Video URL
+    7d8c6c93-e58e-4dd0-9691-91c41f39b8bc: Default # Default
     08f82119-a2df-4da8-990b-aca5231c953b: Default # Default
     8fcb881c-b94d-4ba7-bc40-1be1a96f7320: 'About Accordion' # About Accordion
     9da0f2bd-7458-4e1e-a715-b4beb701a03a: About # About
     18d52844-51e2-44f6-bb5f-885e7dbbc311: Minutes # Minutes
+    27f1f900-5a51-4a28-a79a-a96fa74eb615: 'Color Indicator' # Color Indicator
     53bb1464-b0cd-4052-809a-dab32005fc02: Common # Common
-    61f1a4f7-2a73-4cb7-a7e4-74542135ccd6: w3g # w3g
+    61f1a4f7-2a73-4cb7-a7e4-74542135ccd6: 'W3G Landing' # W3G Landing
     72a12008-61d1-46be-9a97-f87cc94a5987: Hours # Hours
+    85bf3862-4ad8-412f-8440-a686e5b9ca0b: 'Sprout Time' # Sprout Time
     136cd890-ddab-4673-89ad-220e8f56d68b: Description # Description
     149b3668-c786-4ca3-8a89-6bab166caa5b: 'Accordion Item' # Accordion Item
+    267f96de-0a6d-432d-91b5-5b9c341ea9f0: W3G # W3G
     0287dd5d-2c33-42d6-8978-4862e482ccc4: Image # Image
     0560f0d2-b031-47fd-9e82-8ce36f49cb14: 'Item Content' # Item Content
     1299b608-7157-4fe9-9a42-6299c974a09c: 'Video Library' # Video Library
@@ -88,16 +119,19 @@ meta:
     38316602-88ba-4e10-acad-7b5bf1bb29c8: 'Sprout Time' # Sprout Time
     69818518-9a42-4d35-baaa-84a94214981c: Crops # Crops
     91373590-fee4-4053-965d-b44852167de4: 'Vide Library' # Vide Library
+    a0860ef3-3c9d-4ab4-a971-81d23723c2f3: 'W3G Farms' # W3G Farms
     a2010028-13f0-42f3-a3e9-fc949380d98d: 'Pixels Tools' # Pixels Tools
     aaae132f-cfb2-4a2c-8206-e4c8d3e834bd: About # About
     bbcf1668-e766-4952-afde-576ee16361c7: App # App
+    bbffa576-6915-45bb-9e6e-d24d714421f8: Notes # Notes
     c1ace2f2-2cda-4869-84e0-42e69977523b: Home # Home
     c85e8fbb-3446-42c2-a104-323ac7f69b1d: 'Item Header' # Item Header
+    c6045d05-9d13-43d9-995a-6235c9d06de7: Number # Number
     cda801fc-47b5-488d-a1e1-066860ab8050: Crops # Crops
-    d5e6adb6-7ab6-4b01-ac40-a18997c7f5c6: 'Icon Picker' # Icon Picker
+    cfe15f5d-1adf-433b-9762-020ffb8390a1: Farm # Farm
     d5fc0c90-3565-4bc9-bf81-570187f7228e: Video # Video
     d39655ad-2cf5-4eae-90dd-c59fdbe28075: 'Poster Image' # Poster Image
-    dfaf12d4-4815-4d4d-966f-f7cb5f07d67c: w3g # w3g
+    dfaf12d4-4815-4d4d-966f-f7cb5f07d67c: 'W3G Landing' # W3G Landing
     e663f665-5b34-4ab0-8696-35cd7c137cb6: 'App Header' # App Header
     e741494a-9a5f-4b19-bb87-7992c9722c03: Globals # Globals
 plugins:

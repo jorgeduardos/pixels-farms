@@ -8,7 +8,6 @@ const CROPS = [
             seconds: 0
         },
         sproutTimeSeconds: 7200
-        // sproutTimeSeconds: 70
     },
     {
         id: 1,

@@ -1,4 +1,4 @@
-import {w3gFarms} from './w3gFarms';
+// import {w3gFarms} from './w3gFarms';
 import Sortable from 'sortablejs';
 import { arrayMoveMutable } from 'array-move';
 import {
@@ -6,12 +6,14 @@ import {
     filterFarmsDom, w3gFarmKey as mainFarmKey
 } from './consts';
 import CROPS from './crops';
-import { openPop, closePop, clearCheckBoxes, download, secondsToHourFormat, handleTimerStart, showError, importClean } from './misc'
+import { openPop, closePop, clearCheckBoxes, download, secondsToHourFormat, 
+    handleTimerStart, showError, importClean, updateFarmCount } from './misc'
 import { startFarm, deleteFarm, editSingleFarmForm, selectFarm } from './farm-events';
 import {
     openFarm, editFarm, createFarmNode, updateFarmDom, findFarm,
     continueFarmTimer, addFarm
 } from './farm-helpers';
+
 
 var localStoreCheck = JSON.parse(localStorage.getItem(mainFarmKey));
 
@@ -25,6 +27,26 @@ var dev = false;
 var storedFarms = JSON.parse(localStorage.getItem(mainFarmKey));
 var FARMS = [];
 var FARMStoUpdate = [];
+
+//coming from w3gFarmsScript.twig
+if(forceUpdate){
+    storedFarms.forEach((farm, i) => {
+        let exist = false;
+        w3gFarms.forEach( w3gFarm => {
+            if(farm.number == w3gFarm.number){
+                exist = true;
+                return
+            }
+        })
+        if(!exist){
+            w3gFarms.splice(i, 0, farm)
+        }
+    })
+
+    storedFarms = w3gFarms;
+    localStorage.setItem(mainFarmKey, JSON.stringify(storedFarms));
+    showError('New W3G farms were added', 2)
+}
 
 
 // ************************************** //
@@ -59,7 +81,7 @@ if (storedFarms != null) {
     });
 
     //update far counters after creating farm nodes
-    // updateFarmCount(FARMS);
+    updateFarmCount(FARMS);
 
     if (FARMS.length > 1) {
         selectAllFarmsDom.disabled = false;
@@ -361,7 +383,7 @@ document.getElementById('delete-all-farms').addEventListener('click', function (
 
 
     localStorage.setItem(mainFarmKey, JSON.stringify(FARMS));
-    // updateFarmCount(FARMS);
+    updateFarmCount(FARMS);
 })
 
 
@@ -399,10 +421,10 @@ document.getElementById('start-all-farms').addEventListener('click', function (e
                 startButton.disabled = false;
                 farmDom.classList.add('completed');
                 farmDom.classList.remove('started');
-                // updateFarmCount(farms);
+                updateFarmCount(FARMS);
             });
 
-            // updateFarmCount(farms);
+            updateFarmCount(FARMS);
             openFarm(farm.number);
         } else {
             farmsStarted += 1;

@@ -64,7 +64,8 @@
         font-size: 1.6rem;
         cursor: pointer;
         transition: transform 0.2s ease-out;
-
+        border: 1px solid #F3F3F3;
+        
         svg,
         img {
             width: 20px;
@@ -76,9 +77,9 @@
             }
         }
 
-        &:not(.start-farm) {
-            border: 1px solid #F3F3F3;
-        }
+        // &:not(.start-farm) {
+        //     border: 1px solid #F3F3F3;
+        // }
 
         &:hover {
             transform: scale(1.03);

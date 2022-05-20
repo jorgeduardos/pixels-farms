@@ -1,6 +1,5 @@
-// import findFarm, updateFarmCount, openFarm, Timer
 import './vendors/easytimer.min';
-import { handleTimerStart, openPop, secondsToHourFormat} from './misc';
+import { handleTimerStart, openPop, secondsToHourFormat, updateFarmCount} from './misc';
 import { findFarm, openFarm } from './farm-helpers';
 import { selectAllFarmsDom, editPopUpDom } from './consts';
 
@@ -38,10 +37,10 @@ export function startFarm(button, farms, localStorageKey) {
         target.disabled = false;
         farmDom.classList.add('completed');
         farmDom.classList.remove('started');
-        // updateFarmCount(farms);
+        updateFarmCount(farms);
     });
 
-    // updateFarmCount(farms);
+    updateFarmCount(farms);
     openFarm(farm.number);
 }
 
@@ -69,7 +68,7 @@ export function deleteFarm(button, farms, localStorageKey, dev = false) {
 
     localStorage.setItem(localStorageKey, JSON.stringify(farms));
     farmDom.remove();
-    // updateFarmCount(farms);
+    updateFarmCount(farms);
 }
 
 export function editSingleFarmForm(button, farms, dev = false) {

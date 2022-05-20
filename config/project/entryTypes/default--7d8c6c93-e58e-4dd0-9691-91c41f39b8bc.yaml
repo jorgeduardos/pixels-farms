@@ -1,5 +1,5 @@
 fieldLayouts:
-  fece4871-dfdc-444c-b941-98bdb197bf43:
+  9cec6ffa-71a7-48a2-8ac5-7f421d3657ea:
     tabs:
       -
         elements:
@@ -24,46 +24,56 @@ fieldLayouts:
             tip: null
             title: null
             type: craft\fieldlayoutelements\entries\EntryTitleField
-            uid: bee271c6-b253-4ef6-9bf9-782741f3ddce
+            uid: 98f02abd-a1bd-4a02-ad02-f9a090671bbf
             warning: null
             width: 100
           -
-            fieldUid: e663f665-5b34-4ab0-8696-35cd7c137cb6 # App Header
+            fieldUid: c6045d05-9d13-43d9-995a-6235c9d06de7 # Number
+            instructions: null
+            label: null
+            required: true
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 94421db1-af24-421e-b7eb-ad2b9d766436
+            warning: null
+            width: 100
+          -
+            fieldUid: 4c9990d5-e7cf-4126-ae69-b11e34291f27 # Default Crop
             instructions: null
             label: null
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
-            uid: 70711eda-2b04-4772-ba98-1a6fce5aa532
+            uid: ddb36c42-aaf0-4ad7-8000-6f06cae30f3f
             warning: null
             width: 100
           -
-            fieldUid: 73909da2-2188-47c2-b430-e2d10487305b # App subheader
+            fieldUid: 27f1f900-5a51-4a28-a79a-a96fa74eb615 # Color Indicator
             instructions: null
             label: null
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
-            uid: 9df87e51-a187-43f8-9fe5-e81597300e7f
+            uid: 0c50424b-e86e-4b0c-baab-9af4972f8d42
             warning: null
             width: 100
           -
-            fieldUid: 5df71f69-8a7f-4c38-9ba7-a244970e6d23 # Last Updated
-            instructions: 'Change this date to force refresh on W3G farms'
+            fieldUid: bbffa576-6915-45bb-9e6e-d24d714421f8 # Notes
+            instructions: null
             label: null
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
-            uid: cfa9f418-b8b8-4534-aaed-b1c7d499e03c
+            uid: e6a88807-cb6f-4eef-9774-efd7dd47a52c
             warning: null
             width: 100
         name: Content
-        uid: cbccfd13-e223-4471-8b5a-741b4ae2ac2a
-handle: w3g
+        uid: 748ce54b-e674-4591-b409-8f47e2968930
+handle: default
 hasTitleField: false
-name: 'W3G Landing'
-section: dfaf12d4-4815-4d4d-966f-f7cb5f07d67c # W3G Landing
+name: Default
+section: a0860ef3-3c9d-4ab4-a971-81d23723c2f3 # W3G Farms
 sortOrder: 1
-titleFormat: '{section.name|raw}'
+titleFormat: '{number}'
 titleTranslationKeyFormat: null
 titleTranslationMethod: site

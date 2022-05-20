@@ -14,7 +14,7 @@
     &.completed{
         background-color: $green !important;
 
-        button:not(.start-farm){
+        button{
             color: $white;
 
             &:hover{
@@ -29,10 +29,6 @@
             }
 
             .notes{
-
-                // .content{
-                //     box-shadow: 0 12px 40px #11111154;
-                // }
 
                 svg path{
                     stroke: $white;
@@ -225,16 +221,21 @@
         }
 
         .start-farm{
-
+            // border: 1px solid ;
+            padding: .8rem 1.2rem;
+            line-height: 1;
             &:disabled{
                 pointer-events: none;
+                color: #D6D6D8;
                 svg path{
                     fill: #D6D6D8;
                 }
             }
             svg{
+                margin-right: 5px;
                 &.completed-svg{
                     display: none;
+                    height: 17px;
                 }
             }
         }
