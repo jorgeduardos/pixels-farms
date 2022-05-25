@@ -169,11 +169,6 @@ farmListDom.addEventListener('click', function (e) {
         //delete frm from farm-events.js
         deleteFarm(e.target, FARMS, mainFarmKey, dev)
 
-    } else if (e.target.classList.contains('open-farm')) {
-
-        let farmDom = e.target.parentElement.parentElement;
-        openFarm(farmDom.id);
-
     } else if (e.target.classList.contains('edit-farm')) {
 
         editSingleFarmForm(e.target, FARMS);
@@ -181,6 +176,27 @@ farmListDom.addEventListener('click', function (e) {
     } else if (e.target.classList.contains('select-farm')) {
 
         selectFarm(e.target, FARMStoUpdate, FARMS, dev);
+
+    } else if (e.target.classList.contains('reset-farm')) {
+
+        let farmDom = e.target.parentElement.parentElement;
+        let farm = findFarm(farmDom.id, FARMS).farm;
+        let nextDomE = farmDom.nextElementSibling;
+
+        farm.startTime = null;
+        farm.timer = null;
+        
+        //remove farm
+        farmDom.remove();
+
+        //build dom el
+        farmListDom.insertBefore(createFarmNode(farm), nextDomE)
+
+        updateFarmCount(FARMS);
+        showError(`Farm ${farm.number} reseted`, 2);
+
+        //save farms
+        localStorage.setItem(mainFarmKey, JSON.stringify(FARMS));
 
     }
 })
@@ -427,6 +443,42 @@ document.getElementById('start-all-farms').addEventListener('click', function (e
 })
 
 // ************************************** //
+//           MASS RESET FARMS             //  add a method to check if farms are online
+// ************************************** //
+document.getElementById('reset-all-farms').addEventListener('click', function (e) {
+
+    for (let i = 0; i < FARMStoUpdate.length; i++) {
+        let farmToReset = FARMStoUpdate[i].number;
+        let farmToResetDom = document.getElementById(FARMStoUpdate[i].number);
+        let nextDomE = farmToResetDom.nextElementSibling;
+
+        for (let f = 0; f < FARMS.length; f++) {
+            let farm = FARMS[f];
+
+            if (farm.number == farmToReset) {
+                farm.startTime = null;
+                farm.timer = null;
+
+                //remove farm
+                farmToResetDom.remove();
+
+                //build dom el
+                farmListDom.insertBefore(createFarmNode(farm), nextDomE)
+            }
+        }
+    }
+
+    updateFarmCount(FARMS);
+    showError(`${FARMStoUpdate.length} farms reseted`, 2);
+
+    FARMStoUpdate = [];
+    document.querySelector('.bulk-actions').style.display = 'none';
+
+    //save farms
+    localStorage.setItem(mainFarmKey, JSON.stringify(FARMS));
+})
+
+// ************************************** //
 //             MASS SELECT                //
 // ************************************** //
 selectAllFarmsDom.addEventListener('change', function (e) {
@@ -542,19 +594,6 @@ document.getElementById('file')
     })
 
 
-// var examplePlaceholder = '[{"number":"3084","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null},{"number":"3223","crop":{"id":2,"name":"Scarrot","sproutTime":{"hours":5,"minutes":20,"seconds":0}},"timer":null,"startTime":null}';
-// var examplePlaceholder2 = 'https://play.pixels.online/farm1688\nhttps://play.pixels.online/farm2766\nhttps://play.pixels.online/farm2130\nhttps://play.pixels.online/farm3535';
-// var importTextArea = document.getElementById('import-data');
-// document.querySelector(".file-type-container").addEventListener('click', function (event) {
-//     if (event.target && event.target.matches("input[type='radio']")) {
-//         if (event.target.value == 'exported') {
-//             importTextArea.setAttribute('placeholder', examplePlaceholder)
-//         } else {
-//             importTextArea.setAttribute('placeholder', examplePlaceholder2)
-//         }
-//     }
-// });
-
 //mass import event
 
 importForm.addEventListener('submit', function (e) {
@@ -570,23 +609,6 @@ importForm.addEventListener('submit', function (e) {
         importClean(fr.result, FARMS, mainFarmKey);
     }
 })
-
-// ************************************** //
-//             RESET FARMS                //
-// ************************************** //
-// document.getElementById('reset').addEventListener('click', function (e) {
-
-//     if (FARMS.length > 0) {
-
-//         FARMS.forEach(farm => {
-//             farm.startTime = null;
-//             farm.timer = null;
-//         })
-
-//         localStorage.setItem(mainFarmKey, JSON.stringify(FARMS));
-//         window.location.reload();
-//     }
-// })
 
 // ************************************** //
 //              ACCOIRDIONS               //

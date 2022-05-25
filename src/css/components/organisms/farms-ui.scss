@@ -97,6 +97,12 @@ div.farms-ui {
                 }
             }
 
+            &.reset{
+                img{
+                    width: 17px;
+                }
+            }
+
             img {
                 width: 20px;
                 transition: all 0.2s ease-in-out;
