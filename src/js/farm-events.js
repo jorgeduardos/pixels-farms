@@ -11,7 +11,8 @@ export function startFarm(button, farms, localStorageKey) {
 
     let farmDom = target.parentElement.parentElement;
     farmDom.classList.remove('completed');
-    let farm = findFarm(farmDom.id, farms).farm;
+    let farmFromArr = findFarm(farmDom.id, farms);
+    let farm = farmFromArr.farm;
 
     let timerDom = farmDom.querySelector('.timer');
     let timer = new easytimer.Timer();
@@ -42,10 +43,9 @@ export function startFarm(button, farms, localStorageKey) {
 
     updateFarmCount(farms);
 
-    if(localStorage.getItem('open-iframe') == 'false'){
-        openFarmIframe(`https://play.pixels.online/farm${farm.number}`);
-    }else{
-        openFarm(farm.number);
+    return {
+        farm: farm,
+        farmDom: farmDom
     }
 }
 
@@ -166,14 +166,16 @@ export function selectFarm(button, farmsToUpdate, farms, dev = false){
     // }
 }
 
-export function openFarmIframe(url){
-    console.log(url);
-    let iframe = iframePop.querySelector('iframe');
-    
-    // if(iframe.getAttribute('src') != url){
-    //     iframe.setAttribute('src', url);
-    // }
+export function openFarmIframe(url, nextFarm){
+    let iframe = iframePop.querySelector('.main-i');
+    let iframeS = iframePop.querySelector('.second-i');
+    iframe.classList.add('active')
     iframe.setAttribute('src', url);
+
+    if(nextFarm != null){
+        iframeS.setAttribute('src', `https://play.pixels.online/farm${nextFarm.id}`);
+    }
+
     iframePop.classList.add('open');
 
 }

@@ -1,19 +1,20 @@
-div.settings{
+div.settings {
     padding: 2rem 5rem;
 
-    .input-container{
+    .input-container {
         display: flex;
         align-items: center;
-        input{
+
+        input {
             margin-right: 8px;
         }
 
-        p{
+        p {
             margin: 0;
         }
     }
 
-    .disclaimer{
+    .disclaimer {
         font-style: italic;
         font-size: 1.1rem;
     }

@@ -1,4 +1,5 @@
 import Sortable from 'sortablejs';
+import { gsap } from 'gsap';
 import { arrayMoveMutable } from 'array-move';
 import {
     farmListDom, editPopUpDom, massEditPopUpDom, importPopUpDom, selectAllFarmsDom, exportAllFarms,
@@ -31,6 +32,7 @@ var dev = false;
 var storedFarms = JSON.parse(localStorage.getItem(mainFarmKey));
 var FARMS = [];
 var FARMStoUpdate = [];
+var nextFarmDom = {};
 
 //coming from w3gFarmsScript.twig
 if(mainFarmKey == 'w3gfarms' && forceUpdate){
@@ -193,7 +195,15 @@ farmListDom.addEventListener('click', function (e) {
     if (e.target.classList.contains('start-farm')) {
 
         //start farm from farm-events.js
-        startFarm(e.target, FARMS, mainFarmKey)
+        let farmObj = startFarm(e.target, FARMS, mainFarmKey);
+
+        if(localStorage.getItem('open-iframe') == 'false'){
+            nextFarmDom = farmObj.farmDom.nextElementSibling;
+            console.log('upcoming farm: ', nextFarmDom.id)
+            openFarmIframe(`https://play.pixels.online/farm${farmObj.farm.number}`, farmObj.farmDom.nextElementSibling);
+        }else if(localStorage.getItem('open-iframe') == 'true'){
+            openFarm(farmObj.farm.number);
+        }
 
     } else if (e.target.classList.contains('delete-farm')) {
 
@@ -241,13 +251,6 @@ farmListDom.addEventListener('click', function (e) {
     }
 })
 
-document.getElementById('general-store').addEventListener('click', (e)=>{
-    if(localStorage.getItem('open-iframe') == 'false'){
-        e.preventDefault()
-        openFarmIframe(e.currentTarget.getAttribute('href'));
-    }
-})
-
 // ************************************** //
 //                SETTINGS                //
 // ************************************** //
@@ -281,7 +284,8 @@ popUps.forEach(element => {
     //close button event
     closePopBtn.addEventListener('click', () => {
         if(element.classList.contains('game-pop')){
-            iframePop.querySelector('iframe').setAttribute('src', '')
+            iframePop.querySelector('.main-i').setAttribute('src', '');
+            iframePop.querySelector('.second-i').setAttribute('src', '');
         }
         closePop(element);
     })
@@ -414,6 +418,57 @@ function filterFarms(filterBy) {
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+// ************************************** //
+//                IFRAME                  //
+// ************************************** //
+
+const refreshIframe = document.getElementById('refresh-iframe');
+const nextFarmI = document.getElementById('next-farm-iframe');
+
+refreshIframe.addEventListener('click', ()=>{
+    let activeUrl = iframePop.querySelector('iframe.active').getAttribute('src')
+    iframePop.querySelector('iframe.active').setAttribute('src', activeUrl)
+})
+
+nextFarmI.addEventListener('click', ()=>{
+    if(nextFarmDom == null || nextFarmDom.classList.contains('started')){
+
+        console.log('in if');
+
+        closePop(iframePop);
+        iframePop.querySelector('.main-i').setAttribute('src', '');
+        iframePop.querySelector('.second-i').setAttribute('src', '');
+        return
+    }
+
+    nextFarmI.disabled = true;
+
+    // console.log('upcoming farm: ', nextFarmDom.id)
+    let currentActive = document.querySelector('iframe.active');
+    let buttonDom = nextFarmDom.querySelector('.start-farm');
+    let nextFarmObj = startFarm(buttonDom, FARMS, mainFarmKey);
+
+    
+
+    gsap.to(currentActive, {x: -400, alpha: 0, onComplete: ()=>{
+        document.querySelector('iframe:not(.active)').classList.add('active');
+        currentActive.classList.remove('active');
+        currentActive.setAttribute('src', `https://play.pixels.online/farm${nextFarmObj.farmDom.nextElementSibling.id}`)
+
+        nextFarmDom = nextFarmObj.farmDom.nextElementSibling;
+        gsap.set(currentActive, {alpha: 1, x: 0})
+        nextFarmI.disabled = false;
+    }})
+
+})
+
+document.getElementById('general-store').addEventListener('click', (e)=>{
+    if(localStorage.getItem('open-iframe') == 'false'){
+        e.preventDefault()
+        openFarmIframe(e.currentTarget.getAttribute('href'));
+    }
+})
 
 
 // ************************************** //

@@ -28,12 +28,26 @@ div.pop-up{
     }
 
     &#game-pop{
-        .pop-close{
+        .pop-close, .refresh, .next-farm-iframe{
             position: absolute;
-            top: .5rem;
+            top: 55%;
             right: .5rem; 
             z-index: 10;
-            background-color: unset;
+            padding: 1rem;
+            // background-color: unset;
+        }
+        .refresh{
+            top: 47.4%;
+            padding: .7rem; 
+
+            img{ width: 2rem; }
+        }
+
+        .next-farm-iframe{
+            top: 40%;
+            padding: .7rem; 
+
+            img{ width: 2rem; }
         }
 
         .container{
@@ -49,12 +63,27 @@ div.pop-up{
             div{
                 width: 100%;
                 height: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
                 iframe{
                     width: inherit;
                     height: inherit;
                     border: none;
+                    position: relative;
+
+                    &.active{
+                        z-index: 1;
+                    }
                 }
+
+                .second-i{
+                    position: absolute;
+
+                }
+
             }
         }
     }
