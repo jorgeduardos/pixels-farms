@@ -6,6 +6,20 @@
 {% include './_components/organisms/pop-up.html' with {id: 'mass-edit-pop-up', content: 'mass-edit-form', type: 'edit', header: 'Edit Farms'} %}
 {% include './_components/organisms/pop-up.html' with {id: 'about-pop-up', content: 'about', type: 'about', header: 'How it works'} %}
 
+{% include './_components/organisms/pop-up.html' with {id: 'settings-pop-up', content: 'settings', type: 'about', header: 'Settings'} %}
+
+<div class="game-pop pop-up" id="game-pop">
+    <div class="screen"></div>
+    <button id="close-pop" class="pop-close" aria-label="close popup">
+        <img src="/assets/images/icons/v2/close-white.svg" alt="">
+    </button>
+    <div class="container">
+        <div>
+            <iframe src="" title="description"></iframe>
+        </div>
+    </div>
+</div>
+
 <div class="home app">
 
     {% include './_components/organisms/main-nav.html' %}

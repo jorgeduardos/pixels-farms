@@ -12,6 +12,7 @@ export const errorDom = document.getElementById('error-handling');
 export const farmCountDom = document.getElementById('farm-count');
 export const farmReadytDom = document.getElementById('farms-ready');
 export const farmStartedDom = document.getElementById('farms-started');
+export const iframePop = document.getElementById('game-pop');
 export const defaultFarmKey = 'farms';
 export const w3gFarmKey = 'w3gfarms';
 export const regex = /(?<=farm)[^/\s]*/i;

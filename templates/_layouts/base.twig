@@ -52,10 +52,12 @@
   #}
 	<script src="/js/vendors/easytimer.min.js"></script>
 	{% if craft.app.request.getSegment(-1) == '' %}
+		<script>const mainFarmKey = 'farms'; var forceUpdate = false;</script>
 		<script type="module" src="{{ mix('/js/main.js') }}" defer></script>
 	{% elseif craft.app.request.segment(-1) == 'w3g' %}
 		{% include './_snippets/w3gFarmsScript.twig' %}
-		<script type="module" src="{{ mix('/js/w3g.js') }}" defer></script>
+		<script>const mainFarmKey = 'w3gfarms';</script>
+		<script type="module" src="{{ mix('/js/main.js') }}" defer></script>
 	{% endif %}
 </body>
 </html>

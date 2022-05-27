@@ -1,7 +1,7 @@
 import './vendors/easytimer.min';
 import { handleTimerStart, openPop, secondsToHourFormat, updateFarmCount} from './misc';
 import { findFarm, openFarm } from './farm-helpers';
-import { selectAllFarmsDom, editPopUpDom } from './consts';
+import { selectAllFarmsDom, editPopUpDom, iframePop } from './consts';
 
 
 export function startFarm(button, farms, localStorageKey) {
@@ -41,7 +41,12 @@ export function startFarm(button, farms, localStorageKey) {
     });
 
     updateFarmCount(farms);
-    openFarm(farm.number);
+
+    if(localStorage.getItem('open-iframe') == 'false'){
+        openFarmIframe(`https://play.pixels.online/farm${farm.number}`);
+    }else{
+        openFarm(farm.number);
+    }
 }
 
 export function deleteFarm(button, farms, localStorageKey, dev = false) {
@@ -159,4 +164,16 @@ export function selectFarm(button, farmsToUpdate, farms, dev = false){
     // } else {
     //     document.querySelector('.mass-edit-container .extra-buttons').classList.remove('show');
     // }
+}
+
+export function openFarmIframe(url){
+    console.log(url);
+    let iframe = iframePop.querySelector('iframe');
+    
+    // if(iframe.getAttribute('src') != url){
+    //     iframe.setAttribute('src', url);
+    // }
+    iframe.setAttribute('src', url);
+    iframePop.classList.add('open');
+
 }

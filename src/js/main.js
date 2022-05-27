@@ -2,17 +2,28 @@ import Sortable from 'sortablejs';
 import { arrayMoveMutable } from 'array-move';
 import {
     farmListDom, editPopUpDom, massEditPopUpDom, importPopUpDom, selectAllFarmsDom, exportAllFarms,
-    filterFarmsDom, defaultFarmKey as mainFarmKey
+    filterFarmsDom, iframePop
 } from './consts';
 import CROPS from './crops';
 import { openPop, closePop, clearCheckBoxes, download, secondsToHourFormat, handleTimerStart, 
     showError, importClean, updateFarmCount
 } from './misc'
-import { startFarm, deleteFarm, editSingleFarmForm, selectFarm } from './farm-events';
+import { startFarm, deleteFarm, editSingleFarmForm, selectFarm, openFarmIframe } from './farm-events';
 import {
     openFarm, editFarm, createFarmNode, updateFarmDom, findFarm,
     continueFarmTimer, addFarm
 } from './farm-helpers';
+import settingsHandler from './settings';
+
+
+if(mainFarmKey == 'w3gfarms'){
+    var localStoreCheck = JSON.parse(localStorage.getItem(mainFarmKey));
+
+    if (localStoreCheck == null || localStoreCheck.length == 0){
+        localStorage.setItem(mainFarmKey, JSON.stringify(w3gFarms));
+    }
+}
+
 
 // is in dev mode to print console logs
 var dev = false;
@@ -20,6 +31,26 @@ var dev = false;
 var storedFarms = JSON.parse(localStorage.getItem(mainFarmKey));
 var FARMS = [];
 var FARMStoUpdate = [];
+
+//coming from w3gFarmsScript.twig
+if(mainFarmKey == 'w3gfarms' && forceUpdate){
+    storedFarms.forEach((farm, i) => {
+        let exist = false;
+        w3gFarms.forEach( w3gFarm => {
+            if(farm.number == w3gFarm.number){
+                exist = true;
+                return
+            }
+        })
+        if(!exist){
+            w3gFarms.splice(i, 0, farm)
+        }
+    })
+
+    storedFarms = w3gFarms;
+    localStorage.setItem(mainFarmKey, JSON.stringify(storedFarms));
+    showError('New W3G farms were added', 2)
+}
 
 
 // ************************************** //
@@ -173,6 +204,15 @@ farmListDom.addEventListener('click', function (e) {
 
         editSingleFarmForm(e.target, FARMS);
 
+    }else if (e.target.classList.contains('open-farm')) {
+
+        if(localStorage.getItem('open-iframe') == 'false'){
+            e.preventDefault()
+            let farmDom = e.target.parentElement.parentElement;
+            // openFarm(farmDom.id);
+            openFarmIframe(e.target.getAttribute('href'));
+        }
+
     } else if (e.target.classList.contains('select-farm')) {
 
         selectFarm(e.target, FARMStoUpdate, FARMS, dev);
@@ -201,7 +241,31 @@ farmListDom.addEventListener('click', function (e) {
     }
 })
 
+document.getElementById('general-store').addEventListener('click', (e)=>{
+    if(localStorage.getItem('open-iframe') == 'false'){
+        e.preventDefault()
+        openFarmIframe(e.currentTarget.getAttribute('href'));
+    }
+})
 
+// ************************************** //
+//                SETTINGS                //
+// ************************************** //
+const settingInputs = document.querySelectorAll('.setting-input');
+
+settingInputs.forEach(element => {
+
+    if(localStorage.getItem(element.name) == null){
+        localStorage.setItem(element.name, 'false');
+    }
+
+    var settingValue = localStorage.getItem(element.name) == 'true' ? true : false;
+    element.checked = settingValue;
+
+    element.addEventListener('change', (e) => {
+        settingsHandler(e.target)
+    })
+})
 
 
 // ************************************** //
@@ -216,6 +280,9 @@ popUps.forEach(element => {
 
     //close button event
     closePopBtn.addEventListener('click', () => {
+        if(element.classList.contains('game-pop')){
+            iframePop.querySelector('iframe').setAttribute('src', '')
+        }
         closePop(element);
     })
 
@@ -225,6 +292,9 @@ popUps.forEach(element => {
     })
 
     screen.addEventListener('click', function (e) {
+        if(element.classList.contains('game-pop')){
+            iframePop.querySelector('iframe').setAttribute('src', '')
+        }
         closePop(element);
     })
 })
@@ -385,6 +455,12 @@ document.getElementById('delete-all-farms').addEventListener('click', function (
 //             MASS STARTING              //
 // ************************************** //
 document.getElementById('start-all-farms').addEventListener('click', function (e) {
+
+    if(localStorage.getItem('open-iframe') == 'false'){
+        showError('Change your app settings', 1)
+        return
+    }
+    
     let farmsStarted = 0;
     FARMStoUpdate.forEach(farm => {
         let farmDom = document.getElementById(farm.number);

@@ -1,0 +1,20 @@
+div.settings{
+    padding: 2rem 5rem;
+
+    .input-container{
+        display: flex;
+        align-items: center;
+        input{
+            margin-right: 8px;
+        }
+
+        p{
+            margin: 0;
+        }
+    }
+
+    .disclaimer{
+        font-style: italic;
+        font-size: 1.1rem;
+    }
+}

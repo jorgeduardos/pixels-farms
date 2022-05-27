@@ -57,41 +57,41 @@ mix
     legacyNodePolyfills: true
   })
 
-  .purgeCss({
-    enabled: mix.inProduction(),
-    globs: [
-      path.join(__dirname, './templates/**/*.{html,twig}'),
-      path.join(__dirname, './src/css/**/*.{scss,css}'),
-      path.join(__dirname, './src/js/**/*.js'),
-      path.join(__dirname, './src/images/**/*.svg'),
-      path.join(__dirname, './web/assets/images/**/*.svg'),
-    ],
-    content: ['./templates/**/*/.{html,twig}', './web/assets/images/**/*.svg', './src/images/**/*.svg', './web/js/main.js'],
-    css: ['./web/css/main.css'],
-    defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
-    extensions: ['html', 'js', 'php', 'twig', 'scss', 'css'],
-    whitelist: ['lazyloading', 'lazyloaded', 'lazyfade', 'lazyblur', 'lazyload']
-  })
+  // .purgeCss({
+  //   enabled: mix.inProduction(),
+  //   globs: [
+  //     path.join(__dirname, './templates/**/*.{html,twig}'),
+  //     path.join(__dirname, './src/css/**/*.{scss,css}'),
+  //     path.join(__dirname, './src/js/**/*.js'),
+  //     path.join(__dirname, './src/images/**/*.svg'),
+  //     path.join(__dirname, './web/assets/images/**/*.svg'),
+  //   ],
+  //   content: ['./templates/**/*/.{html,twig}', './web/assets/images/**/*.svg', './src/images/**/*.svg', './web/js/main.js'],
+  //   css: ['./web/css/main.css'],
+  //   defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
+  //   extensions: ['html', 'js', 'php', 'twig', 'scss', 'css'],
+  //   whitelist: ['lazyloading', 'lazyloaded', 'lazyfade', 'lazyblur', 'lazyload']
+  // })
 
-  .criticalCss({
-    enabled: mix.inProduction(),
-    paths: {
-      base: process.env.PRIMARY_SITE_URL,
-      templates: './templates/_critical/',
-      suffix: '-critical.min'
-    },
-    urls: [
-      {
-        url: '/',
-        template: 'index'
-      }
-    ],
-    options: {
-      minify: true,
-      width: 1440,
-      height: 1200,
-    },
-  })
+  // .criticalCss({
+  //   enabled: mix.inProduction(),
+  //   paths: {
+  //     base: process.env.PRIMARY_SITE_URL,
+  //     templates: './templates/_critical/',
+  //     suffix: '-critical.min'
+  //   },
+  //   urls: [
+  //     {
+  //       url: '/',
+  //       template: 'index'
+  //     }
+  //   ],
+  //   options: {
+  //     minify: true,
+  //     width: 1440,
+  //     height: 1200,
+  //   },
+  // })
 
   // This enable jQuery autoload
   // .autoload({

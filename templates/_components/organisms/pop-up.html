@@ -1,4 +1,4 @@
-<div id="{{id}}" class="pop-up" data-type="{{type}}">
+<div id="{{id}}" class="pop-up {% if class is defined %}{{class}}{% endif %}" data-type="{{type}}">
     <div class="screen"></div>
     <div class="container">
         <div class="pop-up-header">
@@ -15,6 +15,8 @@
             {% include './_components/molecules/import-form.html'%}
         {% elseif content == 'about' %}
             {% include './_components/molecules/acordion.html'%}
+        {% elseif content == 'settings' %}
+            {% include './_components/molecules/settings.html'%}
         {% endif %}
     </div>
 </div>
