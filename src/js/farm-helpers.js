@@ -1,5 +1,5 @@
 import CROPS from './crops';
-import { farmListDom,farmCountDom, farmReadytDom, farmStartedDom, regex, selectAllFarmsDom } from './consts';
+import { farmListDom,farmCountDom, farmReadytDom, farmStartedDom, regex, selectAllFarmsDom, iframeInfo } from './consts';
 import { updateFarmCount, showError, secondsToHourFormat } from './misc';
 
 export function findFarm(id, arr) {
@@ -16,7 +16,14 @@ export function findFarm(id, arr) {
     return farm;
 }
 
-
+export function farmIframeInfo(farm, index, farms){
+    iframeInfo.style.display = 'flex';
+    iframeInfo.querySelector('.farm-number span').innerHTML = farm.number;
+    iframeInfo.querySelector('.crop-type').classList.remove('scarrot', 'popberry', 'grumpkin');
+    iframeInfo.querySelector('.crop-type').classList.add(farm.crop.name.toLowerCase()); 
+    iframeInfo.querySelector('.arr-length').innerHTML = farms.length;
+    iframeInfo.querySelector('.index').innerHTML = index + 1;
+}
 
 export function openFarm(farmNumber) {
     window.open(`https://play.pixels.online/farm${farmNumber}`, "_blank");

@@ -103,29 +103,6 @@
         }
     }
 
-    .crop-type {
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-
-        &:after{
-            content: '';
-            padding-bottom: 40px;
-            width: 40px;
-            display: block;
-        }
-
-        &.scarrot{
-            background-image: url('/assets/images/crops/scarrot.png');
-        }
-        &.grumpkin{
-            background-image: url('/assets/images/crops/grumpkin.png');
-        }
-        &.popberry{
-            background-image: url('/assets/images/crops/popberry.png');
-        }
-    }
-
     .farm-header{
 
         >div{

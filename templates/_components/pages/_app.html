@@ -10,17 +10,24 @@
 
 <div class="game-pop pop-up" id="game-pop">
     <div class="screen"></div>
-    <button id="close-pop" class="pop-close" aria-label="close popup">
-        <img src="/assets/images/icons/v2/close.svg" alt="">
-    </button>
-    <button class="refresh" aria-label="refresh iframe" id="refresh-iframe">
-        <img src="/assets/images/icons/v2/refresh-v2.svg" alt="">
-    </button>
-    <button id="next-farm-iframe" class="next-farm-iframe" aria-label="next farm">
-        <img src="/assets/images/icons/v2/logout.svg" alt="">
-    </button>
+    <div class="iframe-ui">
+        <button id="next-farm-iframe" class="next-farm-iframe" aria-label="next farm">
+            <img src="/assets/images/icons/v2/logout.svg" alt="">
+        </button>
+        <button id="close-pop" class="pop-close" aria-label="close popup">
+            <img src="/assets/images/icons/v2/close.svg" alt="">
+        </button>
+        <button class="refresh" aria-label="refresh iframe" id="refresh-iframe">
+            <img src="/assets/images/icons/v2/refresh-v2.svg" alt="">
+        </button>
+    </div>
     <div class="container">
         <div>
+            <div id="iframe-info">
+                <h6 class="farm-number">Farm <span></span></h6>
+                <div class="crop-type"></div>
+                <div class="array-counter"><span class="index"></span>/<span class="arr-length"></span></div>
+            </div>
             <iframe class="main-i" src="" title="Pixels Game"></iframe>
             <iframe class="second-i" src="" title="Pixels Game"></iframe>
         </div>

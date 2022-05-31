@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { arrayMoveMutable } from 'array-move';
 import {
     farmListDom, editPopUpDom, massEditPopUpDom, importPopUpDom, selectAllFarmsDom, exportAllFarms,
-    filterFarmsDom, iframePop
+    filterFarmsDom, iframePop, iframeInfo
 } from './consts';
 import CROPS from './crops';
 import { openPop, closePop, clearCheckBoxes, download, secondsToHourFormat, handleTimerStart, 
@@ -12,7 +12,7 @@ import { openPop, closePop, clearCheckBoxes, download, secondsToHourFormat, hand
 import { startFarm, deleteFarm, editSingleFarmForm, selectFarm, openFarmIframe } from './farm-events';
 import {
     openFarm, editFarm, createFarmNode, updateFarmDom, findFarm,
-    continueFarmTimer, addFarm
+    continueFarmTimer, addFarm, farmIframeInfo
 } from './farm-helpers';
 import settingsHandler from './settings';
 
@@ -199,7 +199,10 @@ farmListDom.addEventListener('click', function (e) {
 
         if(localStorage.getItem('open-iframe') == 'false'){
             nextFarmDom = farmObj.farmDom.nextElementSibling;
-            console.log('upcoming farm: ', nextFarmDom.id)
+            document.getElementById('next-farm-iframe').style.display = 'flex';
+
+            farmIframeInfo(farmObj.farm, farmObj.farmIndex, FARMS);
+            
             openFarmIframe(`https://play.pixels.online/farm${farmObj.farm.number}`, farmObj.farmDom.nextElementSibling);
         }else if(localStorage.getItem('open-iframe') == 'true'){
             openFarm(farmObj.farm.number);
@@ -218,8 +221,12 @@ farmListDom.addEventListener('click', function (e) {
 
         if(localStorage.getItem('open-iframe') == 'false'){
             e.preventDefault()
+            document.getElementById('next-farm-iframe').style.display = 'none';
             let farmDom = e.target.parentElement.parentElement;
-            // openFarm(farmDom.id);
+            let farmObj = findFarm(farmDom.id, FARMS);
+
+            farmIframeInfo(farmObj.farm, farmObj.i, FARMS);
+
             openFarmIframe(e.target.getAttribute('href'));
         }
 
@@ -286,6 +293,9 @@ popUps.forEach(element => {
         if(element.classList.contains('game-pop')){
             iframePop.querySelector('.main-i').setAttribute('src', '');
             iframePop.querySelector('.second-i').setAttribute('src', '');
+            iframeInfo.style.display = 'none';
+            iframePop.querySelector('iframe.active').classList.remove('active');
+            gsap.set('iframe', {alpha: 1, x: 0})
         }
         closePop(element);
     })
@@ -297,7 +307,11 @@ popUps.forEach(element => {
 
     screen.addEventListener('click', function (e) {
         if(element.classList.contains('game-pop')){
-            iframePop.querySelector('iframe').setAttribute('src', '')
+            iframePop.querySelector('.main-i').setAttribute('src', '');
+            iframePop.querySelector('.second-i').setAttribute('src', '');
+            iframePop.querySelector('iframe.active').classList.remove('active');
+            iframeInfo.style.display = 'none';
+            gsap.set('iframe', {alpha: 1, x: 0})
         }
         closePop(element);
     })
@@ -439,6 +453,7 @@ nextFarmI.addEventListener('click', ()=>{
         closePop(iframePop);
         iframePop.querySelector('.main-i').setAttribute('src', '');
         iframePop.querySelector('.second-i').setAttribute('src', '');
+        iframePop.querySelector('iframe.active').classList.remove('active');
         return
     }
 
@@ -449,13 +464,14 @@ nextFarmI.addEventListener('click', ()=>{
     let buttonDom = nextFarmDom.querySelector('.start-farm');
     let nextFarmObj = startFarm(buttonDom, FARMS, mainFarmKey);
 
+    farmIframeInfo(nextFarmObj.farm, nextFarmObj.farmIndex, FARMS);
+
     
 
     gsap.to(currentActive, {x: -400, alpha: 0, onComplete: ()=>{
         document.querySelector('iframe:not(.active)').classList.add('active');
         currentActive.classList.remove('active');
         currentActive.setAttribute('src', `https://play.pixels.online/farm${nextFarmObj.farmDom.nextElementSibling.id}`)
-
         nextFarmDom = nextFarmObj.farmDom.nextElementSibling;
         gsap.set(currentActive, {alpha: 1, x: 0})
         nextFarmI.disabled = false;

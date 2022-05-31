@@ -45,7 +45,8 @@ export function startFarm(button, farms, localStorageKey) {
 
     return {
         farm: farm,
-        farmDom: farmDom
+        farmDom: farmDom,
+        farmIndex: farmFromArr.i
     }
 }
 
