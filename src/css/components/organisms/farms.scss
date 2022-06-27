@@ -15,6 +15,10 @@ div.farms{
 
         &:nth-child(even){
             background-color: $gray;
+
+            @media (prefers-color-scheme: dark) {
+                background-color: $darkmodeRow;
+            }
         }
     }
 

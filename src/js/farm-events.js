@@ -1,7 +1,7 @@
 import './vendors/easytimer.min';
 import { handleTimerStart, openPop, secondsToHourFormat, updateFarmCount} from './misc';
 import { findFarm, openFarm } from './farm-helpers';
-import { selectAllFarmsDom, editPopUpDom, iframePop } from './consts';
+import { selectAllFarmsDom, editPopUpDom, iframePop, mainGameUrl, farmUrl } from './consts';
 
 
 export function startFarm(button, farms, localStorageKey) {
@@ -174,7 +174,7 @@ export function openFarmIframe(url, nextFarm){
     iframe.setAttribute('src', url);
 
     if(nextFarm != null){
-        iframeS.setAttribute('src', `https://play.pixels.online/farm${nextFarm.id}`);
+        iframeS.setAttribute('src', `${mainGameUrl}${farmUrl}${nextFarm.id}`);
     }
 
     iframePop.classList.add('open');

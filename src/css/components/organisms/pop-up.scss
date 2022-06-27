@@ -79,7 +79,7 @@ div.pop-up{
             #iframe-info{
                 position: absolute;
                 top: 2rem;
-                left: 5rem;
+                left: 17rem;
                 // transform: translateX(-50%);
                 padding: .3rem 2rem;
                 border-radius: 16px;
@@ -146,9 +146,17 @@ div.pop-up{
     }
 
     &#settings-pop-up{
+
+        // input, label{
+        //     pointer-events: none;
+        // }
+
         .container{
-            height: 180px; 
+            height: 220px; 
             width: 500px;
+        }
+        .red{
+            color: red;
         }
     }
 
@@ -173,6 +181,10 @@ div.pop-up{
         background-color: rgba(0,0,0,0.4);
         opacity: 0;
         transition: opacity 0.2s linear;
+
+        @media (prefers-color-scheme: dark) {
+            background-color: rgba(0,0,0,0.6);
+        }
     }
 
     .container{
@@ -186,6 +198,12 @@ div.pop-up{
         transform: translateY(-2%);
         opacity: 0;
         transition: all 0.3s ease-out;
+
+        @media (prefers-color-scheme: dark) {
+            // box-shadow: $darkModeShadow;
+            background-color: $darkmodePopBkg;
+            color: $white;
+        }
 
         // padding: 2rem 3rem;
         // display: flex;

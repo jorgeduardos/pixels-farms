@@ -24,6 +24,11 @@ div.import-farms {
             border-radius: 8px;
             transition: all 0.2s linear;
 
+            @media (prefers-color-scheme: dark) {
+                background-color: $darkmodeRow;
+                color: $white;
+            }
+
             &.is-dragover{
                 background-color: #c6ceff;
                 label{

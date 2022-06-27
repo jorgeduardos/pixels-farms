@@ -190,6 +190,12 @@
         >svg{
             margin-right: 0.5rem;
             width: 30px;
+
+            @media (prefers-color-scheme: dark) {
+                path{
+                    fill: $rockGray;
+                }
+            }
         }
 
         .timer{

@@ -16,4 +16,6 @@ export const iframePop = document.getElementById('game-pop');
 export const iframeInfo = document.getElementById('iframe-info');
 export const defaultFarmKey = 'farms';
 export const w3gFarmKey = 'w3gfarms';
+export const mainGameUrl = 'https://play.pixels.xyz/';
+export const farmUrl = 'farm';
 export const regex = /(?<=farm)[^/\s]*/i;

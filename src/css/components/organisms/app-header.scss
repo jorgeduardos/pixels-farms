@@ -10,6 +10,10 @@ div.app-header{
                 max-width: 650px;
                 color: $rockGray;
 
+                @media (prefers-color-scheme: dark) {
+                    color: $white;
+                }
+
                 em{
                     font-size: 1.1rem;
                 }
@@ -30,6 +34,10 @@ div.app-header{
     .btn{
 
         height: 50px;
+
+        @media (prefers-color-scheme: dark) {
+            background-color: $darkmodeGridBkg;
+        }
 
         &:nth-child(1){
             margin-right: 2rem;

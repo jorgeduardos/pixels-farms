@@ -17,8 +17,17 @@
         color: #3F3F44;
         font-size: 1.2rem;
 
+        @media (prefers-color-scheme: dark) {
+            background-color: $darkmodeRow;
+            color: $white;
+        }
+
         &::placeholder {
             color: #C0C0C1;
+
+            @media (prefers-color-scheme: dark) {
+                color: $rockGray;
+            }
         }
     }
 }

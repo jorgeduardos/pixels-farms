@@ -8,13 +8,18 @@ div.farms-ui {
     padding-top: 3rem;
     z-index: 1;
     background-color: $white;
+
+    @media (prefers-color-scheme: dark) {
+        background-color: $darkmodeGridBkg;
+    }
+
     // margin-bottom:  3rem;
 
-    h5{
+    h5 {
         margin-right: 3rem;
     }
 
-    .farm-counter{
+    .farm-counter {
         display: flex;
         margin-right: auto;
         align-items: center;
@@ -23,7 +28,7 @@ div.farms-ui {
         border-radius: 8px;
         padding: .8rem;
 
-        >div{
+        >div {
             display: inherit;
             align-items: center;
             font-size: 1.4rem;
@@ -31,6 +36,10 @@ div.farms-ui {
             padding: 0 1rem;
             color: $black;
             position: relative;
+
+            @media (prefers-color-scheme: dark) {
+                color: $white;
+            }
 
             &:nth-child(1),
             &:nth-child(2) {
@@ -44,13 +53,19 @@ div.farms-ui {
                     top: 0;
                     bottom: 0;
                     margin: auto 0;
+
+
+                    @media (prefers-color-scheme: dark) {
+                        background-color: $white;
+                    }
                 }
             }
+
             // color: #84818a;
 
-            span{
+            span {
                 margin-left: 3px;
-                color: $black;
+                color: inherit;
             }
         }
     }
@@ -70,14 +85,24 @@ div.farms-ui {
         display: none;
         border-radius: 5px;
 
+        @media (prefers-color-scheme: dark) {
+            box-shadow: 0px 0px 3px #000000;
+            background-color: $black;
+        }
+
         button {
             border: none;
             padding: 1rem;
             background-color: $white;
             position: relative;
 
+            @media (prefers-color-scheme: dark) {
+                background-color: $black;
+            }
+
             &:nth-child(1),
-            &:nth-child(2) {
+            &:nth-child(2),
+            &:nth-child(3) {
                 &::after {
                     position: absolute;
                     height: 60%;
@@ -88,17 +113,21 @@ div.farms-ui {
                     top: 0;
                     bottom: 0;
                     margin: auto 0;
+
+                    @media (prefers-color-scheme: dark) {
+                        background-color: $darkmodeGridBkg;
+                    }
                 }
             }
 
             &:hover {
-                img{
+                img {
                     transform: scale(1.05);
                 }
             }
 
-            &.reset{
-                img{
+            &.reset {
+                img {
                     width: 17px;
                 }
             }
@@ -106,6 +135,8 @@ div.farms-ui {
             img {
                 width: 20px;
                 transition: all 0.2s ease-in-out;
+
+                filter: brightness(100);
             }
         }
 
@@ -115,6 +146,10 @@ div.farms-ui {
 
         &:not(.bulk) {
             box-shadow: 0 1px 5px 0px rgb(0 0 0 / 12%);
+
+            @media (prefers-color-scheme: dark) {
+                box-shadow: 0px 0px 3px #000000;
+            }
         }
 
         &.export-farms {
@@ -125,9 +160,10 @@ div.farms-ui {
             }
         }
 
-        &.filter-farms{
+        &.filter-farms {
             color: #ABABAB;
-            img{
+
+            img {
                 width: 15px;
             }
 
@@ -135,13 +171,17 @@ div.farms-ui {
                 color: $black;
                 display: inline-block;
                 margin-left: 3px;
+
+                @media (prefers-color-scheme: dark) {
+                    color: $white;
+                }
             }
         }
     }
 
 
-    div.farm-labels{
-        margin-top:  3rem;
+    div.farm-labels {
+        margin-top: 3rem;
         padding: 1rem;
         width: 100%;
         z-index: 2;
@@ -152,7 +192,11 @@ div.farms-ui {
         border-radius: 12px;
         background-color: $gray;
 
-        p{
+        @media (prefers-color-scheme: dark) {
+            background-color: $darkmodeRow;
+        }
+
+        p {
             text-transform: uppercase;
             font-weight: 700;
             margin: 0;

@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { arrayMoveMutable } from 'array-move';
 import {
     farmListDom, editPopUpDom, massEditPopUpDom, importPopUpDom, selectAllFarmsDom, exportAllFarms,
-    filterFarmsDom, iframePop, iframeInfo
+    filterFarmsDom, iframePop, iframeInfo, mainGameUrl, farmUrl
 } from './consts';
 import CROPS from './crops';
 import { openPop, closePop, clearCheckBoxes, download, secondsToHourFormat, handleTimerStart, 
@@ -203,7 +203,7 @@ farmListDom.addEventListener('click', function (e) {
 
             farmIframeInfo(farmObj.farm, farmObj.farmIndex, FARMS);
             
-            openFarmIframe(`https://play.pixels.online/farm${farmObj.farm.number}`, farmObj.farmDom.nextElementSibling);
+            openFarmIframe(`${mainGameUrl}${farmUrl}${farmObj.farm.number}`, farmObj.farmDom.nextElementSibling);
         }else if(localStorage.getItem('open-iframe') == 'true'){
             openFarm(farmObj.farm.number);
         }
@@ -228,6 +228,9 @@ farmListDom.addEventListener('click', function (e) {
             farmIframeInfo(farmObj.farm, farmObj.i, FARMS);
 
             openFarmIframe(e.target.getAttribute('href'));
+
+        }else if(localStorage.getItem('open-iframe') == 'true'){
+            openFarm(farmObj.farm.number);
         }
 
     } else if (e.target.classList.contains('select-farm')) {
@@ -261,6 +264,7 @@ farmListDom.addEventListener('click', function (e) {
 // ************************************** //
 //                SETTINGS                //
 // ************************************** //
+
 const settingInputs = document.querySelectorAll('.setting-input');
 
 settingInputs.forEach(element => {
@@ -471,7 +475,7 @@ nextFarmI.addEventListener('click', ()=>{
     gsap.to(currentActive, {x: -400, alpha: 0, onComplete: ()=>{
         document.querySelector('iframe:not(.active)').classList.add('active');
         currentActive.classList.remove('active');
-        currentActive.setAttribute('src', `https://play.pixels.online/farm${nextFarmObj.farmDom.nextElementSibling.id}`)
+        currentActive.setAttribute('src', `${mainGameUrl}${farmUrl}${nextFarmObj.farmDom.nextElementSibling.id}`)
         nextFarmDom = nextFarmObj.farmDom.nextElementSibling;
         gsap.set(currentActive, {alpha: 1, x: 0})
         nextFarmI.disabled = false;

@@ -21,6 +21,10 @@ div.add-color {
                 font-size: 1.4rem;
                 background-color: $white;
                 cursor: pointer;
+
+                @media (prefers-color-scheme: dark) {
+                    background-color: unset;
+                }
             }
         }
     }
