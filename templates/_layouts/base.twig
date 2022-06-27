@@ -51,6 +51,7 @@
     Defer: Document Order. Non-blocking.
   #}
 	<script src="/js/vendors/easytimer.min.js"></script>
+	<script type="module" src="{{ mix('/js/dark-mode.js') }}" defer></script>
 	{% if craft.app.request.getSegment(-1) == '' %}
 		<script>const mainFarmKey = 'farms'; var forceUpdate = false;</script>
 		<script type="module" src="{{ mix('/js/main.js') }}" defer></script>

@@ -185,41 +185,53 @@ export function addFarm(formDom, form, farms, localStorageKey, dev = false) {
     let crop = CROPS[form.type]
 
     var match = regex.exec(form.farmNumber);
-    let number = match == null ? form.farmNumber : match[0];
+    let numbers = [];
+
+    if(match == null){
+        numbers = form.farmNumber.split(",").map(function(item) {
+            return item.trim();
+        });
+    }else{
+        numbers.push(match[0]);
+    }
+
+    let counter = 0;
 
     //errOr handling
-    if (isNaN(number * 1)) {
-        return showError('Invalid Farm');
-    } else if ((number * 1) > 5000 || (number * 1) < 0) {
-        return showError('Invalid Farm');
-    } else if (farms.length > 0 && findFarm(number, farms) != null) {
-        return showError('Farm already exists');
-    }
-
-    //regex url
-
-    let farm = {
-        number: number,
-        crop: crop,
-        timer: null,
-        startTime: null,
-        info: {
-            color: form.farmColor == 'null' ? null : form.farmColor,
-            notes: form.farmNotes
+    numbers.forEach(number => {
+        if (isNaN(number * 1)) {
+            return /*showError('Invalid Farm');*/
+        } else if ((number * 1) > 5000 || (number * 1) < 0) {
+            return /*showError('Invalid Farm');*/
+        } else if (farms.length > 0 && findFarm(number, farms) != null) {
+            return /*showError('Farm already exists');*/
         }
-    }
 
-    farms.push(farm);
+
+        let farm = {
+            number: number,
+            crop: crop,
+            timer: null,
+            startTime: null,
+            info: {
+                color: form.farmColor == 'null' ? null : form.farmColor,
+                notes: form.farmNotes
+            }
+        }
+
+        farms.push(farm);
+        farmListDom.appendChild(createFarmNode(farm));
+
+        counter = counter + 1;
+    })
+
+    
     updateFarmCount(farms);
 
     //reset form fields
     formDom.querySelector('.farmNumber').value = ''
     formDom.querySelector('.farmNotes').value = ''
     formDom.querySelector('.farmNumber').focus
-
-    // if (farms.length > 1) {
-    //     selectAllFarmsDom.disabled = false;
-    // }
 
     localStorage.setItem(localStorageKey, JSON.stringify(farms));
 
@@ -228,6 +240,11 @@ export function addFarm(formDom, form, farms, localStorageKey, dev = false) {
     }
 
     //create dom element and add it
-    showError(`Farm ${number} added to the bottom`, 2);
-    farmListDom.appendChild(createFarmNode(farm));
+    if(numbers.length == counter){
+        showError(`Farms added to the bottom`, 2);
+    }else if(counter != 0){
+        showError(`Some Farms were invalid or duplicated`, 1);
+    }else{
+        showError(`Invalid or duplicated farms`);
+    }
 }

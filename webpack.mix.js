@@ -33,7 +33,7 @@ mix
   })
   .sass('./src/css/main.scss', 'css')
   .js('./src/js/main.js', 'js')
-  .js('./src/js/w3g.js', 'js')
+  .js('./src/js/dark-mode.js', 'js')
   .setPublicPath('./web/')
   .copy('./src/js/vendors', './web/js/vendors/')
   .copy('./src/fonts', './web/assets/fonts/')

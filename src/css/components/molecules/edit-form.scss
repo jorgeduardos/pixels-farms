@@ -4,11 +4,11 @@ form.edit-farms{
         display: flex;
         padding: 2rem 4rem;
         align-items: flex-start;
-        border: 1px solid $gray;
+        border-bottom: 1px solid var(--gray);
 
         .crop-info{
             padding: 1rem;
-            background-color: $gray;
+            background-color: var(--gray);;
             border-radius: 50%;
             width: 64px;
             height: 64px;
@@ -31,7 +31,7 @@ form.edit-farms{
                 display: flex;
                 align-items: center;
                 margin-top: .8rem;
-                img{
+                svg{
                     width: 2.5rem;
                     margin-right: 1rem;
                 }
@@ -50,7 +50,7 @@ form.edit-farms{
 
     .fields{
         padding: 2rem 4rem;
-        border-bottom: 1px solid $gray;
+        border-bottom: 1px solid var(--gray);;
 
         .form-section{
             margin-bottom: 2.5rem;

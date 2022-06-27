@@ -1,11 +1,12 @@
 a.video-item{
-    box-shadow: 0 1px 5px 0px rgba(0, 0, 0, 0.191);
+    box-shadow: var(--videoItemShadow);
     width: 100%;
     min-width: 380px;
     border-radius: 8px;
     display: block;
     text-decoration: none;
     transition: transform 0.3s ease-in-out;
+    background-color: var(--darkmodePopBkg);
 
     &:hover{
         transform: scale(1.01) translate(5px, 5px);
@@ -37,7 +38,7 @@ a.video-item{
         flex-direction: column;
 
         h5{
-            color: $black;
+            color: var(--black);
         }
 
         p{

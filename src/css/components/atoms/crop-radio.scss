@@ -23,10 +23,5 @@ label.crop-radio{
     [type=radio]:checked+div {
         border: 1px solid #1B84FF;
         background-color: #D1E6FF;
-
-        @media (prefers-color-scheme: dark) {
-            background-color: $gray;
-            border-color: $white;
-        }
     }
 }

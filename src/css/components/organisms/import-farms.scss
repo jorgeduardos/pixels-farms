@@ -16,18 +16,15 @@ div.import-farms {
         >div {
             width: 100%;
             height: 140px;
-            background-color: $gray;
+            background-color: var(--darkmodeRow);
             padding: 1rem;
             margin-bottom: 2rem;
             // border: 1px dashed #8F92A1;
             background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='9' ry='9' stroke='#8F92A1' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
             border-radius: 8px;
             transition: all 0.2s linear;
+            color: var(--black);
 
-            @media (prefers-color-scheme: dark) {
-                background-color: $darkmodeRow;
-                color: $white;
-            }
 
             &.is-dragover{
                 background-color: #c6ceff;

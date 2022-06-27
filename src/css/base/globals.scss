@@ -28,4 +28,14 @@ body{
             background-image: url('/assets/images/crops/popberry.png');
         }
     }
+
+    div.time{
+        >svg{
+
+            path{
+                fill: var(--timeSvg);
+            }
+
+        }
+    }
 }

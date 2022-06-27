@@ -2,8 +2,9 @@
 
     .section-label {
         margin: 0;
-        color: #504F54;
+        color: var(--sectionLabelColor);
         margin-bottom: 1rem;
+
     }
 
     textarea {
@@ -14,20 +15,12 @@
         border: none;
         padding: 1rem;
         resize: none;
-        color: #3F3F44;
+        color: var(--inputFieldsColor);
         font-size: 1.2rem;
-
-        @media (prefers-color-scheme: dark) {
-            background-color: $darkmodeRow;
-            color: $white;
-        }
+        background-color: var(--darkmodeRow);
 
         &::placeholder {
-            color: #C0C0C1;
-
-            @media (prefers-color-scheme: dark) {
-                color: $rockGray;
-            }
+            color: var(--inputPlaceholderFieldsColor);
         }
     }
 }

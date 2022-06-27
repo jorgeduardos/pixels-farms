@@ -4,11 +4,7 @@ html {
     font-size: 62.5%;
     scroll-behavior: smooth;
     font-family: $sans-serif;
-    color: $black;
-
-    @media (prefers-color-scheme: dark) {
-        color: $white;
-    }
+    color: var(--black);
 }
 
 h1, .h1,
@@ -61,16 +57,14 @@ p {
     }
 
     a{
-        color: $blue;
+        color: var(--blue);
 
-        @media (prefers-color-scheme: dark) {
-            background-color: $white;
-        }
+        background-color: var(--white);
     }
 }
 
 .is-rock{
-    color: $rockGray;
+    color: var(--rockGray);
 }
 
 input, textarea{

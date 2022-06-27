@@ -178,13 +178,9 @@ div.pop-up{
     .screen{
         height: inherit;
         width: inherit;
-        background-color: rgba(0,0,0,0.4);
+        background-color: var(--screen);
         opacity: 0;
         transition: opacity 0.2s linear;
-
-        @media (prefers-color-scheme: dark) {
-            background-color: rgba(0,0,0,0.6);
-        }
     }
 
     .container{
@@ -194,16 +190,11 @@ div.pop-up{
         width: 550px;
         inset: 0;
         margin: auto;
-        background-color: $white;
+        background-color: var(--darkmodePopBkg);
         transform: translateY(-2%);
         opacity: 0;
         transition: all 0.3s ease-out;
-
-        @media (prefers-color-scheme: dark) {
-            // box-shadow: $darkModeShadow;
-            background-color: $darkmodePopBkg;
-            color: $white;
-        }
+        color: var(--black);
 
         // padding: 2rem 3rem;
         // display: flex;

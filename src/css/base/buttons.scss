@@ -8,25 +8,20 @@
     display: inline-flex;
     align-items: center;
     padding: 1rem 2rem;
-    color: $black;
+    color: var(--black);
     font-weight: 400;
     cursor: pointer;
     border-radius: 8px;
     // position: relative;
 
+
     &.fill-white {
-        background-color: $white;
-        box-shadow: 0px 12px 40px #cdd0d5;
+        background-color: var(--white);
+        box-shadow: var(--darkModeShadow);
         transition: all 0.2s ease-in-out;
 
         &:hover {
             transform: scale(1.02);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            box-shadow: $darkModeShadow;
-            background-color: $black;
-            color: $white;
         }
     }
 
@@ -36,9 +31,7 @@
             margin-left: 10px;
             width: 7px;
 
-            @media (prefers-color-scheme: dark) {
-                path{ fill: $white }
-            }
+            path{ fill: var(--black) }
         }
     }
 
@@ -74,23 +67,18 @@
         font-size: 1.6rem;
         cursor: pointer;
         transition: transform 0.2s ease-out;
-        border: 1px solid #F3F3F3;
-
-        @media (prefers-color-scheme: dark) {
-            border: 1px solid $white;
-        }
+        border: 1px solid var(--btnIconBorder);
         
         svg,
         img {
             width: 20px;
 
-            @media (prefers-color-scheme: dark) {
-                &.darkMode-path path{
-                    fill: $white;
-                }
-                &.darkMode-stroke path{
-                    stroke: $white;
-                }
+            &.darkMode-path path{
+                fill: var(--black);
+            }
+
+            &.darkMode-stroke path{
+                stroke: var(--black);
             }
         }
 
@@ -99,9 +87,8 @@
                 margin-right: 3px;
             }
 
-            @media (prefers-color-scheme: dark){
-                color: $white;
-            }
+            color: var(--black);
+
         }
 
         // &:not(.start-farm) {
@@ -115,7 +102,7 @@
 
     &.submit-form-btn{
         border: none;
-        background-color: $blue;
+        background-color: var(--blue);
         color: $white;
         padding: 1.5rem;
         border-radius: 8px;
@@ -126,19 +113,13 @@
         transition: transform 0.2s ease-out;
         width: 100%;
 
-        // @media (prefers-color-scheme: dark) {
-        //     box-shadow: $darkModeShadow;
-        //     background-color: $black;
-        //     color: $white;
-        // }
-
         &:hover{
             transform: scale(1.02);
         }
 
         &:disabled{
             cursor: no-drop;
-            background-color: $white;
+            background-color: var(--white);
             border: 1px solid #ECECEF;
             color: #8F92A1;
             &:hover{

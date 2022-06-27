@@ -1,6 +1,33 @@
 /*-----------------------------------*\
     COLORS
 \*-----------------------------------*/
+:root {
+    --black: #232323;
+    --darkGray: #2E2C34;
+    --white: #fff;
+    --gray: #F9F9FA;
+    --rockGray: #84818A;
+    --green: #4FBF67;
+    --blue: #3757FF;
+    --btnIconBorder: #F3F3F3;
+    --timeSvg: #232323;
+    --borderColorCrop: #1B84FF;
+    --backgroundColorCrop: #D1E6FF;
+    --sectionLabelColor: #504F54;
+    --inputFieldsColor: #3F3F44;
+    --inputPlaceholderFieldsColor: #C0C0C1;
+    --screen: rgba(0,0,0,0.4);
+
+    --darkmodeAppBkg: #f9f9fa;
+    --darkmodePopBkg: #fff;
+    --darkmodeGridBkg: #fff;
+    --darkmodeRow: #F9F9FA;
+    --darkModeShadow: 0px 12px 40px #cdd0d5;
+    --darkModeShadowTwo: 0 1px 5px 0px rgb(0 0 0 / 12%);
+    --videoItemShadow: 0 1px 5px 0px rgba(0, 0, 0, 0.191);
+}
+
+
 $black: #232323;
 $darkGray: #2E2C34;
 $white: #fff;
@@ -8,18 +35,56 @@ $gray: #F9F9FA;
 $rockGray: #84818A;
 $green: #4FBF67;
 $blue: #3757FF;
+$btnIconBorder: #F3F3F3;
+$timeSvg: #232323;
 
-// dark mode
 $darkmodeAppBkg: #1B1D1E;
-$darkmodePopBkg: #2d2f30;
-$darkmodeGridBkg: #3e4143;
-$darkmodeRow: #292c2d;
-$darkModeShadow: 0px 0px 8px #000000;
+$darkmodePopBkg: #fff;
+$darkmodeGridBkg: #fff;
+$darkmodeRow: #F9F9FA;
+$darkModeShadow: 0px 12px 40px #cdd0d5;
+
+
+html.dark-mode {
+
+    $white: #232323;
+    $black: #fff;
+    $darkmodeAppBkg: #1B1D1E;
+    $darkmodePopBkg: #2d2f30;
+    $darkmodeGridBkg: #3e4143;
+    $darkmodeRow: #292c2d;
+    $darkModeShadow: 0px 0px 8px #000000;
+    $btnIconBorder: #fff;
+    $timeSvg: #84818A;
+
+
+    --rockGray: #fff;
+    --white: #232323;
+    --black: #fff;
+    --darkmodeAppBkg: #1B1D1E;
+    --darkmodePopBkg: #2d2f30;
+    --darkmodeGridBkg: #3e4143;
+    --darkmodeRow: #292c2d;
+    --darkModeShadow: 0px 0px 8px #000000;
+    --darkModeShadowTwo: 0px 0px 3px #000000;
+    --btnIconBorder: #fff;
+    --timeSvg: #84818A;
+    --borderColorCrop: #fff;
+    --backgroundColorCrop: #F9F9FA;
+    --sectionLabelColor: #fff;
+    --inputFieldsColor: #fff;
+    --inputPlaceholderFieldsColor: #84818A;
+    --screen: rgba(0,0,0,0.65);
+    --videoItemShadow: 0 1px 5px 0px #000000;
+
+    background-color: var(--white);
+}
 
 /*-----------------------------------*\
     FONTS
 \*-----------------------------------*/
-$sans-serif: 'Manrope', sans-serif;
+$sans-serif: 'Manrope',
+sans-serif;
 
 /*-----------------------------------*\
     BREAKPOINTS IN CORRECT ORDER

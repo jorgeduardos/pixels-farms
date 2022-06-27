@@ -425,36 +425,49 @@ function addFarm(formDom, form, farms, localStorageKey) {
   var dev = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
   var crop = _crops__WEBPACK_IMPORTED_MODULE_0__["default"][form.type];
   var match = _consts__WEBPACK_IMPORTED_MODULE_1__.regex.exec(form.farmNumber);
-  var number = match == null ? form.farmNumber : match[0]; //errOr handling
+  var numbers = [];
 
-  if (isNaN(number * 1)) {
-    return (0,_misc__WEBPACK_IMPORTED_MODULE_2__.showError)('Invalid Farm');
-  } else if (number * 1 > 5000 || number * 1 < 0) {
-    return (0,_misc__WEBPACK_IMPORTED_MODULE_2__.showError)('Invalid Farm');
-  } else if (farms.length > 0 && findFarm(number, farms) != null) {
-    return (0,_misc__WEBPACK_IMPORTED_MODULE_2__.showError)('Farm already exists');
-  } //regex url
+  if (match == null) {
+    numbers = form.farmNumber.split(",").map(function (item) {
+      return item.trim();
+    });
+  } else {
+    numbers.push(match[0]);
+  }
 
+  var counter = 0; //errOr handling
 
-  var farm = {
-    number: number,
-    crop: crop,
-    timer: null,
-    startTime: null,
-    info: {
-      color: form.farmColor == 'null' ? null : form.farmColor,
-      notes: form.farmNotes
+  numbers.forEach(function (number) {
+    if (isNaN(number * 1)) {
+      return;
+      /*showError('Invalid Farm');*/
+    } else if (number * 1 > 5000 || number * 1 < 0) {
+      return;
+      /*showError('Invalid Farm');*/
+    } else if (farms.length > 0 && findFarm(number, farms) != null) {
+      return;
+      /*showError('Farm already exists');*/
     }
-  };
-  farms.push(farm);
+
+    var farm = {
+      number: number,
+      crop: crop,
+      timer: null,
+      startTime: null,
+      info: {
+        color: form.farmColor == 'null' ? null : form.farmColor,
+        notes: form.farmNotes
+      }
+    };
+    farms.push(farm);
+    _consts__WEBPACK_IMPORTED_MODULE_1__.farmListDom.appendChild(createFarmNode(farm));
+    counter = counter + 1;
+  });
   (0,_misc__WEBPACK_IMPORTED_MODULE_2__.updateFarmCount)(farms); //reset form fields
 
   formDom.querySelector('.farmNumber').value = '';
   formDom.querySelector('.farmNotes').value = '';
-  formDom.querySelector('.farmNumber').focus; // if (farms.length > 1) {
-  //     selectAllFarmsDom.disabled = false;
-  // }
-
+  formDom.querySelector('.farmNumber').focus;
   localStorage.setItem(localStorageKey, JSON.stringify(farms));
 
   if (dev) {
@@ -462,8 +475,13 @@ function addFarm(formDom, form, farms, localStorageKey) {
   } //create dom element and add it
 
 
-  (0,_misc__WEBPACK_IMPORTED_MODULE_2__.showError)("Farm ".concat(number, " added to the bottom"), 2);
-  _consts__WEBPACK_IMPORTED_MODULE_1__.farmListDom.appendChild(createFarmNode(farm));
+  if (numbers.length == counter) {
+    (0,_misc__WEBPACK_IMPORTED_MODULE_2__.showError)("Farms added to the bottom", 2);
+  } else if (counter != 0) {
+    (0,_misc__WEBPACK_IMPORTED_MODULE_2__.showError)("Some Farms were invalid or duplicated", 1);
+  } else {
+    (0,_misc__WEBPACK_IMPORTED_MODULE_2__.showError)("Invalid or duplicated farms");
+  }
 }
 
 /***/ }),

@@ -1,10 +1,7 @@
 div.app {
     display: flex;
-    background-color: $gray;
+    background-color: var(--darkmodeAppBkg);
 
-    @media (prefers-color-scheme: dark) {
-        background-color: $darkmodeAppBkg;
-    }
 
     .main-grid {
         display: grid;
@@ -27,13 +24,8 @@ div.app {
             border-radius: 16px;
             
             &:not(.app-header) {
-                box-shadow: 0px 0px 20px #cdd0d5;
-                background-color: $white;
-
-                @media (prefers-color-scheme: dark) {
-                    box-shadow: $darkModeShadow;
-                    background-color: $darkmodeGridBkg;
-                }
+                box-shadow: var(--darkModeShadow);
+                background-color: var(--darkmodeGridBkg);
             }
         }
 
